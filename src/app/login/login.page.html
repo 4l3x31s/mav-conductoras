@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+<form [formGroup]="myForm" novalidate >
+  
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input formControlName="vPruebaInput" name="vPruebaInput" [(ngModel)]="txtPruebaInput" ></ion-input>
+        <div *ngIf="f.vPruebaInput.dirty && f.vPruebaInput.errors" class="danger">
+        <div class="error-item-validate" color="danger" ion-text *ngIf="f.vPruebaInput.errors.required">
+          El campo es requerido
+        </div>
+        </div>
+        <br />
+        <div>
+          {{nombre}}
+        </div>
+
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button (click)="nombreFunc()" color="primary" [disabled]="myForm.invalid">
+              <ion-icon name="send"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+</form>
+</ion-content>
