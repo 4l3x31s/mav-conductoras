@@ -23,6 +23,10 @@ export class AppComponent {
       title: 'Login',
       url: '/login',
       icon: 'list'
+    },{
+      title: 'Detalle Conductora',
+      url: '/detalle-conductora',
+      icon: 'contact'
     }
   ];
 
