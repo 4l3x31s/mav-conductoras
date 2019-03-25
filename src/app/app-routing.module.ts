@@ -15,7 +15,9 @@ const routes: Routes = [
     path: 'list',
     loadChildren: './list/list.module#ListPageModule'
   },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },  { path: 'detalle-conductora', loadChildren: './detalle-conductora/detalle-conductora.module#DetalleConductoraPageModule' }
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },  { path: 'detalle-conductora', loadChildren: './detalle-conductora/detalle-conductora.module#DetalleConductoraPageModule' },
+  { path: 'busca-conductora', loadChildren: './admin/busca-conductora/busca-conductora.module#BuscaConductoraPageModule' },
+  { path: 'lista-conductoras', loadChildren: './admin/lista-conductoras/lista-conductoras.module#ListaConductorasPageModule' }
 
 ];
 
