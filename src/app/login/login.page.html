@@ -1,32 +1,29 @@
-<ion-header>
-  <ion-toolbar color="primary">
-      <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Login</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="form" novalidate>
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating">Usuario</ion-label>
+            <ion-input formControlName="vuser" [(ngModel)]="user"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vuser"></print-error>
 
-<form [formGroup]="myForm" novalidate >
-  
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input formControlName="vPruebaInput" name="vPruebaInput" [(ngModel)]="txtPruebaInput" ></ion-input>
-        <div *ngIf="f.vPruebaInput.dirty && f.vPruebaInput.errors" class="danger">
-        <div class="error-item-validate" color="danger" ion-text *ngIf="f.vPruebaInput.errors.required">
-          El campo es requerido
-        </div>
-        </div>
-        <br />
-        <div>
-          {{nombre}}
-        </div>
+          <ion-item>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input formControlName="vpass" [(ngModel)]="pass" type="password"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vpass"></print-error>
 
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button (click)="nombreFunc()" color="primary" [disabled]="myForm.invalid">
-              <ion-icon name="send"></ion-icon>
-            </ion-fab-button>
-        </ion-fab>
-</form>
+        </ion-list>
+
+        <ion-button expand="block" shape="round" (click)="ingresar()" [disabled]="form.invalid">
+          Ingresar
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

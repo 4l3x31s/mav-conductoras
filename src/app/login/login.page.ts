@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MdlCliente } from '../modelo/mdlCliente';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SesionService } from '../services/sesion.service';
 
 @Component({
   selector: 'app-login',
@@ -8,27 +8,34 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  myForm: FormGroup;
-  public txtPruebaInput: string;
-  public nombre: string = 'Edwin';
+  form: FormGroup;
+  public user: string;
+  public pass: string;
 
-  constructor(public fb: FormBuilder) { }
+  constructor(
+    public fb: FormBuilder,
+    public sesionService: SesionService
+  ) { }
 
   ngOnInit() {
     this.iniciaValidaciones();
   }
   iniciaValidaciones() {
-  this.myForm = this.fb.group({
-    vPruebaInput: ['', [
-      Validators.required,
+    this.form = this.fb.group({
+      vuser: ['', [
+        Validators.required,
+      ]],
+      vpass: ['', [
+        Validators.required,
       ]]
-  });
-}
-get f() { return this.myForm.controls; }
-
-
-public nombreFunc() {
-    console.log(this.txtPruebaInput);
+    });
   }
+  get f() { return this.form.controls; }
 
+  ingresar(){
+    this.sesionService.login(this.user, this.pass)
+      .subscribe(conductora=>{
+        console.log('login',conductora);
+      });
+  }
 }

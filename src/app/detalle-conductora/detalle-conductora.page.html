@@ -1,6 +1,14 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Detalle Conductora</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="image"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,86 +20,98 @@
         <ion-input formControlName="vnombre" [(ngModel)]="conductora.nombre"></ion-input>
       </ion-item>
       <print-error [control]="f.vnombre"></print-error>
-  
+
       <ion-item>
         <ion-label position="floating">Apellido Paterno</ion-label>
         <ion-input formControlName="vpaterno" [(ngModel)]="conductora.paterno"></ion-input>
       </ion-item>
       <print-error [control]="f.vpaterno"></print-error>
-  
+
       <ion-item>
         <ion-label position="floating">Apellido Materno</ion-label>
         <ion-input formControlName="vmaterno" [(ngModel)]="conductora.materno"></ion-input>
       </ion-item>
       <print-error [control]="f.vmaterno"></print-error>
-  
+
       <ion-item>
         <ion-label position="stacked">Fecha Nacimiento</ion-label>
-        <ion-input type="date"></ion-input>
+        <ion-input type="date" formControlName="vfechanac" [(ngModel)]="conductora.fechaNac"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vfechanac"></print-error>
+
       <ion-item>
         <ion-label position="floating">CI</ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="vci" [(ngModel)]="conductora.ci"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vci"></print-error>
+
       <ion-item>
         <ion-label position="floating">Tipo Licencia</ion-label>
-        <ion-select placeholder="Selecionar uno">
+        <ion-select placeholder="Selecione un valor" formControlName="vtipolicencia"
+          [(ngModel)]="conductora.tipoLicencia">
           <ion-select-option value="A">A</ion-select-option>
           <ion-select-option value="B">B</ion-select-option>
           <ion-select-option value="C">C</ion-select-option>
           <ion-select-option value="P">P</ion-select-option>
         </ion-select>
       </ion-item>
-  
+      <print-error [control]="f.vtipolicencia"></print-error>
+
       <ion-item>
         <ion-label position="floating">Dirección</ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="vdireccion" [(ngModel)]="conductora.direccion"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vdireccion"></print-error>
+
       <ion-item>
         <ion-label position="floating">Género</ion-label>
-        <ion-select placeholder="Selecionar uno">
+        <ion-select placeholder="Selecionar uno" formControlName="vgenero" [(ngModel)]="conductora.genero">
           <ion-select-option value="F">Femenino</ion-select-option>
           <ion-select-option value="M">Masculino</ion-select-option>
         </ion-select>
       </ion-item>
-  
+      <print-error [control]="f.vgenero"></print-error>
+
       <ion-item>
         <ion-label position="floating">Número de Cuenta Bancaria</ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="vnroctabancaria" [(ngModel)]="conductora.nroCtaBancaria"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vnroctabancaria"></print-error>
+
       <ion-item>
         <ion-label position="floating">Teléfono Fijo</ion-label>
-        <ion-input></ion-input>
+        <ion-input type="number" formControlName="vtelefono" [(ngModel)]="conductora.telefono"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vtelefono"></print-error>
+
       <ion-item>
         <ion-label position="floating">Celular</ion-label>
-        <ion-input></ion-input>
+        <ion-input type="number" formControlName="vcelular" [(ngModel)]="conductora.celular"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vcelular"></print-error>
+
       <ion-item>
         <ion-label position="floating">Número de Residencia</ion-label>
-        <ion-input></ion-input>
+        <ion-input type="number" formControlName="vnroresidencia" [(ngModel)]="conductora.nroResidencia"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vnroresidencia"></print-error>
+
       <ion-item>
         <ion-label position="floating">Nombre de Usuario</ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="vuser" [(ngModel)]="conductora.user"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vuser"></print-error>
+
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password"></ion-input>
+        <ion-input type="password" formControlName="vpass" [(ngModel)]="conductora.pass"></ion-input>
       </ion-item>
-  
+      <print-error [control]="f.vpass"></print-error>
+
     </ion-list>
   </form>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [disabled]="form.invalid">
+    <ion-fab-button [disabled]="form.invalid" (click)="grabar()">
       <ion-icon name="send"></ion-icon>
     </ion-fab-button>
   </ion-fab>
