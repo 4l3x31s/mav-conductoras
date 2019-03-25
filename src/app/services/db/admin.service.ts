@@ -15,7 +15,7 @@ export class AdminService {
   crearCliente(nombreConductora: string) {
     return this.rootRef.child('conductora').orderByChild('nombre').equalTo(nombreConductora);
   }
-  listaConductoras<Object>() {
-    return this.afDB.list<Object>('conductora').valueChanges();
+  listaConductoras() {
+    return this.afDB.list('conductora').valueChanges();
   }
 }

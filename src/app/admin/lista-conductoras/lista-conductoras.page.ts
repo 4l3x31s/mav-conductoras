@@ -9,19 +9,35 @@ import { MdlConductora } from 'src/app/modelo/mldConductora';
   styleUrls: ['./lista-conductoras.page.scss'],
 })
 export class ListaConductorasPage implements OnInit {
-  public lstConductoras: Array<MdlConductora>;
+  public lstConductoras: MdlConductora[] = [];
+  public lstConductorasFiltradas: MdlConductora[] = [];
+  public txtBuscar: string;
   constructor(
     public adminService: AdminService,
     public loading: LoadingService
     ) { }
 
   ngOnInit() {
+    this.listaConductoras();
   }
 
-  listaConductoras() {
-    this.adminService.listaConductoras<Array<MdlConductora>>().subscribe(data => {
+  public listaConductoras() {
+    this.loading.present();
+    this.adminService.listaConductoras().subscribe(data => {
+      this.loading.dismiss();
       this.lstConductoras = Object.assign(data);
-      
-    })
+      this.lstConductorasFiltradas = this.lstConductoras;
+    }, error => {
+      this.loading.dismiss();
+    });
+  }
+  public seleccionarConductora(conductora: MdlConductora) {
+    console.log(conductora);
+  }
+  public filtrar() {
+    this.lstConductorasFiltradas = this.lstConductoras.filter(
+      conductora =>
+        conductora.nombre.toLowerCase().indexOf(this.txtBuscar.toLowerCase()) > -1
+    );
   }
 }
