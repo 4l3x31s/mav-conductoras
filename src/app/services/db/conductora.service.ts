@@ -2,39 +2,16 @@ import { Injectable } from '@angular/core';
 import { MdlConductora } from 'src/app/modelo/mldConductora';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
+import { MdlCliente } from 'src/app/modelo/mdlCliente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConductoraService {
-
+  
   constructor(
     public afDB: AngularFireDatabase
   ) { }
-
-  getConductoraSesion(): MdlConductora {
-    return new MdlConductora(
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-    );
-  }
 
   /**
    * Para revisar datos:
@@ -55,9 +32,18 @@ export class ConductoraService {
         ref => ref.orderByChild('user').equalTo(user)).valueChanges()
         .subscribe(conductoras=>{
           console.log('service',conductoras);
-          observer.next(conductoras);
+          if(conductoras.length > 0 && pass == conductoras[0].pass){
+            observer.next(conductoras);
+          } else {
+            observer.next();
+          }
+          observer.complete();
         });
     });
+  }
+
+  getConductora(id: number) : Observable<MdlConductora> {
+    return this.afDB.object<MdlConductora>('conductora/'+id).valueChanges();
   }
 
 }

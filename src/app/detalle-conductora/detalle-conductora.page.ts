@@ -4,6 +4,8 @@ import { MdlConductora } from '../modelo/mldConductora';
 import { ConductoraService } from '../services/db/conductora.service';
 import { AlertService } from '../services/util/alert.service';
 import { LoadingService } from '../services/util/loading.service';
+import { SesionService } from '../services/sesion.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -20,7 +22,9 @@ export class DetalleConductoraPage implements OnInit {
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
     public alertService: AlertService,
-    public loadingService: LoadingService
+    public loadingService: LoadingService,
+    public sesionService: SesionService,
+    public navController: NavController
   ) { }
 
   iniciarValidaciones() {
@@ -90,8 +94,19 @@ export class DetalleConductoraPage implements OnInit {
   get f() { return this.form.controls; }
 
   ngOnInit() {
-    this.conductora = this.conductoraService.getConductoraSesion();
     this.iniciarValidaciones();
+    this.sesionService.getSesion()
+      .then(conductora=>{
+        if(conductora){
+          this.conductoraService.getConductora(conductora.id)
+          .subscribe(conductora=>{
+            this.conductora=conductora;
+          });
+        } else {
+          this.navController.navigateRoot('/login');
+        }
+      });
+    
   }
 
   grabar() {
