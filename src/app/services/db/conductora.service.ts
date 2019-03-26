@@ -3,6 +3,7 @@ import { MdlConductora } from 'src/app/modelo/mldConductora';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { MdlCliente } from 'src/app/modelo/mdlCliente';
+import { UtilService } from '../util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { MdlCliente } from 'src/app/modelo/mdlCliente';
 export class ConductoraService {
   
   constructor(
-    public afDB: AngularFireDatabase
+    public afDB: AngularFireDatabase,
+    public utilService: UtilService
   ) { }
 
   /**
@@ -24,8 +26,10 @@ export class ConductoraService {
     return this.afDB.database.ref('conductora/' + conductora.id).set(conductora);
   }
   actualizarConductora(conductora: MdlConductora): Promise<any> {
+    this.utilService.serializar(conductora);
     return this.afDB.database.ref('conductora/' + conductora.id).set(conductora);
   }
+  
   getConductoraPorUserPass(user: string, pass: string) : Observable<MdlConductora[]> {
     return new Observable<MdlConductora[]>(observer => {
       this.afDB.list<MdlConductora>('conductora/',

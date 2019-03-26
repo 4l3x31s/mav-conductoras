@@ -111,8 +111,14 @@ export class DetalleConductoraPage implements OnInit {
 
   grabar() {
     this.loadingService.present().then(() => {
-      this.conductoraService.actualizarConductora(this.conductora).then(()=>{
+      this.conductoraService.actualizarConductora(this.conductora)
+      .then(()=>{
         this.loadingService.dismiss();
+      })
+      .catch(error=>{
+        this.loadingService.dismiss();
+        console.log(error);
+        this.alertService.present('Error','Hubo un error al grabar los datos');
       });
     });
   }
