@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="rosado">
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    <ion-title>Lista Conductoras</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-searchbar animated howCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscar" (ionChange)="filtrar()" ></ion-searchbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4">Nombre</ion-col>
+      <ion-col size="2">Estado</ion-col>
+      <ion-col size="3">Direccion</ion-col>
+      <ion-col size="3">Telefono</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let conductora of lstConductorasFiltradas" (click)="seleccionarConductora(conductora)" >
+      <ion-col size="4">{{conductora.nombre + ' ' + conductora.paterno + ' ' + conductora.materno}}</ion-col>
+      <ion-col size="2">{{conductora.estado}}</ion-col>
+      <ion-col size="3">{{conductora.direccion}}</ion-col>
+      <ion-col size="3">{{conductora.telefono}}</ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

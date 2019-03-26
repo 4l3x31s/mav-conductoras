@@ -1,3 +1,4 @@
+import { AdminService } from './services/db/admin.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -37,6 +38,7 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     AngularFireDatabase,
+    AdminService,
     SQLite,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

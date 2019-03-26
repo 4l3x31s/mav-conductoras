@@ -27,6 +27,10 @@ export class AppComponent {
       title: 'Detalle Conductora',
       url: '/detalle-conductora',
       icon: 'contact'
+    }, {
+      title: 'Lista Conductoras',
+      url: 'lista-conductoras',
+      icon: 'person'
     }
   ];
 
@@ -40,7 +44,8 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent();
+      this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
     });
   }
