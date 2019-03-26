@@ -114,11 +114,13 @@ export class DetalleConductoraPage implements OnInit {
       this.conductoraService.actualizarConductora(this.conductora)
       .then(()=>{
         this.loadingService.dismiss();
+        this.alertService.present('Info','Datos guardados correctamente.');
       })
       .catch(error=>{
         this.loadingService.dismiss();
         console.log(error);
         this.alertService.present('Error','Hubo un error al grabar los datos');
+        this.navController.navigateRoot('/home');
       });
     });
   }
