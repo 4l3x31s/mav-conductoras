@@ -26,8 +26,8 @@ export class ConductoraService {
     return this.afDB.database.ref('conductora/' + conductora.id).set(conductora);
   }
   actualizarConductora(conductora: MdlConductora): Promise<any> {
-    this.utilService.serializar(conductora);
-    return this.afDB.database.ref('conductora/' + conductora.id).set(conductora);
+    return this.afDB.database.ref('conductora/' + conductora.id)
+                .set(this.utilService.serializar(conductora));
   }
   
   getConductoraPorUserPass(user: string, pass: string) : Observable<MdlConductora[]> {

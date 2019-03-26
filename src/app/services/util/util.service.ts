@@ -7,9 +7,12 @@ export class UtilService {
 
   constructor() { }
 
+  /**
+   * quita los campos undefinded de un objeto.
+   * Utilizado en un objeto antes de actualizarlo en firebase
+   * @param objeto Objeto a serailizar
+   */
   serializar(objeto: any): any {
-    for(let propiedad in objeto){
-      objeto[propiedad] = objeto[propiedad] ? objeto[propiedad] : null;
-    }
+    return JSON.parse(JSON.stringify(objeto));
   }
 }
