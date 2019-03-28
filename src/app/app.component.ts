@@ -19,19 +19,31 @@ export class AppComponent {
       title: 'List',
       url: '/list',
       icon: 'list'
-    },{
+    },
+    {
       title: 'Login',
       url: '/login',
       icon: 'list'
-    },{
+    },
+    {
       title: 'Detalle Conductora',
       url: '/detalle-conductora',
       icon: 'contact'
     }, {
       title: 'Lista Conductoras',
-      url: 'lista-conductoras',
+      url: '/lista-conductoras',
       icon: 'person'
-    }
+    },
+    {
+      title: 'Detalle Contrato',
+      url: '/detalle-contrato',
+      icon: 'person'
+    },
+    {
+      title: 'Mapa',
+      url: '/mapa',
+      icon: 'person'
+    },
   ];
 
   constructor(
