@@ -6,6 +6,7 @@ import { AlertService } from '../services/util/alert.service';
 import { LoadingService } from '../services/util/loading.service';
 import { SesionService } from '../services/sesion.service';
 import { NavController } from '@ionic/angular';
+import { NavParamService } from '../services/nav-param.service';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -24,7 +25,8 @@ export class DetalleConductoraPage implements OnInit {
     public alertService: AlertService,
     public loadingService: LoadingService,
     public sesionService: SesionService,
-    public navController: NavController
+    public navController: NavController,
+    public navParam: NavParamService
   ) { }
 
   iniciarValidaciones() {
@@ -123,5 +125,10 @@ export class DetalleConductoraPage implements OnInit {
         this.navController.navigateRoot('/home');
       });
     });
+  }
+
+  irDetalleVehiculo(){
+    this.navParam.set({conductora:this.conductora})
+    this.navController.navigateForward('/detalle-vehiculo');
   }
 }
