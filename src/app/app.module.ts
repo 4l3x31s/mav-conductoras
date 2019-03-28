@@ -1,3 +1,4 @@
+import { MapaPageModule } from './comun/mapa/mapa.module';
 import { AdminService } from './services/db/admin.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -33,7 +34,8 @@ export const firebaseConfig = {
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    MapaPageModule
   ],
   providers: [
     StatusBar,

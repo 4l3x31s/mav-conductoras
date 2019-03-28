@@ -44,6 +44,11 @@ export class AppComponent {
       url: '/mapa',
       icon: 'person'
     },
+    {
+      title: 'Registro Feriados',
+      url: '/reg-feriados',
+      icon: 'person'
+    },
   ];
 
   constructor(

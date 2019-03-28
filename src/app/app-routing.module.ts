@@ -20,7 +20,8 @@ const routes: Routes = [
   { path: 'lista-conductoras', loadChildren: './admin/lista-conductoras/lista-conductoras.module#ListaConductorasPageModule' },
   { path: 'detalle-contrato', loadChildren: './admin/detalle-contrato/detalle-contrato.module#DetalleContratoPageModule' },
   { path: 'mapa', loadChildren: './comun/mapa/mapa.module#MapaPageModule' },
-  { path: 'detalle-vehiculo', loadChildren: './detalle-vehiculo/detalle-vehiculo.module#DetalleVehiculoPageModule' }
+  { path: 'detalle-vehiculo', loadChildren: './detalle-vehiculo/detalle-vehiculo.module#DetalleVehiculoPageModule' },
+  { path: 'reg-feriados', loadChildren: './admin/reg-feriados/reg-feriados.module#RegFeriadosPageModule' }
 ];
 
 @NgModule({
