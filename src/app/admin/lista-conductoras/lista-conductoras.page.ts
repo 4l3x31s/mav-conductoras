@@ -1,3 +1,4 @@
+import { ConductoraService } from './../../services/db/conductora.service';
 import { LoadingService } from './../../services/util/loading.service';
 import { AdminService } from './../../services/db/admin.service';
 import { Component, OnInit } from '@angular/core';
@@ -13,7 +14,7 @@ export class ListaConductorasPage implements OnInit {
   public lstConductorasFiltradas: MdlConductora[] = [];
   public txtBuscar: string;
   constructor(
-    public adminService: AdminService,
+    public conductorasService: ConductoraService,
     public loading: LoadingService
     ) { }
 
@@ -23,7 +24,7 @@ export class ListaConductorasPage implements OnInit {
 
   public listaConductoras() {
     this.loading.present();
-    this.adminService.listaConductoras().subscribe(data => {
+    this.conductorasService.listaConductoras().subscribe(data => {
       this.loading.dismiss();
       this.lstConductoras = Object.assign(data);
       this.lstConductorasFiltradas = this.lstConductoras;

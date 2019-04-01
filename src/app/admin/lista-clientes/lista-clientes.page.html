@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-toolbar color="rosado">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+      <ion-title>Lista Clientes</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <ion-searchbar animated howCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarCliente" (ionChange)="filtrar()" ></ion-searchbar>
+    <ion-grid>
+      <ion-row class="cabecera-tabla">
+        <ion-col size="4">Nombre</ion-col>
+        <ion-col size="2">Estado</ion-col>
+        <ion-col size="3">Direccion</ion-col>
+        <ion-col size="3">Telefono</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let cliente of lstClientesFiltrado" (click)="seleccionarCliente(cliente)" nowrap >
+        <ion-col size="4">{{cliente.nombre}}</ion-col>
+        <ion-col size="2">{{cliente.estado}}</ion-col>
+        <ion-col size="3">{{cliente.direccion}}</ion-col>
+        <ion-col size="3">{{cliente.cel}}</ion-col>
+      </ion-row>
+      <!--<ion-list>
+          <ion-item-sliding *ngFor="let cliente of lstClientesFiltrado" (click)="seleccionarCliente(cliente)" >
+              <ion-item>
+                  <ion-label size="4">{{cliente.nombre}}</ion-label>
+                  <ion-label size="2">{{cliente.estado}}</ion-label>
+                  <ion-label size="3">{{cliente.direccion}}</ion-label>
+                  <ion-label size="3">{{cliente.cel}}</ion-label>
+              </ion-item>
+        <ion-item-options side="end">
+            <ion-item-option (click)="borrarCliente(cliente)">Borrar</ion-item-option>
+          </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>-->
+  
+    </ion-grid>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="verdec" (click)="presentActionSheet()" >
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+</ion-content>

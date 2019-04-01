@@ -1,4 +1,4 @@
-export class MdlFeriados {
+export class MdlFeriado {
     constructor(
         public id: number,
         public fecha: string,

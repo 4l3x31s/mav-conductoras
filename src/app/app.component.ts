@@ -49,6 +49,11 @@ export class AppComponent {
       url: '/reg-feriados',
       icon: 'person'
     },
+    {
+      title: 'Lista Clientes',
+      url: '/lista-clientes',
+      icon: 'person'
+    }
   ];
 
   constructor(

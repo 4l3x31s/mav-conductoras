@@ -21,7 +21,9 @@ const routes: Routes = [
   { path: 'detalle-contrato', loadChildren: './admin/detalle-contrato/detalle-contrato.module#DetalleContratoPageModule' },
   { path: 'mapa', loadChildren: './comun/mapa/mapa.module#MapaPageModule' },
   { path: 'detalle-vehiculo', loadChildren: './detalle-vehiculo/detalle-vehiculo.module#DetalleVehiculoPageModule' },
-  { path: 'reg-feriados', loadChildren: './admin/reg-feriados/reg-feriados.module#RegFeriadosPageModule' }
+  { path: 'reg-feriados', loadChildren: './admin/reg-feriados/reg-feriados.module#RegFeriadosPageModule' },
+  { path: 'lista-clientes', loadChildren: './admin/lista-clientes/lista-clientes.module#ListaClientesPageModule' },
+  { path: 'reg-clientes', loadChildren: './admin/reg-clientes/reg-clientes.module#RegClientesPageModule' }
 ];
 
 @NgModule({

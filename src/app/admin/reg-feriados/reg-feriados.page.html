@@ -22,9 +22,14 @@
           <print-error [control]="f.vDescFeriado"></print-error>
           <ion-item >
             <ion-label >Estado</ion-label>
-            <ion-toggle [(ngModel)]="feriados.estado" color="rosado" formControlName="vEstado" checked></ion-toggle>
+            <ion-toggle [(ngModel)]="feriados.estado" color="rosado" formControlName="vEstado"></ion-toggle>
           </ion-item>
           <print-error [control]="f.vEstado"></print-error>
     </ion-list>
+    <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="registroFeriados()" color="verdec" [disabled]="frmFeriados.invalid" >
+          <ion-icon name="save"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
   </form>
 </ion-content>

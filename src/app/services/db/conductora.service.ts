@@ -50,4 +50,8 @@ export class ConductoraService {
     return this.afDB.object<MdlConductora>('conductora/'+id).valueChanges();
   }
 
+  listaConductoras() {
+    return this.afDB.list('conductora').valueChanges();
+  }
+
 }
