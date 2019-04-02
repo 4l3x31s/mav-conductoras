@@ -1,0 +1,63 @@
+<ion-header>
+    <ion-toolbar color="rosado">
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+      <ion-title>Registro Parametros</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    
+    <form [formGroup]="frmParametro" novalidate>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Ciudad</ion-label>
+            <ion-input formControlName="vCiudad" name="vCiudad"  [(ngModel)]="parametroCarrera.ciudad"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vCiudad"></print-error>
+          
+          <ion-item>
+            <ion-label position="stacked">Pais</ion-label>
+            <ion-input formControlName="vPais" name="vPais"  [(ngModel)]="parametroCarrera.pais"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vPais"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Base</ion-label>
+            <ion-input type="number" formControlName="vBase" name="vBase"  [(ngModel)]="parametroCarrera.base"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vBase"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Cuota Solicitud</ion-label>
+            <ion-input type="number" formControlName="vCuotaSolicitud" name="vCuotaSolicitud"  [(ngModel)]="parametroCarrera.cuotaSolicitud"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vCuotaSolicitud"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Tarifa Minima</ion-label>
+            <ion-input type="number" formControlName="vTarifaMinima" name="vTarifaMinima"  [(ngModel)]="parametroCarrera.tarifaMinima"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vTarifaMinima"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Tiempo</ion-label>
+            <ion-input type="number" formControlName="vTiempo" name="vTiempo"  [(ngModel)]="parametroCarrera.tiempo"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vTiempo"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Distancia</ion-label>
+            <ion-input type="number" formControlName="vDistancia" name="vDistancia"  [(ngModel)]="parametroCarrera.distancia"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vDistancia"></print-error> 
+        </ion-list>
+        
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button [disabled]="frmParametro.invalid" color="verdec" (click)="grabar()" >
+              <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+      </form>
+</ion-content>

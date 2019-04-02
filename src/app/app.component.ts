@@ -53,6 +53,11 @@ export class AppComponent {
       title: 'Lista Clientes',
       url: '/lista-clientes',
       icon: 'person'
+    },
+    {
+      title: 'Lista Parametros',
+      url: '/lista-parametros',
+      icon: 'person'
     }
   ];
 
