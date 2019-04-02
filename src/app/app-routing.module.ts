@@ -25,7 +25,9 @@ const routes: Routes = [
   { path: 'reg-feriados', loadChildren: './admin/reg-feriados/reg-feriados.module#RegFeriadosPageModule' },
   { path: 'lista-clientes', loadChildren: './admin/lista-clientes/lista-clientes.module#ListaClientesPageModule' },
   { path: 'reg-clientes', loadChildren: './admin/reg-clientes/reg-clientes.module#RegClientesPageModule' },
-  { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' }
+  { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' },  { path: 'reg-parametros', loadChildren: './admin/reg-parametros/reg-parametros.module#RegParametrosPageModule' },
+  { path: 'lista-parametros', loadChildren: './admin/lista-parametros/lista-parametros.module#ListaParametrosPageModule' }
+
 ];
 
 @NgModule({

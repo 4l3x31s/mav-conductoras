@@ -1,0 +1,50 @@
+<ion-header>
+    <ion-toolbar color="rosado">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title>Parametros Cobro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+        <ion-card-title>Lista Parametros Cobro</ion-card-title>
+      </ion-card-header>
+      <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarParametros" (ionChange)="filtrar()" ></ion-searchbar>
+      <ion-grid>
+        <ion-row class="cabecera-tabla">
+          <ion-col size="4">Pais</ion-col>
+          <ion-col size="2">Ciudad</ion-col>
+          <ion-col size="3">Minimo</ion-col>
+          <ion-col size="3">Base</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let parametro of listParametrosFiltrado" (click)="seleccionarParametro(parametro)" nowrap >
+          <ion-col size="4">{{parametro.pais}}</ion-col>
+          <ion-col size="2">{{parametro.ciudad}}</ion-col>
+          <ion-col size="3">{{parametro.tarifaMinima}}</ion-col>
+          <ion-col size="3">{{parametro.base}}</ion-col>
+        </ion-row>
+        <!--<ion-list>
+            <ion-item-sliding *ngFor="let cliente of lstClientesFiltrado" (click)="seleccionarCliente(cliente)" >
+                <ion-item>
+                    <ion-label size="4">{{cliente.nombre}}</ion-label>
+                    <ion-label size="2">{{cliente.estado}}</ion-label>
+                    <ion-label size="3">{{cliente.direccion}}</ion-label>
+                    <ion-label size="3">{{cliente.cel}}</ion-label>
+                </ion-item>
+          <ion-item-options side="end">
+              <ion-item-option (click)="borrarCliente(cliente)">Borrar</ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>-->
+    
+      </ion-grid>
+    </ion-card>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="verdec" (click)="presentActionSheet()" >
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+</ion-content>
