@@ -1,8 +1,7 @@
-export class Carrera {
+export class MdlCarrera {
     constructor (
         public id: number,
         public idUsuario: number,
-        public idCarrera: number,
         public idContrato: number,
         public latInicio: string,
         public longInicio: string,

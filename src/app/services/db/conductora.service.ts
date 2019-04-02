@@ -29,14 +29,13 @@ export class ConductoraService {
     return this.afDB.database.ref('conductora/' + conductora.id)
                 .set(this.utilService.serializar(conductora));
   }
-  
-  getConductoraPorUserPass(user: string, pass: string) : Observable<MdlConductora[]> {
+  getConductoraPorUserPass(user: string, pass: string): Observable<MdlConductora[]> {
     return new Observable<MdlConductora[]>(observer => {
       this.afDB.list<MdlConductora>('conductora/',
         ref => ref.orderByChild('user').equalTo(user)).valueChanges()
-        .subscribe(conductoras=>{
-          console.log('service',conductoras);
-          if(conductoras.length > 0 && pass == conductoras[0].pass){
+        .subscribe(conductoras => {
+          console.log('service', conductoras);
+          if (conductoras.length > 0 && pass === conductoras[0].pass) {
             observer.next(conductoras);
           } else {
             observer.next();
@@ -46,8 +45,12 @@ export class ConductoraService {
     });
   }
 
-  getConductora(id: number) : Observable<MdlConductora> {
-    return this.afDB.object<MdlConductora>('conductora/'+id).valueChanges();
+  getConductora(id: number): Observable<MdlConductora> {
+    return this.afDB.object<MdlConductora>('conductora/' + id).valueChanges();
+  }
+
+  listaConductoras() {
+    return this.afDB.list('conductora').valueChanges();
   }
 
 }

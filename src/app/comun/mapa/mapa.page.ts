@@ -1,3 +1,7 @@
+import { AlertService } from './../../services/util/alert.service';
+import { ToastService } from './../../services/util/toast.service';
+import { NavController, ModalController } from '@ionic/angular';
+import { NavParamService } from './../../services/nav-param.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 declare var google;
@@ -12,9 +16,21 @@ export class MapaPage implements OnInit {
   map: any;
   latitud: string;
   longitud: string;
-  constructor() { }
+  paginaRetorno: string;
+  constructor(
+    public navParam: NavParamService,
+    public navCtrl: NavController,
+    public toastCtrl: ToastService,
+    public modalController: ModalController,
+    public alertController: AlertService
+    ) { }
 
   ngOnInit() {
+    if (this.navParam.get()){
+      this.paginaRetorno = this.navParam.get().page;
+    } else {
+      console.log('no hay pagina retorno');
+    }
     this.cargarMapa();
   }
   cargarMapa() {
@@ -27,6 +43,8 @@ export class MapaPage implements OnInit {
       fullScreenControl: false,
       center: myLatlng
     };
+    this.latitud = myLatlng.lat.toString();
+    this.longitud = myLatlng.lng.toString();
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     let marker = new google.maps.Marker
     ({
@@ -46,7 +64,14 @@ export class MapaPage implements OnInit {
     // {"lat":-16.498217987944532,"lng":-68.13232216455685}
   }
   guardarLatLong() {
-    console.log(this.latitud);
-    console.log(this.longitud);
+    if(this.latitud && this.longitud){
+      this.toastCtrl.presentToast('Los datos fueron guardados exitosamente');
+      this.modalController.dismiss({
+        lat: this.latitud,
+        lng: this.longitud
+    });
+    } else {
+      this.alertController.present('Alerta', 'Debes seleccionar un punto antes de terminar.');
+    }
   }
 }

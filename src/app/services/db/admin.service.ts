@@ -12,10 +12,7 @@ export class AdminService {
     this.rootRef = this.afDB.database.ref();
    }
 
-  crearCliente(nombreConductora: string) {
+  conductoraPorNombre(nombreConductora: string) {
     return this.rootRef.child('conductora').orderByChild('nombre').equalTo(nombreConductora);
-  }
-  listaConductoras() {
-    return this.afDB.list('conductora').valueChanges();
   }
 }

@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -15,12 +15,17 @@ const routes: Routes = [
     path: 'list',
     loadChildren: './list/list.module#ListPageModule'
   },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },  { path: 'detalle-conductora', loadChildren: './detalle-conductora/detalle-conductora.module#DetalleConductoraPageModule' },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'detalle-conductora', loadChildren: './detalle-conductora/detalle-conductora.module#DetalleConductoraPageModule' },
   { path: 'busca-conductora', loadChildren: './admin/busca-conductora/busca-conductora.module#BuscaConductoraPageModule' },
   { path: 'lista-conductoras', loadChildren: './admin/lista-conductoras/lista-conductoras.module#ListaConductorasPageModule' },
   { path: 'detalle-contrato', loadChildren: './admin/detalle-contrato/detalle-contrato.module#DetalleContratoPageModule' },
   { path: 'mapa', loadChildren: './comun/mapa/mapa.module#MapaPageModule' },
-  { path: 'detalle-vehiculo', loadChildren: './detalle-vehiculo/detalle-vehiculo.module#DetalleVehiculoPageModule' }
+  { path: 'detalle-vehiculo', loadChildren: './detalle-vehiculo/detalle-vehiculo.module#DetalleVehiculoPageModule' },
+  { path: 'reg-feriados', loadChildren: './admin/reg-feriados/reg-feriados.module#RegFeriadosPageModule' },
+  { path: 'lista-clientes', loadChildren: './admin/lista-clientes/lista-clientes.module#ListaClientesPageModule' },
+  { path: 'reg-clientes', loadChildren: './admin/reg-clientes/reg-clientes.module#RegClientesPageModule' },
+  { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' }
 ];
 
 @NgModule({

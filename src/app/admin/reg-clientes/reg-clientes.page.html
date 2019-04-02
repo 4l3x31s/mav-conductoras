@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar color="rosado">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+    <ion-title>Registro Clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card>
+        <ion-card-header>
+        <ion-card-title>Depositos Cliente</ion-card-title>
+    </ion-card-header>
+    <form [formGroup]="frmCliente" novalidate>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Nombre</ion-label>
+            <ion-input formControlName="vnombre" name="vnombre"  [(ngModel)]="cliente.nombre"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vnombre"></print-error>
+          
+          <ion-item>
+            <ion-label position="stacked">Carnet de Identidad</ion-label>
+            <ion-input formControlName="vci" name="vci"  [(ngModel)]="cliente.ci"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vci"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Dirección</ion-label>
+            <ion-input formControlName="vdireccion" name="vdireccion"  [(ngModel)]="cliente.direccion"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vdireccion"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Usuario</ion-label>
+            <ion-input formControlName="vuser" name="vuser"  [(ngModel)]="cliente.user"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vuser"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Contraseña</ion-label>
+            <ion-input type="password" formControlName="vpass" name="vpass"  [(ngModel)]="cliente.pass"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vpass"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Telefono</ion-label>
+            <ion-input formControlName="vtel" name="vtel"  [(ngModel)]="cliente.tel"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vtel"></print-error>
+      
+          <ion-item>
+            <ion-label position="stacked">Celular</ion-label>
+            <ion-input formControlName="vcel" name="vcel"  [(ngModel)]="cliente.cel"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vcel"></print-error>    
+      
+          <ion-item>
+            <ion-label position="stacked">Correo</ion-label>
+            <ion-input formControlName="vemail" name="vemail"  [(ngModel)]="cliente.email"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vemail"></print-error>    
+        </ion-list>
+        <ion-button expand="block" [disabled]="frmCliente.invalid" (click)="grabar()" color="verdec">Registrar</ion-button>
+      </form>
+      
+    </ion-card>
+    <div *ngIf="cliente.id" >
+      <ion-card>
+          <ion-card-header>
+          <ion-card-title>Depositos Cliente</ion-card-title>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row class="cabecera-tabla">
+          <ion-col size="3">Tipo</ion-col>
+          <ion-col size="3">Fecha</ion-col>
+          <ion-col size="3">Monto</ion-col>
+          <ion-col size="3">Verificado</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let deposito of lstDepositos" (click)="seleccionarDeposito(deposito)" nowrap >
+          <ion-col size="3">{{deposito.tipo}}</ion-col>
+          <ion-col size="3">{{deposito.fecha}}</ion-col>
+          <ion-col size="3">{{deposito.monto}}</ion-col>
+          <ion-col size="3">{{deposito.verificado}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      </ion-card>
+      </div>
+      
+</ion-content>
