@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content padding>
+    <ion-card>
+        <ion-card-header>
+        <ion-card-title>Depositos Cliente</ion-card-title>
+    </ion-card-header>
     <form [formGroup]="frmCliente" novalidate>
         <ion-list>
           <ion-item>
@@ -58,11 +62,30 @@
           </ion-item>
           <print-error [control]="f.vemail"></print-error>    
         </ion-list>
-      
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-          <ion-fab-button [disabled]="frmCliente.invalid" (click)="grabar()">
-            <ion-icon name="send"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
+        <ion-button expand="block" [disabled]="frmCliente.invalid" (click)="grabar()" color="verdec">Registrar</ion-button>
       </form>
+      
+    </ion-card>
+    <div *ngIf="cliente.id" >
+      <ion-card>
+          <ion-card-header>
+          <ion-card-title>Depositos Cliente</ion-card-title>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row class="cabecera-tabla">
+          <ion-col size="3">Tipo</ion-col>
+          <ion-col size="3">Fecha</ion-col>
+          <ion-col size="3">Monto</ion-col>
+          <ion-col size="3">Verificado</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let deposito of lstDepositos" (click)="seleccionarDeposito(deposito)" nowrap >
+          <ion-col size="3">{{deposito.tipo}}</ion-col>
+          <ion-col size="3">{{deposito.fecha}}</ion-col>
+          <ion-col size="3">{{deposito.monto}}</ion-col>
+          <ion-col size="3">{{deposito.verificado}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      </ion-card>
+      </div>
+      
 </ion-content>

@@ -3,11 +3,15 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
           </ion-buttons>
-      <ion-title>Lista Clientes</ion-title>
+      <ion-title>Clientes</ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content padding>
-    <ion-searchbar animated howCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarCliente" (ionChange)="filtrar()" ></ion-searchbar>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Lista de Clientes</ion-card-title>
+    </ion-card-header>
+    <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarCliente" (ionChange)="filtrar()" ></ion-searchbar>
     <ion-grid>
       <ion-row class="cabecera-tabla">
         <ion-col size="4">Nombre</ion-col>
@@ -36,6 +40,8 @@
     </ion-list>-->
   
     </ion-grid>
+  </ion-card>
+  
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button color="verdec" (click)="presentActionSheet()" >
           <ion-icon name="add"></ion-icon>

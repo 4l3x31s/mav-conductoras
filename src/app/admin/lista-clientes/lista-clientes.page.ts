@@ -1,9 +1,11 @@
+import { DepositoService } from './../../services/db/deposito.service';
 import { NavParamService } from './../../services/nav-param.service';
 import { NavController, ActionSheetController } from '@ionic/angular';
 import { LoadingService } from './../../services/util/loading.service';
 import { ClienteService } from './../../services/db/cliente.service';
 import { MdlCliente } from './../../modelo/mdlCliente';
 import { Component, OnInit } from '@angular/core';
+import { MdlDepositos } from 'src/app/modelo/mdlDepositos';
 
 @Component({
   selector: 'app-lista-clientes',
@@ -29,9 +31,9 @@ export class ListaClientesPage implements OnInit {
     console.log(cliente);
     this.irActualizarCliente(cliente);
   }
-  listarClientes() {
+  async listarClientes() {
     this.loading.present();
-    this.clienteService.listaClientes().subscribe( data => {
+    await this.clienteService.listaClientes().subscribe( data => {
       this.loading.dismiss();
       this.lstClientes = Object.assign(data);
       this.lstClientesFiltrado = this.lstClientes;
@@ -39,6 +41,7 @@ export class ListaClientesPage implements OnInit {
       this.loading.dismiss();
     });
   }
+  
   public filtrar() {
     this.lstClientesFiltrado = this.lstClientes.filter(
       conductora =>
@@ -54,11 +57,12 @@ export class ListaClientesPage implements OnInit {
     })
     this.navController.navigateForward('/reg-clientes');
   }
+  
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones Cliente',
       buttons: [
-        {
+      {
         text: 'Nuevo Cliente',
         icon: 'person',
         handler: () => {
@@ -67,6 +71,17 @@ export class ListaClientesPage implements OnInit {
             cliente: null
           });
           this.navController.navigateForward('/reg-clientes');
+        }
+      },
+      {
+        text: 'Nuevo Deposito',
+        icon: 'cash',
+        handler: () => {
+          console.log('Share clicked');
+          this.navParams.set({
+            cliente: null
+          });
+          this.navController.navigateForward('/reg-depositos');
         }
       },
       {
