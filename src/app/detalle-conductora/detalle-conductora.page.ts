@@ -33,7 +33,7 @@ export class DetalleConductoraPage implements OnInit {
     this.form = this.fb.group({
       vnombre: ['', [
         Validators.required,
-        Validators.minLength(4),
+        Validators.minLength(3),
         Validators.maxLength(50),
       ]],
       vpaterno: ['', [

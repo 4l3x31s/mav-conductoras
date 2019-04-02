@@ -1,6 +1,9 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>detalle-vehiculo</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Detalle Vehículo</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,11 +24,50 @@
 
       <ion-item>
         <ion-label position="floating">Modelo</ion-label>
-        <ion-input formControlName="vmodelo" [(ngModel)]="vehiculo.modelo"></ion-input>
+        <ion-input formControlName="vmodelo" [(ngModel)]="vehiculo.modelo" type="number"></ion-input>
       </ion-item>
       <print-error [control]="f.vmodelo"></print-error>
-
-      
     </ion-list>
+    <div padding>
+      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid">
+        Grabar
+      </ion-button>
+    </div>
+  </form>
+
+  <form>
+    <ion-card>
+
+      <ion-card-header>
+        <ion-card-title>Imagen RUAT</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <img [src]="urlImgRuat | async" />
+        <div class="fileUpload">
+          <span>Cargar Imagen</span>
+          <input type="file" class="upload" (change)="uploadImgRuat($event)" />
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+  </form>
+
+  <form>
+    <ion-card>
+
+      <ion-card-header>
+        <ion-card-title>Imagen Vehículo</ion-card-title>
+        <img [src]="urlImgVehiculo | async" />
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="fileUpload">
+          <span>Cargar Imagen</span>
+          <input type="file" class="upload" (change)="uploadImgVehiculo($event)" />
+        </div>
+      </ion-card-content>
+
+    </ion-card> 
   </form>
 </ion-content>
