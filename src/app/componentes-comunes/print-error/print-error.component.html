@@ -4,6 +4,8 @@
   <div *ngIf="control.errors.maxlength"><small>El campo no debe tener mas de {{ control.errors.maxlength.requiredLength }} caracteres.</small></div>
   <div *ngIf="control.errors.email"><small>El correo no cumple con el formato requerido.</small></div>
   <div *ngIf="control.errors.pattern"><small>El campo no cumple con el formato requerido.</small></div>
+  <div *ngIf="control.errors.min"><small>El campo debe ser mayor o igual a {{ control.errors.min.min }}.</small></div>
+  <div *ngIf="control.errors.max"><small>El campo debe ser menor o igual a {{ control.errors.max.max }}.</small></div>
   <div *ngIf="control.errors.unique"><small>{{control.errors.unique}}</small></div>
   <div *ngIf="control.errors.lessThen"><small>{{control.errors.lessThen}}</small></div>
   <div *ngIf="control.errors.greaterThan"><small>{{control.errors.greaterThan}}</small></div>
