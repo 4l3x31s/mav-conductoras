@@ -1,0 +1,15 @@
+<ion-card>
+  <ion-item>
+    <ion-label>{{ titulo }}</ion-label>
+    <ion-icon *ngIf="urlImagenFirebase" slot="end" name="trash" (click)="eliminarImagen()"></ion-icon>
+  </ion-item>
+  <div *ngIf="urlImagenFirebase">
+    <img [src]="urlImagenFirebase" />
+  </div>
+
+  <div class="fileUpload">
+    <span>Cargar Imagen</span>
+    <input type="file" class="upload" (change)="uploadImagen($event)" />
+  </div>
+
+</ion-card>

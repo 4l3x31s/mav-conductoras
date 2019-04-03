@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="form" novalidate>
+  <form [formGroup]="form" novalidate *ngIf="vehiculo">
     <ion-list>
       <ion-item>
         <ion-label position="floating">Capacidad</ion-label>
@@ -35,39 +35,11 @@
     </div>
   </form>
 
-  <form>
-    <ion-card>
-
-      <ion-card-header>
-        <ion-card-title>Imagen RUAT</ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <img [src]="urlImgRuat | async" />
-        <div class="fileUpload">
-          <span>Cargar Imagen</span>
-          <input type="file" class="upload" (change)="uploadImgRuat($event)" />
-        </div>
-      </ion-card-content>
-
-    </ion-card>
-  </form>
-
-  <form>
-    <ion-card>
-
-      <ion-card-header>
-        <ion-card-title>Imagen Vehículo</ion-card-title>
-        <img [src]="urlImgVehiculo | async" />
-      </ion-card-header>
-
-      <ion-card-content>
-        <div class="fileUpload">
-          <span>Cargar Imagen</span>
-          <input type="file" class="upload" (change)="uploadImgVehiculo($event)" />
-        </div>
-      </ion-card-content>
-
-    </ion-card> 
+  <form *ngIf="vehiculo">
+    <subir-imagen titulo="Imagen RUAT" 
+      [url-imagen]="'mav/vehiculo/'+vehiculo.id+'-ruat'"></subir-imagen>
+    
+    <subir-imagen titulo="Imagen Vehículo"
+      [url-imagen]="'mav/vehiculo/'+vehiculo.id+'-vehiculo'"></subir-imagen>
   </form>
 </ion-content>
