@@ -41,7 +41,6 @@ export class ListaClientesPage implements OnInit {
       this.loading.dismiss();
     });
   }
-  
   public filtrar() {
     this.lstClientesFiltrado = this.lstClientes.filter(
       conductora =>
@@ -54,10 +53,9 @@ export class ListaClientesPage implements OnInit {
   irActualizarCliente(cliente) {
     this.navParams.set({
       cliente: cliente
-    })
+    });
     this.navController.navigateForward('/reg-clientes');
   }
-  
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones Cliente',
@@ -71,17 +69,6 @@ export class ListaClientesPage implements OnInit {
             cliente: null
           });
           this.navController.navigateForward('/reg-clientes');
-        }
-      },
-      {
-        text: 'Nuevo Deposito',
-        icon: 'cash',
-        handler: () => {
-          console.log('Share clicked');
-          this.navParams.set({
-            cliente: null
-          });
-          this.navController.navigateForward('/reg-depositos');
         }
       },
       {

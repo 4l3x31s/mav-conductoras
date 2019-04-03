@@ -12,17 +12,28 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Cliente</ion-label>
-        <ion-select placeholder="Seleccione un Cliente">
-          <ion-select-option *ngFor="let cliente of lstClientes" value="cliente.id">{{cliente.nombre}}</ion-select-option>
+        <ion-input formControlName="vNombreCliente" readonly >{{cliente.nombre}}</ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Pais</ion-label>
+        <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais" (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="contrato.pais" >
+          <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">{{parametros.pais}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-          <ion-label position="stacked">Conductora</ion-label>
-          <ion-select placeholder="Seleccione una Conductora">
-            <ion-select-option *ngFor="let conductora of lstConductoras" value="conductora.id">{{conductora.nombre +' '+ conductora.paterno}}</ion-select-option>
+          <ion-label position="stacked">Ciudad</ion-label>
+          <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad" [(ngModel)]="contrato.ciudad">
+            <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">{{parametros.ciudad}}</ion-select-option>
           </ion-select>
         </ion-item>
       <ion-item>
+          <ion-item>
+              <ion-label position="stacked">Conductora</ion-label>
+              <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora" [(ngModel)]="contrato.idConductora">
+                <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">{{conductora.nombre +' '+ conductora.paterno}}</ion-select-option>
+              </ion-select>
+            </ion-item>
         <ion-label position="stacked">Fecha Inicio</ion-label>
         <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio" display-format="DD/MM/YYYY"></ion-datetime>
       </ion-item>

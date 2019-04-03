@@ -11,18 +11,18 @@
     
     <form [formGroup]="frmParametro" novalidate>
         <ion-list>
-          <ion-item>
-            <ion-label position="stacked">Ciudad</ion-label>
-            <ion-input formControlName="vCiudad" name="vCiudad"  [(ngModel)]="parametroCarrera.ciudad"></ion-input>
-          </ion-item>
-          <print-error [control]="f.vCiudad"></print-error>
+          
           
           <ion-item>
             <ion-label position="stacked">Pais</ion-label>
             <ion-input formControlName="vPais" name="vPais"  [(ngModel)]="parametroCarrera.pais"></ion-input>
           </ion-item>
           <print-error [control]="f.vPais"></print-error>
-      
+          <ion-item>
+              <ion-label position="stacked">Ciudad</ion-label>
+              <ion-input formControlName="vCiudad" name="vCiudad"  [(ngModel)]="parametroCarrera.ciudad"></ion-input>
+            </ion-item>
+            <print-error [control]="f.vCiudad"></print-error>
           <ion-item>
             <ion-label position="stacked">Base</ion-label>
             <ion-input type="number" formControlName="vBase" name="vBase"  [(ngModel)]="parametroCarrera.base"></ion-input>

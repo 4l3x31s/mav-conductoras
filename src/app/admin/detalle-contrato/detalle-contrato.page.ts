@@ -1,3 +1,4 @@
+import { ParametrosCarreraService } from './../../services/db/parametros-carrera.service';
 import { MdlFeriado } from './../../modelo/mdlFeriado';
 import { MdlCliente } from './../../modelo/mdlCliente';
 import { MdlConductora } from './../../modelo/mldConductora';
@@ -12,6 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FeriadosService } from 'src/app/services/db/feriados.service';
 import { LoadingService } from 'src/app/services/util/loading.service';
+import { MdlParametrosCarrera } from 'src/app/modelo/mdlParametrosCarrera';
 
 @Component({
   selector: 'app-detalle-contrato',
@@ -21,11 +23,15 @@ import { LoadingService } from 'src/app/services/util/loading.service';
 export class DetalleContratoPage implements OnInit {
   frmContrato: FormGroup;
   public contrato: MdlContrato = new MdlContrato(
-    null, null, null, null, null, null, null,null, null, null, null,null,null,null,null,null,null, null
+    null, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null,null, null
   );
   public lstConductoras: MdlConductora[] = [];
   public lstClientes: MdlCliente[] = [];
   public lstFeriados: MdlFeriado[] = [];
+  public lstParametros: MdlParametrosCarrera [] = [];
+  public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
+  public lstPaisesFiltrados = [];
+  public cliente: MdlCliente;
   constructor(
     public fb: FormBuilder,
     public navController: NavController,
@@ -35,22 +41,50 @@ export class DetalleContratoPage implements OnInit {
     public clienteService: ClienteService,
     public feriadoService: FeriadosService,
     public carreraService: CarreraService,
-    public loading: LoadingService
-  ) { }
+    public loading: LoadingService,
+    public parametrosService: ParametrosCarreraService,
+    public navParams: NavParamService
+  ) {
+    this.cliente = this.navParams.get().cliente;
+  }
 
   ngOnInit() {
     this.initValidaciones();
-    this.obtenerClientes();
+    // this.obtenerClientes();
+    this.obtenerParametros();
     this.obtenerConductoras();
     this.obtenerFeriados();
   }
+  filtrarCiudades(event) {
+    console.log(event);
+    this.lstCiudadesFiltrado = this.lstParametros.filter(
+      parametros => parametros.pais.indexOf(event) > -1
+    );
+  }
   obtenerConductoras() {
-    this.loading.present();
+    //this.loading.present();
     this.conductoraService.listaConductoras().subscribe(data => {
-      this.loading.dismiss();
+      //this.loading.dismiss();
       this.lstConductoras = Object.assign(data);
     }, error => {
-      this.loading.dismiss();
+      //this.loading.dismiss();
+    });
+  }
+  async obtenerParametros() {
+    this.loading.present();
+    await this.parametrosService.listarParametros().subscribe(data => {
+      //this.loading.dismiss();
+      this.lstParametros = Object.assign(data);
+      this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
+      .map(id => {
+        return {
+          id: id,
+          pais: this.lstParametros.find( s => s.pais === id).pais,
+        }
+      })
+      console.log(this.lstPaisesFiltrados);
+    }, error => {
+      //this.loading.dismiss();
     });
   }
   obtenerClientes() {
@@ -63,7 +97,7 @@ export class DetalleContratoPage implements OnInit {
     });
   }
   obtenerFeriados() {
-    this.loading.present();
+    //this.loading.present();
     this.feriadoService.listaFeriados().subscribe(data => {
       this.loading.dismiss();
       this.lstFeriados = Object.assign(data);
@@ -73,6 +107,18 @@ export class DetalleContratoPage implements OnInit {
   }
   initValidaciones() {
     this.frmContrato = this.fb.group({
+      vNombreCliente: ['', [
+        Validators.required,
+      ]],
+      vConductora: ['', [
+        Validators.required,
+      ]],
+      vPais: ['', [
+        Validators.required,
+      ]],
+      vCiudad: ['', [
+        Validators.required,
+      ]],
       vFechaInicio: ['', [
         Validators.required,
       ]],

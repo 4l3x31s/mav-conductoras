@@ -1,3 +1,4 @@
+import { MdlCliente } from './../../modelo/mdlCliente';
 import { NavParamService } from './../../services/nav-param.service';
 import { NavController } from '@ionic/angular';
 import { AlertService } from 'src/app/services/util/alert.service';
@@ -16,6 +17,7 @@ import { LoadingService } from 'src/app/services/util/loading.service';
 export class RegDepositosPage implements OnInit {
   frmDeposito: FormGroup;
   public deposito: MdlDepositos;
+  public cliente: MdlCliente;
   constructor(
     public fb: FormBuilder,
     public depositoService: DepositoService,
@@ -24,12 +26,14 @@ export class RegDepositosPage implements OnInit {
     public navController: NavController,
     public navParams: NavParamService
   ) {
+    this.cliente = this.navParams.get().cliente;
     if (this.navParams.get().deposito) {
       this.deposito = this.navParams.get().deposito;
     } else {
       this.deposito = new MdlDepositos(null, null, null, null, null, null, null);
       this.deposito.verificado = false;
     }
+    this.deposito.idCliente = this.cliente.id;
   }
 
   ngOnInit() {
@@ -67,7 +71,7 @@ export class RegDepositosPage implements OnInit {
       .catch( error => {
         this.loadingServices.dismiss();
         console.log(error);
-        this.alertService.present('Error', 'Hubo un error al grabar los datos');
+        this.alertService.present('Error', 'Hubo un error al grabar los datos.');
         this.navController.navigateRoot('/home');
       });
   }

@@ -8,10 +8,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
-        <ion-card-header>
-        <ion-card-title>Depositos Cliente</ion-card-title>
-    </ion-card-header>
+<h1>Datos Cliente</h1>
     <form [formGroup]="frmCliente" novalidate>
         <ion-list>
           <ion-item>
@@ -64,13 +61,8 @@
         </ion-list>
         <ion-button expand="block" [disabled]="frmCliente.invalid" (click)="grabar()" color="verdec">Registrar</ion-button>
       </form>
-      
-    </ion-card>
     <div *ngIf="cliente.id" >
-      <ion-card>
-          <ion-card-header>
-          <ion-card-title>Depositos Cliente</ion-card-title>
-      </ion-card-header>
+      <h1>Datos Depositos</h1>
       <ion-grid>
         <ion-row class="cabecera-tabla">
           <ion-col size="3">Tipo</ion-col>
@@ -85,7 +77,13 @@
           <ion-col size="3">{{deposito.verificado}}</ion-col>
         </ion-row>
       </ion-grid>
-      </ion-card>
+    
       </div>
+
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="presentActionSheet()">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
       
 </ion-content>

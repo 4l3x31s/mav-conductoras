@@ -15,10 +15,14 @@ export class ContratoService {
     ) {
     this.rootRef = this.afDB.database.ref();
   }
-  insertarFeriado(contrato: MdlContrato): Promise<any> {
+  insertarContrato(contrato: MdlContrato): Promise<any> {
     if (!contrato.id) {
       contrato.id = Date.now();
     }
-    return this.afDB.database.ref('feriado/' + contrato.id).set(this.utilService.serializar(contrato));
+    return this.afDB.database.ref('contrato/' + contrato.id).set(this.utilService.serializar(contrato));
+  }
+  listaContratosPorUsuario(idUsuario: number) {
+    return this.afDB.list('contrato', ref =>
+      ref.orderByChild('idUsuario').equalTo(idUsuario)).valueChanges();
   }
 }

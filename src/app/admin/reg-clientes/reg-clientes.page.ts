@@ -40,9 +40,9 @@ export class RegClientesPage implements OnInit {
     this.listarDepositos();
   }
   get f() { return this.frmCliente.controls; }
-  async listarDepositos() {
+  listarDepositos() {
     this.loadingServices.present();
-    await this.depositosService.listaDepositos().subscribe( data => {
+    this.depositosService.listaDepositosPorCliente(this.cliente.id).subscribe( data => {
       this.loadingServices.dismiss();
       this.lstDepositos = Object.assign(data);
     },  error => {
@@ -51,7 +51,8 @@ export class RegClientesPage implements OnInit {
   }
   seleccionarDeposito(deposito) {
     this.navParams.set({
-      deposito: deposito
+      deposito: deposito,
+      cliente: this.cliente
     })
     this.navController.navigateForward('/reg-depositos');
   }
@@ -130,6 +131,17 @@ export class RegClientesPage implements OnInit {
             deposito: null
           });
           this.navController.navigateForward('/reg-depositos');
+        }
+      },
+      {
+        text: 'Registrar Contrato',
+        icon: 'cash',
+        handler: () => {
+          console.log('Share clicked');
+          this.navParams.set({
+            cliente: this.cliente
+          });
+          this.navController.navigateForward('/detalle-contrato');
         }
       },
       {

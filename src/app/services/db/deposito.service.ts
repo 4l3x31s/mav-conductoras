@@ -22,4 +22,7 @@ export class DepositoService {
    listaDepositos() {
      return this.afDB.list('deposito').valueChanges();
    }
+   listaDepositosPorCliente(idClient) {
+     return this.afDB.list('deposito', ref => ref.orderByChild('idCliente').equalTo(idClient)).valueChanges();
+   }
 }
