@@ -36,6 +36,7 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireStorageModule,
+    AngularFireAuthModule,
     MapaPageModule
   ],
   providers: [
