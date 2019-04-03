@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Detalle Imágenes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <subir-imagen titulo="Carnet de Identidad" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-ci'">
+    </subir-imagen>
+
+    <subir-imagen titulo="Licencia" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-licencia'">
+    </subir-imagen>
+
+    <subir-imagen titulo="Factura Agua/Luz" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-factagualuz'">
+    </subir-imagen>
+
+    <subir-imagen titulo="Antecedentes FELCC" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-antfelcc'">
+    </subir-imagen>
+
+    <subir-imagen titulo="Antecedentes Tránsito" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-antfelcc'">
+    </subir-imagen>
+
+    <subir-imagen titulo="Otros" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-otros'">
+    </subir-imagen>
+  </form>
+</ion-content>

@@ -131,4 +131,9 @@ export class DetalleConductoraPage implements OnInit {
     this.navParam.set({conductora:this.conductora})
     this.navController.navigateForward('/detalle-vehiculo');
   }
+
+  irDetalleImagenes(){
+    this.navParam.set({conductora:this.conductora})
+    this.navController.navigateForward('/detalle-imagenes-conductora');
+  }
 }

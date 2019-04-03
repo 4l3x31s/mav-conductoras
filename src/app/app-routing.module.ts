@@ -26,7 +26,8 @@ const routes: Routes = [
   { path: 'lista-clientes', loadChildren: './admin/lista-clientes/lista-clientes.module#ListaClientesPageModule' },
   { path: 'reg-clientes', loadChildren: './admin/reg-clientes/reg-clientes.module#RegClientesPageModule' },
   { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' },  { path: 'reg-parametros', loadChildren: './admin/reg-parametros/reg-parametros.module#RegParametrosPageModule' },
-  { path: 'lista-parametros', loadChildren: './admin/lista-parametros/lista-parametros.module#ListaParametrosPageModule' }
+  { path: 'lista-parametros', loadChildren: './admin/lista-parametros/lista-parametros.module#ListaParametrosPageModule' },
+  { path: 'detalle-imagenes-conductora', loadChildren: './detalle-imagenes-conductora/detalle-imagenes-conductora.module#DetalleImagenesConductoraPageModule' }
 
 ];
 

@@ -21,7 +21,7 @@ import { LoadingService } from 'src/app/services/util/loading.service';
 export class DetalleContratoPage implements OnInit {
   frmContrato: FormGroup;
   public contrato: MdlContrato = new MdlContrato(
-    null, null, null, null, null, null, null,null, null, null, null,null,null,null,null,null
+    null, null, null, null, null, null, null, null, null,null, null, null, null,null,null,null,null,null
   );
   public lstConductoras: MdlConductora[] = [];
   public lstClientes: MdlCliente[] = [];
