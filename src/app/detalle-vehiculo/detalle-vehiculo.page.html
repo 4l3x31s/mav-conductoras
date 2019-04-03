@@ -1,11 +1,14 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>detalle-vehiculo</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Detalle Vehículo</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="form" novalidate>
+  <form [formGroup]="form" novalidate *ngIf="vehiculo">
     <ion-list>
       <ion-item>
         <ion-label position="floating">Capacidad</ion-label>
@@ -21,11 +24,22 @@
 
       <ion-item>
         <ion-label position="floating">Modelo</ion-label>
-        <ion-input formControlName="vmodelo" [(ngModel)]="vehiculo.modelo"></ion-input>
+        <ion-input formControlName="vmodelo" [(ngModel)]="vehiculo.modelo" type="number"></ion-input>
       </ion-item>
       <print-error [control]="f.vmodelo"></print-error>
-
-      
     </ion-list>
+    <div padding>
+      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid">
+        Grabar
+      </ion-button>
+    </div>
+  </form>
+
+  <form *ngIf="vehiculo">
+    <subir-imagen titulo="Imagen RUAT" 
+      [url-imagen]="'mav/vehiculo/'+vehiculo.id+'-ruat'"></subir-imagen>
+    
+    <subir-imagen titulo="Imagen Vehículo"
+      [url-imagen]="'mav/vehiculo/'+vehiculo.id+'-vehiculo'"></subir-imagen>
   </form>
 </ion-content>

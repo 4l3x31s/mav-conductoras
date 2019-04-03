@@ -1,25 +1,38 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { MdlVehiculo } from 'src/app/modelo/mdlVehiculo';
+import { Observable } from 'rxjs';
+import { UtilService } from '../util/util.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehiculoService {
-
+  
   rootRef: firebase.database.Reference;
   constructor(
     public afDB: AngularFireDatabase,
-    private storage: AngularFireStorage
-  ) { 
+    public utilService: UtilService
+  ) {
     this.rootRef = this.afDB.database.ref();
   }
 
-  upload(event) {
-    //this.afDB.list('imagen_vehiculo').push(event.target.files[0]);
-    const file = event.target.files[0];
-    const filePath = 'imagen-vehiculo/'+Date.now();
-    this.storage.upload(filePath, file);
+  getVehiculoPorConductora(idConductora: number): Observable<MdlVehiculo[]> {
+    return this.afDB.list<MdlVehiculo>('vehiculo/',
+      ref => ref.orderByChild('idConductora').equalTo(idConductora)).valueChanges();
   }
+
+  /**
+   * Para revisar datos:
+   * https://mav-db.firebaseio.com/vehiculo.json
+   */
+  actualizarVehiculo(vehiculo: MdlVehiculo): Promise<any> {
+    if (!vehiculo.id) {
+      vehiculo.id = Date.now();
+    }
+    return this.afDB.database.ref('vehiculo/' + vehiculo.id)
+      .set(this.utilService.serializar(vehiculo));
+  }
+  
 }
