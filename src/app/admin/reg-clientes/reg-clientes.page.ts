@@ -23,7 +23,7 @@ export class RegClientesPage implements OnInit {
     public clienteService: ClienteService,
     public loadingServices: LoadingService,
     public alertService: AlertService,
-    public navController: NavController,
+    public navControllert: NavController,
     public navParams: NavParamService,
     public depositosService: DepositoService,
     public actionSheetController: ActionSheetController

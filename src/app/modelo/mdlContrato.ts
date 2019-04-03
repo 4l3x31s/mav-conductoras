@@ -15,7 +15,9 @@ export class MdlContrato {
         public hora: string,
         public tipoPago: string,
         public estadoPago: string,
-        public estado: boolean
+        public estado: boolean,
+        public pais: string,
+        public ciudad: string
     ) {
 
     }
