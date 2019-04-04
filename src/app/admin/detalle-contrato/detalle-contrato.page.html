@@ -12,7 +12,7 @@
         <ion-list>
             <ion-item>
                 <ion-label position="stacked">Cliente</ion-label>
-                <ion-input formControlName="vNombreCliente" readonly>{{cliente.nombre}}</ion-input>
+                <ion-input formControlName="vNombreCliente"  readonly>{{cliente.nombre}}</ion-input>
             </ion-item>
 
             <ion-item>
@@ -24,6 +24,7 @@
                     </ion-select-option>
                 </ion-select>
             </ion-item>
+            <print-error [control]="f.vPais"></print-error>
             <ion-item>
                 <ion-label position="stacked">Ciudad</ion-label>
                 <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad"
@@ -33,9 +34,10 @@
                     </ion-select-option>
                 </ion-select>
             </ion-item>
+            <print-error [control]="f.vCiudad"></print-error>
             <ion-item *ngIf="lstConductoras">
                 <ion-label position="stacked">Conductora</ion-label>
-                <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora"
+                <ion-select interface="popover"  formControlName="vConductora" placeholder="Seleccione una Conductora"
                             [(ngModel)]="contrato.idConductora">
                     <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">
                         {{conductora.nombre +' '+ conductora.paterno}}
@@ -46,6 +48,7 @@
                 <ion-label>No existen conductoras dentro de este criterio</ion-label>
 
             </ion-item>
+            <print-error [control]="f.vConductora"></print-error>
             <ion-item>
                 <ion-label position="stacked">Fecha Inicio</ion-label>
                 <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio"
@@ -83,14 +86,14 @@
                 <ion-input formControlName="vLongDestino" [(ngModel)]="contrato.longDestino" readonly></ion-input>
             </ion-item>
             <print-error [control]="f.vLongDestino"></print-error>
-            <ion-item>
+            <ion-item (click)="determinarDistanciaTiempo()">
                 <ion-label position="stacked">Monto Total</ion-label>
                 <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
             </ion-item>
             <print-error [control]="f.vMontoTotal"></print-error>
             <ion-item>
                 <ion-label position="stacked">Dias</ion-label>
-                <ion-input formControlName="vDias" [(ngModel)]="contrato.dias" type="text"></ion-input>
+                <ion-input formControlName="vDias" [(ngModel)]="contrato.dias" type="text" (click)="presentAlertCheckbox()" readonly ></ion-input>
             </ion-item>
             <print-error [control]="f.vDias"></print-error>
             <ion-item>
@@ -99,16 +102,27 @@
             </ion-item>
             <print-error [control]="f.vHora"></print-error>
             <ion-item>
-                <ion-label position="stacked">Tipo Pago</ion-label>
-                <ion-input formControlName="vTipoPago" [(ngModel)]="contrato.tipoPago"></ion-input>
-            </ion-item>
-            <print-error [control]="f.vTipoPago"></print-error>
+                <ion-label position="stacked">Tipo</ion-label>
+                <ion-select placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago" [(ngModel)]="contrato.tipoPago">
+                    <ion-select-option value="Deposito en Cuenta">Deposito en Cuenta</ion-select-option>
+                    <ion-select-option value="Efectivo en Caja">Efectivo en Caja</ion-select-option>
+                    <ion-select-option value="Promocion">Promocion</ion-select-option>
+                </ion-select>
+                </ion-item>
+                <print-error [control]="f.vTipoPago"></print-error>
             <ion-item>
                 <ion-label position="stacked">Estado Pago</ion-label>
                 <ion-input formControlName="vEstadoPago" [(ngModel)]="contrato.estadoPago"></ion-input>
             </ion-item>
             <print-error [control]="f.vEstadoPago"></print-error>
         </ion-list>
+
+        
     </form>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button [disabled]="frmContrato.invalid" (click)="grabar()" >
+                <ion-icon name="send"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
 
 </ion-content>

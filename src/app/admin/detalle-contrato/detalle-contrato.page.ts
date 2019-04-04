@@ -1,3 +1,4 @@
+import { AlertService } from 'src/app/services/util/alert.service';
 import { ParametrosCarreraService } from './../../services/db/parametros-carrera.service';
 import { MdlFeriado } from './../../modelo/mdlFeriado';
 import { MdlCliente } from './../../modelo/mdlCliente';
@@ -8,12 +9,13 @@ import { ConductoraService } from './../../services/db/conductora.service';
 import { MdlContrato } from './../../modelo/mdlContrato';
 import { MapaPage } from './../../comun/mapa/mapa.page';
 import { NavParamService } from './../../services/nav-param.service';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FeriadosService } from 'src/app/services/db/feriados.service';
 import { LoadingService } from 'src/app/services/util/loading.service';
 import { MdlParametrosCarrera } from 'src/app/modelo/mdlParametrosCarrera';
+declare var google;
 
 @Component({
   selector: 'app-detalle-contrato',
@@ -32,6 +34,7 @@ export class DetalleContratoPage implements OnInit {
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstPaisesFiltrados = [];
   public cliente: MdlCliente;
+  public ciudadSeleccionada: string;
   constructor(
     public fb: FormBuilder,
     public navController: NavController,
@@ -43,7 +46,9 @@ export class DetalleContratoPage implements OnInit {
     public carreraService: CarreraService,
     public loading: LoadingService,
     public parametrosService: ParametrosCarreraService,
-    public navParams: NavParamService
+    public navParams: NavParamService,
+    public alertService: AlertService,
+    public alertController: AlertController
   ) {
     this.cliente = this.navParams.get().cliente;
   }
@@ -62,6 +67,7 @@ export class DetalleContratoPage implements OnInit {
     );
   }
   filtrarConductoras(event) {
+    this.ciudadSeleccionada = event;
     this.contrato.idConductora = null;
     this.lstConductoras = undefined;
     this.conductoraService.getConductoraPorPaisCiudad(this.contrato.pais, event)
@@ -70,9 +76,19 @@ export class DetalleContratoPage implements OnInit {
           if (conductora) {
             this.lstConductoras = conductora;
           }
+          console.log('datos conductoras');
+          console.log(this.lstConductoras);
         }, error => {
           this.lstConductoras = undefined;
         });
+  }
+  grabar() {
+    if (this.lstConductoras) {
+      //TODO: Validaciones de guardado acá.
+    } else {
+      this.alertService.present('Alerta',
+            'No existe una conductora seleccionada o no existen conductoras disponibles para la radicatoria.');
+    }
   }
   obtenerConductoras() {
     //this.loading.present();
@@ -120,9 +136,7 @@ export class DetalleContratoPage implements OnInit {
   }
   initValidaciones() {
     this.frmContrato = this.fb.group({
-      vNombreCliente: ['', [
-        Validators.required,
-      ]],
+      vNombreCliente: ['', []],
       vConductora: ['', [
         Validators.required,
       ]],
@@ -196,4 +210,141 @@ export class DetalleContratoPage implements OnInit {
       });
     });
   }
+  async presentAlertCheckbox() {
+    const alert = await this.alertController.create({
+      header: 'Días',
+      inputs: [
+        {
+          name: 'lunes',
+          type: 'checkbox',
+          label: 'Lunes',
+          value: 'LU',
+          checked: true
+        },
+
+        {
+          name: 'martes',
+          type: 'checkbox',
+          label: 'Martes',
+          value: 'MA'
+        },
+
+        {
+          name: 'miercoles',
+          type: 'checkbox',
+          label: 'Miércoles',
+          value: 'MI'
+        },
+
+        {
+          name: 'jueves',
+          type: 'checkbox',
+          label: 'Jueves',
+          value: 'JU'
+        },
+
+        {
+          name: 'viernes',
+          type: 'checkbox',
+          label: 'Viernes',
+          value: 'VI'
+        },
+
+        {
+          name: 'sabado',
+          type: 'checkbox',
+          label: 'Sábado',
+          value: 'SA'
+        },
+        {
+          name: 'domingo',
+          type: 'checkbox',
+          label: 'Domingo',
+          value: 'DO'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: (data) => {
+            console.log('Confirm Ok');
+            console.log(data);
+            this.contrato.dias = null;
+            for (let i = 0; i < data.length; i++) {
+              if (this.contrato.dias) {
+                this.contrato.dias = this.contrato.dias + ',' + data[i];
+              } else {
+                this.contrato.dias = data[i];
+              }
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  public determinarDistanciaTiempo() {
+    console.log('ingresa calcula tiempo');
+    if(this.lstCiudadesFiltrado){
+    let distance = new google.maps.DistanceMatrixService();
+    distance.getDistanceMatrix({
+      origins:
+      [{
+        lat: Number(this.contrato.latOrigen),
+        lng: Number(this.contrato.longOrigen)
+      }],
+      destinations:
+      [{
+        lat: Number(this.contrato.latDestino),
+        lng: Number(this.contrato.longDestino)
+      }],
+      travelMode: 'DRIVING',
+      unitSystem: google.maps.UnitSystem.METRIC,
+      durationInTraffic: false,
+      avoidHighways: false,
+      avoidTolls: false
+    }, function (response, status) {
+      console.log('entra acá');
+      console.log(response);
+      console.log(status);
+      if (status === 'OK') {
+        let origins = response.originAddresses;
+        let destinations = response.destinationAddresses;
+        for (let i = 0; i < origins.length; i++) {
+          let results = response.rows[i].elements;
+          for (let j = 0; j < results.length; j++) {
+            let element = results[j];
+            let distance = element.distance.text;
+            let time = element.duration.text;
+            console.log(distance, time);
+            /*
+            this.lstCiudadesFiltrado = this.lstParametros.filter(
+              parametros => parametros.pais.indexOf(event) > -1
+            );
+            */
+            let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
+              parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
+            );
+            let montoFinal: number = (ciudadParametro[0].base + (element.duration.value * ciudadParametro[0].tiempo) + (element.distance.value * ciudadParametro[0].distancia));
+            console.log(montoFinal);
+            this.contrato.montoTotal = montoFinal;
+          }
+        }
+      }
+    }
+    );
+  } else {
+    // TODO: decir que no hay que calcular sin conductoras
+  }
+}
+
+
 }

@@ -98,27 +98,26 @@ export class DetalleConductoraPage implements OnInit {
   ngOnInit() {
     this.iniciarValidaciones();
     this.sesionService.getSesion()
-      .then(conductora=>{
-        if(conductora){
+      .then(conductora => {
+        if (conductora) {
           this.conductoraService.getConductora(conductora.id)
-          .subscribe(conductora=>{
-            this.conductora=conductora;
+          .subscribe( conductora => {
+            this.conductora = conductora;
           });
         } else {
           this.navController.navigateRoot('/login');
         }
       });
-    
   }
 
   grabar() {
     this.loadingService.present().then(() => {
       this.conductoraService.actualizarConductora(this.conductora)
-      .then(()=>{
+      .then(() => {
         this.loadingService.dismiss();
         this.alertService.present('Info','Datos guardados correctamente.');
       })
-      .catch(error=>{
+      .catch(error => {
         this.loadingService.dismiss();
         console.log(error);
         this.alertService.present('Error','Hubo un error al grabar los datos');
@@ -127,8 +126,8 @@ export class DetalleConductoraPage implements OnInit {
     });
   }
 
-  irDetalleVehiculo(){
-    this.navParam.set({conductora:this.conductora})
+  irDetalleVehiculo() {
+    this.navParam.set({ conductora: this.conductora});
     this.navController.navigateForward('/detalle-vehiculo');
   }
 
