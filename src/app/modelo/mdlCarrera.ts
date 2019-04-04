@@ -2,6 +2,7 @@ export class MdlCarrera {
     constructor (
         public id: number,
         public idUsuario: number,
+        public idConductora: number,
         public idContrato: number,
         public latInicio: string,
         public longInicio: string,

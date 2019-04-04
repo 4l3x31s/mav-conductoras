@@ -1,99 +1,114 @@
 <ion-header>
-  <ion-toolbar color="rosado">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Detalle Contrato</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="rosado">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Detalle Contrato</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="frmContrato" novalidate >
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Cliente</ion-label>
-        <ion-input formControlName="vNombreCliente" readonly >{{cliente.nombre}}</ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label position="stacked">Pais</ion-label>
-        <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais" (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="contrato.pais" >
-          <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">{{parametros.pais}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-          <ion-label position="stacked">Ciudad</ion-label>
-          <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad" [(ngModel)]="contrato.ciudad">
-            <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">{{parametros.ciudad}}</ion-select-option>
-          </ion-select>
-        </ion-item>
-      <ion-item>
-          <ion-item>
-              <ion-label position="stacked">Conductora</ion-label>
-              <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora" [(ngModel)]="contrato.idConductora">
-                <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">{{conductora.nombre +' '+ conductora.paterno}}</ion-select-option>
-              </ion-select>
+    <form [formGroup]="frmContrato" novalidate>
+        <ion-list>
+            <ion-item>
+                <ion-label position="stacked">Cliente</ion-label>
+                <ion-input formControlName="vNombreCliente" readonly>{{cliente.nombre}}</ion-input>
             </ion-item>
-        <ion-label position="stacked">Fecha Inicio</ion-label>
-        <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio" display-format="DD/MM/YYYY"></ion-datetime>
-      </ion-item>
-      <print-error [control]="f.vFechaInicio"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Fecha Fin</ion-label>
-        <ion-datetime formControlName="vFechaFin" [(ngModel)]="contrato.fechaFin" display-format="DD/MM/YYYY"></ion-datetime>
-      </ion-item>
-      <print-error [control]="f.vFechaFin"></print-error>
-      <ion-item (click)="irMapaOrigen()">
-        <ion-label position="stacked">Latitud Origen</ion-label>
-        <ion-input formControlName="vLatOrigen" [(ngModel)]="contrato.latOrigen" readonly ></ion-input>
-      </ion-item>
-      <print-error [control]="f.vLatOrigen"></print-error>
-      <ion-item  >
-        <ion-label position="stacked">Longitud Origen</ion-label>
-        <ion-input formControlName="vLongOrigen" [(ngModel)]="contrato.longOrigen" readonly></ion-input>
-      </ion-item>
-      <print-error [control]="f.vLongOrigen"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Cantidad de Pasajeros</ion-label>
-        <ion-input formControlName="vCantidadPasajeros" [(ngModel)]="contrato.cantidadPasajeros" ></ion-input>
-      </ion-item>
-      <print-error [control]="f.vCantidadPasajeros"></print-error>
-      <ion-item (click)="irMapaDestino()">
-        <ion-label position="stacked">Latitud Destino</ion-label>
-        <ion-input formControlName="vLatDestino" [(ngModel)]="contrato.latDestino" readonly></ion-input>
-      </ion-item>
-      <print-error [control]="f.vLatDestino"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Longitud Destino</ion-label>
-        <ion-input formControlName="vLongDestino" [(ngModel)]="contrato.longDestino" readonly></ion-input>
-      </ion-item>
-      <print-error [control]="f.vLongDestino"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Monto Total</ion-label>
-        <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vMontoTotal"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Dias</ion-label>
-        <ion-input formControlName="vDias" [(ngModel)]="contrato.dias" type="text"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vDias"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Hora</ion-label>
-        <ion-datetime formControlName="vHora" [(ngModel)]="contrato.hora" display-format="HH:mm"></ion-datetime>
-      </ion-item>
-      <print-error [control]="f.vHora"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Tipo Pago</ion-label>
-        <ion-input formControlName="vTipoPago" [(ngModel)]="contrato.tipoPago"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vTipoPago"></print-error>
-      <ion-item>
-        <ion-label position="stacked">Estado Pago</ion-label>
-        <ion-input formControlName="vEstadoPago" [(ngModel)]="contrato.estadoPago"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vEstadoPago"></print-error>
-    </ion-list>
-  </form>
+
+            <ion-item>
+                <ion-label position="stacked">Pais</ion-label>
+                <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
+                            (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="contrato.pais">
+                    <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">
+                        {{parametros.pais}}
+                    </ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">Ciudad</ion-label>
+                <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad"
+                            [(ngModel)]="contrato.ciudad" (ngModelChange)="filtrarConductoras($event)">
+                    <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">
+                        {{parametros.ciudad}}
+                    </ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item *ngIf="lstConductoras">
+                <ion-label position="stacked">Conductora</ion-label>
+                <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora"
+                            [(ngModel)]="contrato.idConductora">
+                    <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">
+                        {{conductora.nombre +' '+ conductora.paterno}}
+                    </ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item *ngIf="!lstConductoras">
+                <ion-label>No existen conductoras dentro de este criterio</ion-label>
+
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">Fecha Inicio</ion-label>
+                <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio"
+                              display-format="DD/MM/YYYY"></ion-datetime>
+            </ion-item>
+            <print-error [control]="f.vFechaInicio"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Fecha Fin</ion-label>
+                <ion-datetime formControlName="vFechaFin" [(ngModel)]="contrato.fechaFin"
+                              display-format="DD/MM/YYYY"></ion-datetime>
+            </ion-item>
+            <print-error [control]="f.vFechaFin"></print-error>
+            <ion-item (click)="irMapaOrigen()">
+                <ion-label position="stacked">Latitud Origen</ion-label>
+                <ion-input formControlName="vLatOrigen" [(ngModel)]="contrato.latOrigen" readonly></ion-input>
+            </ion-item>
+            <print-error [control]="f.vLatOrigen"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Longitud Origen</ion-label>
+                <ion-input formControlName="vLongOrigen" [(ngModel)]="contrato.longOrigen" readonly></ion-input>
+            </ion-item>
+            <print-error [control]="f.vLongOrigen"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Cantidad de Pasajeros</ion-label>
+                <ion-input formControlName="vCantidadPasajeros" [(ngModel)]="contrato.cantidadPasajeros"></ion-input>
+            </ion-item>
+            <print-error [control]="f.vCantidadPasajeros"></print-error>
+            <ion-item (click)="irMapaDestino()">
+                <ion-label position="stacked">Latitud Destino</ion-label>
+                <ion-input formControlName="vLatDestino" [(ngModel)]="contrato.latDestino" readonly></ion-input>
+            </ion-item>
+            <print-error [control]="f.vLatDestino"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Longitud Destino</ion-label>
+                <ion-input formControlName="vLongDestino" [(ngModel)]="contrato.longDestino" readonly></ion-input>
+            </ion-item>
+            <print-error [control]="f.vLongDestino"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Monto Total</ion-label>
+                <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
+            </ion-item>
+            <print-error [control]="f.vMontoTotal"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Dias</ion-label>
+                <ion-input formControlName="vDias" [(ngModel)]="contrato.dias" type="text"></ion-input>
+            </ion-item>
+            <print-error [control]="f.vDias"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Hora</ion-label>
+                <ion-datetime formControlName="vHora" [(ngModel)]="contrato.hora" display-format="HH:mm"></ion-datetime>
+            </ion-item>
+            <print-error [control]="f.vHora"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Tipo Pago</ion-label>
+                <ion-input formControlName="vTipoPago" [(ngModel)]="contrato.tipoPago"></ion-input>
+            </ion-item>
+            <print-error [control]="f.vTipoPago"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Estado Pago</ion-label>
+                <ion-input formControlName="vEstadoPago" [(ngModel)]="contrato.estadoPago"></ion-input>
+            </ion-item>
+            <print-error [control]="f.vEstadoPago"></print-error>
+        </ion-list>
+    </form>
 
 </ion-content>

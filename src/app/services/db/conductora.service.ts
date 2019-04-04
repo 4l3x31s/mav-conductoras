@@ -52,5 +52,21 @@ export class ConductoraService {
   listaConductoras() {
     return this.afDB.list('conductora').valueChanges();
   }
+  getConductoraPorPaisCiudad(pais: string, ciudad: string): Observable<MdlConductora[]> {
+    return new Observable<MdlConductora[]>(observer => {
+      this.afDB.list<MdlConductora>('conductora/',
+        ref => ref.orderByChild('pais').equalTo(pais)).valueChanges()
+        .subscribe(conductoras => {
+          console.log('service', conductoras);
+          if (conductoras.length > 0 && ciudad === conductoras[0].ciudad) {
+            observer.next(conductoras);
+          } else {
+            observer.next();
+          }
+          observer.complete();
+        });
+    });
+  }
 
+  
 }

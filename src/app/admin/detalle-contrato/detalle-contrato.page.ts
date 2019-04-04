@@ -52,7 +52,7 @@ export class DetalleContratoPage implements OnInit {
     this.initValidaciones();
     // this.obtenerClientes();
     this.obtenerParametros();
-    this.obtenerConductoras();
+    // this.obtenerConductoras();
     this.obtenerFeriados();
   }
   filtrarCiudades(event) {
@@ -60,6 +60,19 @@ export class DetalleContratoPage implements OnInit {
     this.lstCiudadesFiltrado = this.lstParametros.filter(
       parametros => parametros.pais.indexOf(event) > -1
     );
+  }
+  filtrarConductoras(event) {
+    this.contrato.idConductora = null;
+    this.lstConductoras = undefined;
+    this.conductoraService.getConductoraPorPaisCiudad(this.contrato.pais, event)
+        .subscribe(conductora => {
+          this.lstConductoras = undefined;
+          if (conductora) {
+            this.lstConductoras = conductora;
+          }
+        }, error => {
+          this.lstConductoras = undefined;
+        });
   }
   obtenerConductoras() {
     //this.loading.present();
