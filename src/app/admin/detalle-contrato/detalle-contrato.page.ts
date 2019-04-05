@@ -1,3 +1,5 @@
+/// <reference types="@types/googlemaps" />
+
 import { AlertService } from 'src/app/services/util/alert.service';
 import { ParametrosCarreraService } from './../../services/db/parametros-carrera.service';
 import { MdlFeriado } from './../../modelo/mdlFeriado';
@@ -15,9 +17,10 @@ import { Component, OnInit } from '@angular/core';
 import { FeriadosService } from 'src/app/services/db/feriados.service';
 import { LoadingService } from 'src/app/services/util/loading.service';
 import { MdlParametrosCarrera } from 'src/app/modelo/mdlParametrosCarrera';
-import { UtilService } from 'src/app/services/util/util.service';
 import { DataUtilService } from 'src/app/services/util/data-util.service';
-declare var google;
+import { Observable } from 'rxjs';
+
+declare var google: any;
 
 @Component({
   selector: 'app-detalle-contrato',
@@ -27,7 +30,7 @@ declare var google;
 export class DetalleContratoPage implements OnInit {
   frmContrato: FormGroup;
   public contrato: MdlContrato = new MdlContrato(
-    null, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null,null, null
+    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
   );
   public lstConductoras: MdlConductora[] = [];
   public lstClientes: MdlCliente[] = [];
@@ -37,6 +40,10 @@ export class DetalleContratoPage implements OnInit {
   public lstPaisesFiltrados = [];
   public cliente: MdlCliente;
   public ciudadSeleccionada: string;
+
+  // directionsService = new google.maps.DirectionsService;
+  // directionsDisplay = new google.maps.DirectionsRenderer;
+  distance: any;
   constructor(
     public fb: FormBuilder,
     public navController: NavController,
@@ -54,6 +61,7 @@ export class DetalleContratoPage implements OnInit {
     public dataUtilService: DataUtilService
   ) {
     this.cliente = this.navParams.get().cliente;
+    this.distance = new google.maps.DistanceMatrixService();
   }
 
   ngOnInit() {
@@ -88,36 +96,36 @@ export class DetalleContratoPage implements OnInit {
   }
   grabar() {
     if (this.lstConductoras) {
-      //TODO: Validaciones de guardado acá.
+      // TODO: Validaciones de guardado acá.
     } else {
       this.alertService.present('Alerta',
             'No existe una conductora seleccionada o no existen conductoras disponibles para la radicatoria.');
     }
   }
   obtenerConductoras() {
-    //this.loading.present();
+    // this.loading.present();
     this.conductoraService.listaConductoras().subscribe(data => {
-      //this.loading.dismiss();
+      // this.loading.dismiss();
       this.lstConductoras = Object.assign(data);
     }, error => {
-      //this.loading.dismiss();
+      // this.loading.dismiss();
     });
   }
   async obtenerParametros() {
     this.loading.present();
     await this.parametrosService.listarParametros().subscribe(data => {
-      //this.loading.dismiss();
+      // this.loading.dismiss();
       this.lstParametros = Object.assign(data);
       this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
       .map(id => {
         return {
           id: id,
           pais: this.lstParametros.find( s => s.pais === id).pais,
-        }
-      })
+        };
+      });
       console.log(this.lstPaisesFiltrados);
     }, error => {
-      //this.loading.dismiss();
+      // this.loading.dismiss();
     });
   }
   obtenerClientes() {
@@ -130,7 +138,7 @@ export class DetalleContratoPage implements OnInit {
     });
   }
   obtenerFeriados() {
-    //this.loading.present();
+    // this.loading.present();
     this.feriadoService.listaFeriados().subscribe(data => {
       this.loading.dismiss();
       this.lstFeriados = Object.assign(data);
@@ -187,7 +195,7 @@ export class DetalleContratoPage implements OnInit {
         Validators.required,
       ]],
 
-    })
+    });
   }
   get f() { return this.frmContrato.controls; }
   async irMapaOrigen() {
@@ -295,54 +303,97 @@ export class DetalleContratoPage implements OnInit {
 
     await alert.present();
   }
+  getDistanceMatrix(req: google.maps.DistanceMatrixRequest): Observable<google.maps.DistanceMatrixResponse> {
+    return Observable.create((observer) => {
+      this.distance.getDistanceMatrix(req, (rsp, status) => {
+        // status checking goes here
+        console.log(status);
+        observer.next(rsp);
+        observer.complete();
+      });
+    });
+  }
+
   public async determinarDistanciaTiempo() {
     console.log('ingresa calcula tiempo');
-    if(this.lstCiudadesFiltrado){
-    let distance = new google.maps.DistanceMatrixService();
-    let data;
-    let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
-      parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
-    );
-    let valor = await distance.getDistanceMatrix({
-      origins:
-      [{
-        lat: Number(this.contrato.latOrigen),
-        lng: Number(this.contrato.longOrigen)
-      }],
-      destinations:
-      [{
-        lat: Number(this.contrato.latDestino),
-        lng: Number(this.contrato.longDestino)
-      }],
-      travelMode: 'DRIVING',
-      unitSystem: google.maps.UnitSystem.METRIC,
-      durationInTraffic: false,
-      avoidHighways: false,
-      avoidTolls: false
-    }, await function (response, status, ciudadParametro) {
-      console.log('entra acá');
-      console.log(response);
-      console.log(status);
-      if (status === 'OK') {
-        let origins = response.originAddresses;
-        let destinations = response.destinationAddresses;
-        for (let i = 0; i < origins.length; i++) {
-          let results = response.rows[i].elements;
-          for (let j = 0; j < results.length; j++) {
-            let element = results[j];
-            let distance = element.distance.value;
-            let time = element.duration.value;
-            console.log(distance, time);
-            let montoFinal: number = (ciudadParametro[0].base + (element.duration.value * ciudadParametro[0].tiempo) + (element.distance.value * ciudadParametro[0].distancia));
-            console.log(montoFinal);
-            this.contrato.montoTotal = montoFinal;
-          }
+
+    if (this.lstCiudadesFiltrado) {
+      let responseMatrix: google.maps.DistanceMatrixRequest;
+      
+      responseMatrix = {
+        origins:
+        [{
+          lat: Number(this.contrato.latOrigen),
+          lng: Number(this.contrato.longOrigen)
+        }],
+        destinations:
+        [{
+          lat: Number(this.contrato.latDestino),
+          lng: Number(this.contrato.longDestino)
+        }],
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+        durationInTraffic: false,
+        avoidHighways: false,
+        avoidTolls: false
+      };
+
+    /*const valor = await this.distance.getDistanceMatrix(
+      responseMatrix , this.callBack
+    );*/
+    let datos = this.getDistanceMatrix(responseMatrix);
+    datos.subscribe(data => {
+      console.log(data);
+      let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
+        parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
+      );
+      const origins = data.originAddresses;
+      const destinations = data.destinationAddresses;
+    for (let i = 0; i < origins.length; i++) {
+      const results = data.rows[i].elements;
+      for (let j = 0; j < results.length; j++) {
+        const element = results[j];
+        const distance = element.distance.value;
+        const time = element.duration.value;
+        console.log(distance, time);
+        // calcular costos UBER: https://calculouber.netlify.com/
+        let montoFinal: number = (ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value/1000) * ciudadParametro[0].distancia));
+        console.log(montoFinal);
+        if(montoFinal < 10) {
+          this.contrato.montoTotal = 10;
+        } else {
+          this.contrato.montoTotal = montoFinal;
         }
       }
     }
-    );
+    });
   } else {
     // TODO: decir que no hay que calcular sin conductoras
+  }
+}
+async callBack(response: any, status: any) {
+  console.log('entra acá');
+  console.log(response);
+  console.log(status);
+  /*let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
+    parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
+  );*/
+  if (status === 'OK') {
+    const origins = response.originAddresses;
+    const destinations = response.destinationAddresses;
+    for (let i = 0; i < origins.length; i++) {
+      const results = response.rows[i].elements;
+      for (let j = 0; j < results.length; j++) {
+        const element = results[j];
+        const distance = element.distance.value;
+        const time = element.duration.value;
+        console.log(distance, time);
+        // let montoFinal: number = (ciudadParametro[0].base + (element.duration.value * ciudadParametro[0].tiempo) + (element.distance.value * ciudadParametro[0].distancia));
+        // console.log(montoFinal);
+        // this.contrato.montoTotal = montoFinal;
+        return await {distance: distance, time: time};
+      }
+    }
   }
 }
 
