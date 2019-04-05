@@ -15,6 +15,8 @@ import { Component, OnInit } from '@angular/core';
 import { FeriadosService } from 'src/app/services/db/feriados.service';
 import { LoadingService } from 'src/app/services/util/loading.service';
 import { MdlParametrosCarrera } from 'src/app/modelo/mdlParametrosCarrera';
+import { UtilService } from 'src/app/services/util/util.service';
+import { DataUtilService } from 'src/app/services/util/data-util.service';
 declare var google;
 
 @Component({
@@ -48,7 +50,8 @@ export class DetalleContratoPage implements OnInit {
     public parametrosService: ParametrosCarreraService,
     public navParams: NavParamService,
     public alertService: AlertService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public dataUtilService: DataUtilService
   ) {
     this.cliente = this.navParams.get().cliente;
   }
@@ -75,6 +78,7 @@ export class DetalleContratoPage implements OnInit {
           this.lstConductoras = undefined;
           if (conductora) {
             this.lstConductoras = conductora;
+            this.dataUtilService.set(this.lstConductoras);
           }
           console.log('datos conductoras');
           console.log(this.lstConductoras);
@@ -291,11 +295,15 @@ export class DetalleContratoPage implements OnInit {
 
     await alert.present();
   }
-  public determinarDistanciaTiempo() {
+  public async determinarDistanciaTiempo() {
     console.log('ingresa calcula tiempo');
     if(this.lstCiudadesFiltrado){
     let distance = new google.maps.DistanceMatrixService();
-    distance.getDistanceMatrix({
+    let data;
+    let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
+      parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
+    );
+    let valor = await distance.getDistanceMatrix({
       origins:
       [{
         lat: Number(this.contrato.latOrigen),
@@ -311,7 +319,7 @@ export class DetalleContratoPage implements OnInit {
       durationInTraffic: false,
       avoidHighways: false,
       avoidTolls: false
-    }, function (response, status) {
+    }, await function (response, status, ciudadParametro) {
       console.log('entra acá');
       console.log(response);
       console.log(status);
@@ -322,17 +330,9 @@ export class DetalleContratoPage implements OnInit {
           let results = response.rows[i].elements;
           for (let j = 0; j < results.length; j++) {
             let element = results[j];
-            let distance = element.distance.text;
-            let time = element.duration.text;
+            let distance = element.distance.value;
+            let time = element.duration.value;
             console.log(distance, time);
-            /*
-            this.lstCiudadesFiltrado = this.lstParametros.filter(
-              parametros => parametros.pais.indexOf(event) > -1
-            );
-            */
-            let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
-              parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
-            );
             let montoFinal: number = (ciudadParametro[0].base + (element.duration.value * ciudadParametro[0].tiempo) + (element.distance.value * ciudadParametro[0].distancia));
             console.log(montoFinal);
             this.contrato.montoTotal = montoFinal;
