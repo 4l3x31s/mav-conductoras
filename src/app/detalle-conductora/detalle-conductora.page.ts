@@ -8,6 +8,8 @@ import { SesionService } from '../services/sesion.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { NavParamService } from '../services/nav-param.service';
 import { MapaPage } from '../comun/mapa/mapa.page';
+import { MdlParametrosCarrera } from '../modelo/mdlParametrosCarrera';
+import { ParametrosCarreraService } from '../services/db/parametros-carrera.service';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -20,6 +22,10 @@ export class DetalleConductoraPage implements OnInit {
 
   conductora: MdlConductora;
 
+  public lstPaisesFiltrados = [];
+  public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
+  public lstParametros: MdlParametrosCarrera [] = [];
+
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -29,6 +35,7 @@ export class DetalleConductoraPage implements OnInit {
     public navController: NavController,
     public navParam: NavParamService,
     public modalController: ModalController,
+    public parametrosService: ParametrosCarreraService,
   ) { }
 
   iniciarValidaciones() {
@@ -93,6 +100,12 @@ export class DetalleConductoraPage implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(30),
       ]],
+      vPais: ['', [
+        Validators.required
+      ]],
+      vCiudad: ['', [
+        Validators.required
+      ]],
     });
   }
   get f() { return this.form.controls; }
@@ -107,6 +120,34 @@ export class DetalleConductoraPage implements OnInit {
         null, null, null, null, null, null, null, null, null, null
       );
     }
+    this.obtenerParametros();
+  }
+
+  obtenerParametros() {
+    this.loadingService.present()
+      .then(()=>{
+        this.parametrosService.listarParametros().subscribe(data => {
+          this.loadingService.dismiss();
+          this.lstParametros = Object.assign(data);
+          this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
+          .map(id => {
+            return {
+              id: id,
+              pais: this.lstParametros.find( s => s.pais === id).pais,
+            };
+          });
+          this.filtrarCiudades(this.lstParametros[0].pais);
+        }, error => {
+          console.log(error);
+        });
+      });
+    
+  }
+
+  filtrarCiudades(event) {
+    this.lstCiudadesFiltrado = this.lstParametros.filter(
+      parametros => parametros.pais.indexOf(event) > -1
+    );
   }
 
   grabar() {
@@ -145,6 +186,7 @@ export class DetalleConductoraPage implements OnInit {
         if(resultado.data && resultado.data.lat){
           this.conductora.lat = resultado.data.lat;
           this.conductora.long = resultado.data.lng;
+          this.form.markAsDirty();
         }
       });
     });

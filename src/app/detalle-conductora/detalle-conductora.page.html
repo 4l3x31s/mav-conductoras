@@ -10,6 +10,9 @@
 <ion-content *ngIf="conductora">
   <form [formGroup]="form" novalidate>
     <ion-list>
+      <ion-list-header color="medium">
+        <ion-label>Datos Generales</ion-label>
+      </ion-list-header>
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input formControlName="vnombre" [(ngModel)]="conductora.nombre"></ion-input>
@@ -41,6 +44,15 @@
       <print-error [control]="f.vci"></print-error>
 
       <ion-item>
+          <ion-label position="floating">Género</ion-label>
+          <ion-select placeholder="Selecionar uno" formControlName="vgenero" [(ngModel)]="conductora.genero">
+            <ion-select-option value="F">Femenino</ion-select-option>
+            <ion-select-option value="M">Masculino</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <print-error [control]="f.vgenero"></print-error>
+
+      <ion-item>
         <ion-label position="floating">Tipo Licencia</ion-label>
         <ion-select placeholder="Selecione un valor" formControlName="vtipolicencia"
           [(ngModel)]="conductora.tipoLicencia">
@@ -51,37 +63,13 @@
         </ion-select>
       </ion-item>
       <print-error [control]="f.vtipolicencia"></print-error>
-
-      <ion-item>
-        <ion-label position="floating">Dirección</ion-label>
-        <ion-input formControlName="vdireccion" [(ngModel)]="conductora.direccion"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vdireccion"></print-error>
-
-      <ion-item (click)="irGetCroquis()">
-        <ion-label>
-          <h2>Croquis</h2>
-          <p *ngIf="conductora.lat">Lat: {{ conductora.lat }}</p>
-          <p *ngIf="conductora.long">Long: {{ conductora.long }}</p>
-        </ion-label>
-        <ion-icon name="create" slot="end"></ion-icon>
-      </ion-item>
       
-      <ion-item>
-        <ion-label position="floating">Género</ion-label>
-        <ion-select placeholder="Selecionar uno" formControlName="vgenero" [(ngModel)]="conductora.genero">
-          <ion-select-option value="F">Femenino</ion-select-option>
-          <ion-select-option value="M">Masculino</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <print-error [control]="f.vgenero"></print-error>
-
       <ion-item>
         <ion-label position="floating">Número de Cuenta Bancaria</ion-label>
         <ion-input formControlName="vnroctabancaria" [(ngModel)]="conductora.nroCtaBancaria"></ion-input>
       </ion-item>
       <print-error [control]="f.vnroctabancaria"></print-error>
-
+      
       <ion-item>
         <ion-label position="floating">Teléfono Fijo</ion-label>
         <ion-input type="number" formControlName="vtelefono" [(ngModel)]="conductora.telefono"></ion-input>
@@ -94,31 +82,72 @@
       </ion-item>
       <print-error [control]="f.vcelular"></print-error>
 
+      <ion-list-header color="medium">
+        <ion-label>Radicatoria</ion-label>
+      </ion-list-header>
+      
+      <ion-item>
+        <ion-label position="stacked">Pais</ion-label>
+        <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
+          (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="conductora.pais">
+          <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">
+            {{parametros.pais}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <print-error [control]="f.vPais"></print-error>
+
+      <ion-item>
+        <ion-label position="stacked">Ciudad</ion-label>
+        <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad"
+          [(ngModel)]="conductora.ciudad">
+          <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">
+            {{parametros.ciudad}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <print-error [control]="f.vCiudad"></print-error>
+
+      <ion-item>
+        <ion-label position="floating">Dirección</ion-label>
+        <ion-input formControlName="vdireccion" [(ngModel)]="conductora.direccion"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vdireccion"></print-error>
+
       <ion-item>
         <ion-label position="floating">Número de Residencia</ion-label>
         <ion-input type="number" formControlName="vnroresidencia" [(ngModel)]="conductora.nroResidencia"></ion-input>
       </ion-item>
       <print-error [control]="f.vnroresidencia"></print-error>
       
-      <ion-card-header>
-        <ion-card-subtitle>Credenciales</ion-card-subtitle>
-      </ion-card-header>
-      
+      <ion-item (click)="irGetCroquis()">
+        <ion-label>
+          <h2>Croquis</h2>
+          <p *ngIf="conductora.lat">Lat: {{ conductora.lat }}</p>
+          <p *ngIf="conductora.long">Long: {{ conductora.long }}</p>
+        </ion-label>
+        <ion-icon name="create" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-list-header color="medium">
+        <ion-label>Credenciales</ion-label>
+      </ion-list-header>
+
       <ion-item>
         <ion-label position="floating">Nombre de Usuario</ion-label>
         <ion-input formControlName="vuser" [(ngModel)]="conductora.user"></ion-input>
       </ion-item>
       <print-error [control]="f.vuser"></print-error>
-    
+
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" formControlName="vpass" [(ngModel)]="conductora.pass"></ion-input>
       </ion-item>
       <print-error [control]="f.vpass"></print-error>
-      
+
     </ion-list>
     <div padding>
-      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid">
+      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
         Grabar
       </ion-button>
     </div>

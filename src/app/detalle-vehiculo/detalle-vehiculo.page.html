@@ -29,7 +29,7 @@
       <print-error [control]="f.vmodelo"></print-error>
     </ion-list>
     <div padding>
-      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid">
+      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
         Grabar
       </ion-button>
     </div>
