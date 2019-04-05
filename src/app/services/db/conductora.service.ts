@@ -19,15 +19,18 @@ export class ConductoraService {
    * Para revisar datos:
    * https://mav-db.firebaseio.com/conductora.json
    */
-  insertarConductora(conductora: MdlConductora): Promise<any> {
+  grabarConductora(conductora: MdlConductora): Promise<MdlConductora> {
     if (!conductora.id) {
       conductora.id = Date.now();
     }
-    return this.afDB.database.ref('conductora/' + conductora.id).set(conductora);
-  }
-  actualizarConductora(conductora: MdlConductora): Promise<any> {
     return this.afDB.database.ref('conductora/' + conductora.id)
-                .set(this.utilService.serializar(conductora));
+              .set(this.utilService.serializar(conductora))
+                .then(()=>{
+                  return Promise.resolve(conductora);
+                })
+                .catch(e=>{
+                  return Promise.reject(e);
+                });
   }
   getConductoraPorUserPass(user: string, pass: string): Observable<MdlConductora[]> {
     return new Observable<MdlConductora[]>(observer => {

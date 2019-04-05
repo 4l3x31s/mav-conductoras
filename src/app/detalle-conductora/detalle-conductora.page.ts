@@ -5,8 +5,9 @@ import { ConductoraService } from '../services/db/conductora.service';
 import { AlertService } from '../services/util/alert.service';
 import { LoadingService } from '../services/util/loading.service';
 import { SesionService } from '../services/sesion.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { NavParamService } from '../services/nav-param.service';
+import { MapaPage } from '../comun/mapa/mapa.page';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -26,7 +27,8 @@ export class DetalleConductoraPage implements OnInit {
     public loadingService: LoadingService,
     public sesionService: SesionService,
     public navController: NavController,
-    public navParam: NavParamService
+    public navParam: NavParamService,
+    public modalController: ModalController,
   ) { }
 
   iniciarValidaciones() {
@@ -97,32 +99,30 @@ export class DetalleConductoraPage implements OnInit {
 
   ngOnInit() {
     this.iniciarValidaciones();
-    this.sesionService.getSesion()
-      .then(conductora => {
-        if (conductora) {
-          this.conductoraService.getConductora(conductora.id)
-          .subscribe( conductora => {
-            this.conductora = conductora;
-          });
-        } else {
-          this.navController.navigateRoot('/login');
-        }
-      });
+    if(this.navParam.get() && this.navParam.get().conductora){
+      this.conductora = this.navParam.get().conductora;
+    } else {
+      this.conductora = new MdlConductora(
+        null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null
+      );
+    }
   }
 
   grabar() {
     this.loadingService.present().then(() => {
-      this.conductoraService.actualizarConductora(this.conductora)
-      .then(() => {
-        this.loadingService.dismiss();
-        this.alertService.present('Info','Datos guardados correctamente.');
-      })
-      .catch(error => {
-        this.loadingService.dismiss();
-        console.log(error);
-        this.alertService.present('Error','Hubo un error al grabar los datos');
-        this.navController.navigateRoot('/home');
-      });
+      this.conductoraService.grabarConductora(this.conductora)
+        .then((conductora) => {
+          this.conductora=conductora;
+          this.loadingService.dismiss();
+          this.alertService.present('Info','Datos guardados correctamente.');
+        })
+        .catch(error => {
+          this.loadingService.dismiss();
+          console.log(error);
+          this.alertService.present('Error','Hubo un error al grabar los datos');
+          this.navController.navigateRoot('/home');
+        });
     });
   }
 
@@ -134,5 +134,19 @@ export class DetalleConductoraPage implements OnInit {
   irDetalleImagenes(){
     this.navParam.set({conductora:this.conductora})
     this.navController.navigateForward('/detalle-imagenes-conductora');
+  }
+
+  async irGetCroquis(){
+    await this.modalController.create({
+      component: MapaPage
+    }).then( dato => {
+      dato.present();
+      dato.onDidDismiss().then(resultado => {
+        if(resultado.data && resultado.data.lat){
+          this.conductora.lat = resultado.data.lat;
+          this.conductora.long = resultado.data.lng;
+        }
+      });
+    });
   }
 }

@@ -35,7 +35,7 @@
     </div>
   </form>
 
-  <form *ngIf="vehiculo">
+  <form *ngIf="vehiculo && vehiculo.id">
     <subir-imagen titulo="Imagen RUAT" 
       [url-imagen]="'mav/vehiculo/'+vehiculo.id+'-ruat'"></subir-imagen>
     

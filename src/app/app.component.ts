@@ -1,14 +1,21 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, NavController, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { SesionService } from './services/sesion.service';
+import { ConductoraService } from './services/db/conductora.service';
+import { MdlConductora } from './modelo/mldConductora';
+import { NavParamService } from './services/nav-param.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+  
+  conductora: MdlConductora;
+
   public appPages = [
     {
       title: 'Home',
@@ -64,9 +71,28 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public sesionService: SesionService,
+    public conductoraService: ConductoraService,
+    public navController: NavController,
+    public navParam: NavParamService,
+    public events: Events
   ) {
     this.initializeApp();
+    events.subscribe('user:login', () => {
+      this.loggedIn();
+    });
+  }
+
+  loggedIn() {
+    console.log("logged in");
+    this.sesionService.getSesion()
+      .then(conductora=>{
+        this.conductoraService.getConductora(conductora.id)
+          .subscribe( conductora => {
+            this.conductora = conductora;
+          });
+      });
   }
 
   initializeApp() {
@@ -74,6 +100,20 @@ export class AppComponent {
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
+      this.sesionService.getSesion()
+        .then(conductora => {
+          if (conductora) {
+            this.conductoraService.getConductora(conductora.id)
+            .subscribe( conductora => {
+              this.conductora = conductora;
+            });
+          }
+      });
     });
+  }
+
+  irPagina(pagina:any){
+    this.navParam.set({conductora:this.conductora})
+    this.navController.navigateForward(pagina.url);
   }
 }

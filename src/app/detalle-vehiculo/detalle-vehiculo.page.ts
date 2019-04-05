@@ -39,18 +39,10 @@ export class DetalleVehiculoPage implements OnInit {
         .subscribe(vehiculo=>{
           if(vehiculo[0]){
             this.vehiculo=vehiculo[0];
-            console.log('vehiculo', this.vehiculo);
           } else {
             this.vehiculo = new MdlVehiculo(
               null,this.conductora.id,null,null,null
             );
-            this.vehiculoService.actualizarVehiculo(this.vehiculo)
-              .then(()=>{
-                this.vehiculoService.getVehiculoPorConductora(this.conductora.id)
-                  .subscribe(vehiculo=>{
-                    this.vehiculo=vehiculo[0];
-                  });
-              });
           }
         });
     } else {
@@ -80,8 +72,9 @@ export class DetalleVehiculoPage implements OnInit {
 
   grabar(){
     this.loadingService.present().then(() => {
-      this.vehiculoService.actualizarVehiculo(this.vehiculo)
-      .then(()=>{
+      this.vehiculoService.grabarVehiculo(this.vehiculo)
+      .then((vehiculo)=>{
+        this.vehiculo = vehiculo;
         this.loadingService.dismiss();
         this.alertService.present('Info','Datos guardados correctamente.');
       })

@@ -27,12 +27,18 @@ export class VehiculoService {
    * Para revisar datos:
    * https://mav-db.firebaseio.com/vehiculo.json
    */
-  actualizarVehiculo(vehiculo: MdlVehiculo): Promise<any> {
+  grabarVehiculo(vehiculo: MdlVehiculo): Promise<MdlVehiculo> {
     if (!vehiculo.id) {
       vehiculo.id = Date.now();
     }
     return this.afDB.database.ref('vehiculo/' + vehiculo.id)
-      .set(this.utilService.serializar(vehiculo));
+      .set(this.utilService.serializar(vehiculo))
+        .then(()=>{
+          return Promise.resolve(vehiculo);
+        })
+        .catch(e=>{
+          return Promise.reject(e);
+        });
   }
   
 }
