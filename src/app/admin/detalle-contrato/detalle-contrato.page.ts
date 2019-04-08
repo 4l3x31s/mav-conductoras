@@ -397,5 +397,22 @@ async callBack(response: any, status: any) {
   }
 }
 
+/*
 
+Buscador en los mapas
+Bolsa de Credito - mensual
+Pago efectivo - A la conductora
+Ambas caras de los documentos -> detalle de documentos
+
+Validacion de horas - 30 minimo de validacion
+Que se registre igual pero con alerta.
+
+
+
+
+Modulos Extras
+Pagos online -pay me
+
+
+*/
 }
