@@ -16,7 +16,7 @@ export class SqliteService {
   getDB(): Promise<SQLiteObject> {
     if (this.db == undefined) {
       return this.sqlite.create({
-        name: 'data.db',
+        name: 'datamav.db',
         location: 'default'
       })
         .then((db: SQLiteObject) => {
@@ -59,7 +59,7 @@ export class SqliteService {
   getConductoraSesion(): Promise<MdlConductora> {
     return this.getDB()
       .then((db: SQLiteObject) => {
-        return db.executeSql('select * from conductora', [])
+        return db.executeSql('select * from conductora_sesion', [])
           .then((data) => {
             let conductora: MdlConductora;
             if (data.rows.length > 0) {
@@ -100,7 +100,7 @@ export class SqliteService {
       .then((db: SQLiteObject) => {
         let ddl=[];
         ddl.push([
-          "create table IF NOT EXISTS conductora (id, nombre, paterno, materno)", []
+          "create table IF NOT EXISTS conductora_sesion (id, nombre, paterno, materno)", []
         ]);
         return db.sqlBatch(ddl)
           .then(() => {
@@ -109,6 +109,16 @@ export class SqliteService {
           .catch(e => {
             return Promise.reject(e);
           });
+      });
+  }
+
+  removeConductoraSesion(): Promise<any> {
+    return this.getDB()
+      .then((db: SQLiteObject)=>{
+        return db.executeSql('delete from conductora_sesion');
+      })
+      .catch(e=>{
+        return Promise.reject(e);
       });
   }
   

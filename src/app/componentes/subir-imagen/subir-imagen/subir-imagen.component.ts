@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { LoadingService } from 'src/app/services/util/loading.service';
 import { AlertService } from 'src/app/services/util/alert.service';

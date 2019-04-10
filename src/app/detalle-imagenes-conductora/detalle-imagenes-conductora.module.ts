@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { DetalleImagenesConductoraPage } from './detalle-imagenes-conductora.page';
 import { SubirImagenModule } from '../componentes/subir-imagen/subir-imagen.module';
+import { ComponentesComunesModule } from '../componentes-comunes/componentes-comunes.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     SubirImagenModule,
+    ComponentesComunesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [DetalleImagenesConductoraPage]

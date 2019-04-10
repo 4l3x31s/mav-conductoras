@@ -32,12 +32,30 @@ export class LoginPage implements OnInit {
       this.user='alvarez';
       this.pass='l1234567';
     }
-    this.sesionService.getSesion()
-      .then((conductora)=>{
-        if(conductora){
-          this.navController.navigateRoot('/home');
-        }
+    this.loadingService.present()
+      .then(()=>{
+        this.sesionService.crearSesionBase()
+        .then(() => {
+          this.sesionService.getSesion()
+            .then((conductora)=>{
+              if(conductora){
+                this.navController.navigateRoot('/home');
+              }
+              this.loadingService.dismiss();
+            })
+            .catch(e=>{
+              console.log(e);
+              this.loadingService.dismiss();
+              this.alertService.present('Error','Error al obtener la sesion.');
+            });
+        })
+        .catch(e=>{
+          console.log(e);
+          this.loadingService.dismiss();
+          this.alertService.present('Error','Error al crear la BD de sesion')
+        });
       });
+    
   }
   iniciaValidaciones() {
     this.form = this.fb.group({

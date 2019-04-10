@@ -25,16 +25,23 @@ export class SesionService {
           if(conductora){
             if(environment.isSesionPrueba){
               this.conductoraSesionPrueba = conductora[0];
-              this.conductoraSesionPrueba.nombre += '(PRUEBA)';
-              this.conductoraSesionPrueba.paterno += '(PRUEBA)';
+              observer.next();
+              observer.complete();
             } else {
-              this.sqlite.setConductoraSesion(conductora[0]);
+              this.sqlite.setConductoraSesion(conductora[0])
+                .then(()=>{
+                  observer.next();
+                  observer.complete();
+                })
+                .catch(e=>{
+                  observer.error(e);
+                  observer.complete();
+                });
             }
-            observer.next();
           } else {
             observer.error({message:'Usuario y/o contraseña inválida'});
+            observer.complete();
           }
-          observer.complete();
         });
     });
   }
@@ -52,6 +59,15 @@ export class SesionService {
       return Promise.resolve()
     } else {
       return this.sqlite.crearBD();
+    }
+  }
+
+  cerrarSesion(): Promise<any>{
+    if(environment.isSesionPrueba){
+      this.conductoraSesionPrueba=undefined;
+      return Promise.resolve()
+    } else {
+      return this.sqlite.removeConductoraSesion();
     }
   }
   

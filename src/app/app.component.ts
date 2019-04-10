@@ -82,6 +82,9 @@ export class AppComponent {
     events.subscribe('user:login', () => {
       this.loggedIn();
     });
+    events.subscribe('user:logout', () => {
+      this.loggedOut();
+    });
   }
 
   loggedIn() {
@@ -93,6 +96,10 @@ export class AppComponent {
             this.conductora = conductora;
           });
       });
+  }
+  loggedOut() {
+    console.log("logged out");
+    this.conductora = undefined;
   }
 
   initializeApp() {
