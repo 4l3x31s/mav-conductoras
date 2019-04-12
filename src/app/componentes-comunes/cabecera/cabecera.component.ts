@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'cabecera',
@@ -6,12 +6,14 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./cabecera.component.scss'],
 })
 export class CabeceraComponent implements OnInit {
-
-  @Input("titulo")
+  @Input('titulo')
   titulo: string;
-  
-  constructor() { }
 
-  ngOnInit() {}
+  mostrarBoton: boolean = false;
+  constructor() {
+   }
+
+  ngOnInit() {
+  }
 
 }

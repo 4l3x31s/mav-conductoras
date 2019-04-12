@@ -66,7 +66,7 @@ export class RegDepositosPage implements OnInit {
       .then(  () => {
         this.loadingServices.dismiss();
         this.alertService.present('Info', 'Datos guardados correctamente.');
-        this.navController.navigateBack('/lista-clientes');
+        this.navController.navigateBack('reg-clientes');
       })
       .catch( error => {
         this.loadingServices.dismiss();
