@@ -39,12 +39,22 @@
             <ion-input type="number" formControlName="vTiempo" name="vTiempo"  [(ngModel)]="parametroCarrera.tiempo"></ion-input>
           </ion-item>
           <print-error [control]="f.vTiempo"></print-error>
-      
+          vTarifaDinamica
           <ion-item>
             <ion-label position="stacked">Distancia</ion-label>
             <ion-input type="number" formControlName="vDistancia" name="vDistancia"  [(ngModel)]="parametroCarrera.distancia"></ion-input>
           </ion-item>
           <print-error [control]="f.vDistancia"></print-error> 
+          <ion-item>
+            <ion-label position="stacked">Tarifa Dinamica</ion-label>
+            <ion-input type="number" formControlName="vTarifaDinamica" name="vTarifaDinamica"  [(ngModel)]="parametroCarrera.tarifaDinamica"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vTarifaDinamica"></print-error> 
+          <ion-item>
+            <ion-label position="stacked">Peajes</ion-label>
+            <ion-input type="number" formControlName="vPeajes" name="vPeajes"  [(ngModel)]="parametroCarrera.peajes"></ion-input>
+          </ion-item>
+          <print-error [control]="f.vPeajes"></print-error> 
         </ion-list>
         
         <ion-fab vertical="bottom" horizontal="end" slot="fixed">

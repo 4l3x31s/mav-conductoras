@@ -31,9 +31,9 @@ export class MapaPage implements OnInit {
     } else {
       console.log('no hay pagina retorno');
     }
-    this.cargarMapa();
+    this.initAutocomplete();
   }
-  cargarMapa() {
+  initAutocomplete() {
     const myLatlng = { lat: -16.4978888, lng: -68.1314424};
     const mapOptions = {
       zoom: 16,

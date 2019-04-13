@@ -4,6 +4,7 @@ import { MdlConductora } from '../modelo/mldConductora';
 import { NavController, AlertController, Events } from '@ionic/angular';
 import { LoadingService } from '../services/util/loading.service';
 import { AlertService } from '../services/util/alert.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,8 @@ export class HomePage implements OnInit {
     public alertController: AlertController,
     public loadingService: LoadingService,
     public alertService: AlertService,
-    public events: Events
+    public events: Events,
+    public iab: InAppBrowser,
   ) { }
 
   ngOnInit() {
@@ -70,5 +72,8 @@ export class HomePage implements OnInit {
     });
 
     await alert.present();
+  }
+  abrirWhatsapp() {
+    this.iab.create(`https://api.whatsapp.com/send?phone=59177232781&text=Un%20Movil%20porfavor`, '_system', 'location=yes');
   }
 }

@@ -7,6 +7,8 @@ export class MdlParametrosCarrera {
         public cuotaSolicitud: number,
         public tarifaMinima: number,
         public tiempo: number,
-        public distancia: number
+        public distancia: number,
+        public tarifaDinamica: number,
+        public peajes: number
     ) {}
 }
