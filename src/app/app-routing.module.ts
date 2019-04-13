@@ -28,7 +28,8 @@ const routes: Routes = [
   { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' },  { path: 'reg-parametros', loadChildren: './admin/reg-parametros/reg-parametros.module#RegParametrosPageModule' },
   { path: 'lista-parametros', loadChildren: './admin/lista-parametros/lista-parametros.module#ListaParametrosPageModule' },
   { path: 'detalle-imagenes-conductora', loadChildren: './detalle-imagenes-conductora/detalle-imagenes-conductora.module#DetalleImagenesConductoraPageModule' },
-  { path: 'calendario', loadChildren: './comun/calendario/calendario.module#CalendarioPageModule' }
+  { path: 'calendario', loadChildren: './comun/calendario/calendario.module#CalendarioPageModule' },
+  { path: 'lista-contratos', loadChildren: './admin/lista-contratos/lista-contratos.module#ListaContratosPageModule' }
 
 ];
 

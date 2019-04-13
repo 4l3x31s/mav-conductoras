@@ -414,6 +414,10 @@ export class DetalleContratoPage implements OnInit {
 
     /*
 
+    http://uber-tarifas-la-paz-bo.ubertarifa.com/
+
+    https://calculouber.netlify.com/
+    
     Buscador en los mapas
     Bolsa de Credito - mensual
     Pago efectivo - A la conductora
