@@ -6,6 +6,7 @@ import { ClienteService } from './../../services/db/cliente.service';
 import { MdlCliente } from './../../modelo/mdlCliente';
 import { Component, OnInit } from '@angular/core';
 import { MdlDepositos } from 'src/app/modelo/mdlDepositos';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-lista-clientes',
@@ -21,7 +22,8 @@ export class ListaClientesPage implements OnInit {
     public loading: LoadingService,
     public navController: NavController,
     public navParams: NavParamService,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    public iab: InAppBrowser
   ) { }
 
   ngOnInit() {
@@ -55,6 +57,9 @@ export class ListaClientesPage implements OnInit {
       cliente: cliente
     });
     this.navController.navigateForward('/reg-clientes');
+  }
+  public abrirWhatsapp (cliente: MdlCliente) {
+    this.iab.create(`https://api.whatsapp.com/send?phone=591` + cliente.cel + `&text=MAV:`, '_system', 'location=yes');
   }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({

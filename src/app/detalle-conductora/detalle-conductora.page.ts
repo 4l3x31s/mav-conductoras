@@ -25,7 +25,6 @@ export class DetalleConductoraPage implements OnInit {
   public lstPaisesFiltrados = [];
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstParametros: MdlParametrosCarrera [] = [];
-
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -112,7 +111,7 @@ export class DetalleConductoraPage implements OnInit {
 
   ngOnInit() {
     this.iniciarValidaciones();
-    if(this.navParam.get() && this.navParam.get().conductora){
+    if (this.navParam.get() && this.navParam.get().conductora){
       this.conductora = this.navParam.get().conductora;
     } else {
       this.conductora = new MdlConductora(
