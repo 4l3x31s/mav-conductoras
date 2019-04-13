@@ -30,7 +30,7 @@
             <print-error [control]="f.vCiudad"></print-error>
             <ion-item *ngIf="lstConductoras">
                 <ion-label position="stacked">Conductora</ion-label>
-                <ion-select interface="popover"  formControlName="vConductora" placeholder="Seleccione una Conductora"
+                <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora"
                             [(ngModel)]="contrato.idConductora">
                     <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">
                         {{conductora.nombre +' '+ conductora.paterno}}
@@ -86,7 +86,8 @@
             <print-error [control]="f.vMontoTotal"></print-error>
             <ion-item>
                 <ion-label position="stacked">Dias</ion-label>
-                <ion-input formControlName="vDias" [(ngModel)]="contrato.dias" type="text" (click)="presentAlertCheckbox()" readonly ></ion-input>
+                <ion-input formControlName="vDias" [(ngModel)]="contrato.dias" type="text"
+                           (click)="presentAlertCheckbox()" readonly></ion-input>
             </ion-item>
             <print-error [control]="f.vDias"></print-error>
             <ion-item>
@@ -96,13 +97,14 @@
             <print-error [control]="f.vHora"></print-error>
             <ion-item>
                 <ion-label position="stacked">Tipo</ion-label>
-                <ion-select placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago" [(ngModel)]="contrato.tipoPago">
+                <ion-select placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
+                            [(ngModel)]="contrato.tipoPago">
                     <ion-select-option value="Deposito en Cuenta">Deposito en Cuenta</ion-select-option>
                     <ion-select-option value="Efectivo en Caja">Efectivo en Caja</ion-select-option>
                     <ion-select-option value="Promocion">Promocion</ion-select-option>
                 </ion-select>
-                </ion-item>
-                <print-error [control]="f.vTipoPago"></print-error>
+            </ion-item>
+            <print-error [control]="f.vTipoPago"></print-error>
             <ion-item>
                 <ion-label position="stacked">Estado Pago</ion-label>
                 <ion-input formControlName="vEstadoPago" [(ngModel)]="contrato.estadoPago"></ion-input>
@@ -110,12 +112,12 @@
             <print-error [control]="f.vEstadoPago"></print-error>
         </ion-list>
 
-        
+
     </form>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button [disabled]="frmContrato.invalid" (click)="grabar()" >
-                <ion-icon name="send"></ion-icon>
-            </ion-fab-button>
-        </ion-fab>
+        <ion-fab-button [disabled]="frmContrato.invalid" (click)="grabar()">
+            <ion-icon name="send"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 
 </ion-content>
