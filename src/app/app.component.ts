@@ -65,6 +65,11 @@ export class AppComponent {
       title: 'Lista Parametros',
       url: '/lista-parametros',
       icon: 'person'
+    },
+    {
+      title: 'Carreras',
+      url: '/detalle-carreras',
+      icon: 'calendar'
     }
   ];
 
@@ -121,6 +126,6 @@ export class AppComponent {
 
   irPagina(pagina:any){
     this.navParam.set({conductora:this.conductora})
-    this.navController.navigateForward(pagina.url);
+    this.navController.navigateRoot(pagina.url);
   }
 }
