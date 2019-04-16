@@ -29,8 +29,8 @@ const routes: Routes = [
   { path: 'lista-parametros', loadChildren: './admin/lista-parametros/lista-parametros.module#ListaParametrosPageModule' },
   { path: 'detalle-imagenes-conductora', loadChildren: './detalle-imagenes-conductora/detalle-imagenes-conductora.module#DetalleImagenesConductoraPageModule' },
   { path: 'calendario', loadChildren: './comun/calendario/calendario.module#CalendarioPageModule' },
+  { path: 'lista-contratos', loadChildren: './admin/lista-contratos/lista-contratos.module#ListaContratosPageModule' },
   { path: 'detalle-carreras', loadChildren: './detalle-carreras/detalle-carreras.module#DetalleCarrerasPageModule' }
-
 ];
 
 @NgModule({

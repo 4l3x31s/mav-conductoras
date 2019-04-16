@@ -27,7 +27,7 @@ export class RegParametrosPage implements OnInit {
     if (navParams.get().parametro) {
       this.parametroCarrera = this.navParams.get().parametro;
     } else {
-      this.parametroCarrera = new MdlParametrosCarrera(null, null, null, null, null, null, null, null);
+      this.parametroCarrera = new MdlParametrosCarrera(null, null, null, null, null, null, null, null, null, null);
     }
   }
 
@@ -56,6 +56,12 @@ export class RegParametrosPage implements OnInit {
         Validators.required
       ]],
       vDistancia: ['', [
+        Validators.required
+      ]],
+      vTarifaDinamica: ['', [
+        Validators.required
+      ]],
+      vPeajes: ['', [
         Validators.required
       ]]
     });

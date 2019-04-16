@@ -95,6 +95,13 @@
   --ion-color-verdec-contrast-rgb: 255, 255, 255;
   --ion-color-verdec-shade: #388e3c;
   --ion-color-verdec-tint: #4caf50;
+  //#00E676
+  --ion-color-whatsapp: #00E676;
+  --ion-color-whatsapp-rgb: 0, 230, 118;
+  --ion-color-whatsapp-contrast: #ffffff;
+  --ion-color-whatsapp-contrast-rgb: 255, 255, 255;
+  --ion-color-whatsapp-shade: #00E676;
+  --ion-color-whatsapp-tint: #00e676;
 
 }
 .ion-color-rosado {
@@ -120,6 +127,14 @@
   --ion-color-contrast-rgb: 255, 255, 255;
   --ion-color-shade: #388e3c;
   --ion-color-tint: #4caf50;
+}
+.ion-color-whatsapp {
+  --ion-color-base: #00E676;
+  --ion-color-base-rgb: 0, 230, 118;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #00E676;
+  --ion-color-tint: #00E676;
 }
 
 .spiner-loading {
