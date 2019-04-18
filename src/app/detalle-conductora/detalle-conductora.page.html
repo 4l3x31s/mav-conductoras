@@ -4,7 +4,7 @@
   <form [formGroup]="form" novalidate>
     <ion-list>
       <ion-list-header color="medium">
-        <ion-label>Datos Generales</ion-label>
+        <ion-label>DATOS GENERALES</ion-label>
       </ion-list-header>
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
@@ -37,13 +37,13 @@
       <print-error [control]="f.vci"></print-error>
 
       <ion-item>
-          <ion-label position="floating">Género</ion-label>
-          <ion-select placeholder="Selecionar uno" formControlName="vgenero" [(ngModel)]="conductora.genero">
-            <ion-select-option value="F">Femenino</ion-select-option>
-            <ion-select-option value="M">Masculino</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <print-error [control]="f.vgenero"></print-error>
+        <ion-label position="floating">Género</ion-label>
+        <ion-select placeholder="Selecionar uno" formControlName="vgenero" [(ngModel)]="conductora.genero">
+          <ion-select-option value="F">Femenino</ion-select-option>
+          <ion-select-option value="M">Masculino</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <print-error [control]="f.vgenero"></print-error>
 
       <ion-item>
         <ion-label position="floating">Tipo Licencia</ion-label>
@@ -76,7 +76,7 @@
       <print-error [control]="f.vcelular"></print-error>
 
       <ion-list-header color="medium">
-        <ion-label>Radicatoria</ion-label>
+        <ion-label>RADICATORIA</ion-label>
       </ion-list-header>
       
       <ion-item>
@@ -123,7 +123,7 @@
       </ion-item>
 
       <ion-list-header color="medium">
-        <ion-label>Credenciales</ion-label>
+        <ion-label>CREDENCIALES</ion-label>
       </ion-list-header>
 
       <ion-item>
@@ -146,18 +146,9 @@
     </div>
   </form>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="conductora.id">
-    <ion-fab-button color="success">
+    <ion-fab-button (click)="showOpcionesConductora()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-
-    <ion-fab-list side="top">
-      <ion-fab-button (click)="irDetalleImagenes()">
-        <ion-icon name="images"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button (click)="irDetalleVehiculo()">
-        <ion-icon name="car"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-
   </ion-fab>
+  
 </ion-content>

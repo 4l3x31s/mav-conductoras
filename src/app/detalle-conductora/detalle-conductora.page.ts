@@ -5,7 +5,7 @@ import { ConductoraService } from '../services/db/conductora.service';
 import { AlertService } from '../services/util/alert.service';
 import { LoadingService } from '../services/util/loading.service';
 import { SesionService } from '../services/sesion.service';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
 import { NavParamService } from '../services/nav-param.service';
 import { MapaPage } from '../comun/mapa/mapa.page';
 import { MdlParametrosCarrera } from '../modelo/mdlParametrosCarrera';
@@ -35,6 +35,7 @@ export class DetalleConductoraPage implements OnInit {
     public navParam: NavParamService,
     public modalController: ModalController,
     public parametrosService: ParametrosCarreraService,
+    public actionSheetController: ActionSheetController
   ) { }
 
   iniciarValidaciones() {
@@ -189,5 +190,35 @@ export class DetalleConductoraPage implements OnInit {
         }
       });
     });
+  }
+
+  async showOpcionesConductora(){
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Opciones Conductora',
+      buttons: [
+      {
+        text: 'Imágenes',
+        icon: 'images',
+        handler: () => {
+          this.irDetalleImagenes();
+        }
+      },
+      {
+        text: 'Vehículo',
+        icon: 'car',
+        handler: () => {
+          this.irDetalleVehiculo();
+        }
+      },
+      {
+        text: 'Cancelar',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 }
