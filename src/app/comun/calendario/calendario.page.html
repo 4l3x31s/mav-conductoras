@@ -6,18 +6,18 @@
 
 <ion-content >
   <div class='app-top'>
-    <button (click)='toggleVisible()'>toggle visible</button>
+    <ion-button (click)='toggleVisible()'>toggle visible</ion-button>
     <br />
-    <button (click)='toggleWeekends()'>toggle weekends</button>
+    <ion-button (click)='toggleWeekends()'>toggle weekends</ion-button>
     <br />
-    <button (click)='gotoPast()'>go to a date in the past</button>
+    <ion-button (click)='gotoPast()'>go to a date in the past</ion-button>
     <br />
     (also, click a date/time to add an event)
   </div>
 
   <div class='app-calendar' *ngIf="calendarVisible">
     <full-calendar
-      #calendar
+      #calendar [locale]="es-ES"
       defaultView="dayGridMonth"
       [header]="{
         left: 'prev,next today',

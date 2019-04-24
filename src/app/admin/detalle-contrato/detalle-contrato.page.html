@@ -43,9 +43,9 @@
             </ion-item>
             <print-error [control]="f.vConductora"></print-error>
             <ion-item>
-                <ion-label position="stacked">Fecha Inicio</ion-label>
+                <ion-label position="stacked">Fecha/Hora Inicio</ion-label>
                 <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio"
-                              display-format="DD/MM/YYYY"></ion-datetime>
+                              display-format="DD/MM/YYYY HH:mm" ></ion-datetime>
             </ion-item>
             <print-error [control]="f.vFechaInicio"></print-error>
             <ion-item>
@@ -79,7 +79,7 @@
                 <ion-input formControlName="vLongDestino" [(ngModel)]="contrato.longDestino" readonly></ion-input>
             </ion-item>
             <print-error [control]="f.vLongDestino"></print-error>
-            <ion-item (click)="determinarDistanciaTiempo()">
+            <ion-item>
                 <ion-label position="stacked">Monto Total</ion-label>
                 <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
             </ion-item>
