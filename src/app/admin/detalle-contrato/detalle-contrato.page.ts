@@ -197,15 +197,19 @@ export class DetalleContratoPage implements OnInit {
         }
         
         this.contratoService.insertarContrato(this.contrato)
-        .then( data => {
-            console.log(this.contrato);
-            /*for (let carrera of this.lstCarreras){
+        .then( async data => {
+            console.log(this.lstCarreras);
+            for (let carrera of this.lstCarreras){
                 this.carreraService.insertarCarrera(carrera)
-                .then( carreraInsertada => {
+                .then( async carreraInsertada => {
                     console.log('inserto carrera');
                     console.log(carreraInsertada);
                 });
-            }*/
+            }
+            await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
+                await this.navController.navigateForward('/lista-clientes');
+            });
+            
             this.loading.dismiss();
         });
 
@@ -298,7 +302,7 @@ export class DetalleContratoPage implements OnInit {
             vDias: ['', [
                 Validators.required,
             ]],
-            vHora: ['', [
+            vDescLugar: ['', [
                 Validators.required,
             ]],
             vTipoPago: ['', [

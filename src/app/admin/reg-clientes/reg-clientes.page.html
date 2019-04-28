@@ -1,9 +1,13 @@
-<cabecera titulo="Registro Clientes"></cabecera>
+<cabecera-back titulo="Registro Clientes"></cabecera-back>
 
-<ion-content padding>
-<h1>Datos Cliente</h1>
+<ion-content>
+    <ion-list-header color="medium">
+        <ion-label>DATOS CLIENTE</ion-label>
+      </ion-list-header>
     <form [formGroup]="frmCliente" novalidate>
+      
         <ion-list>
+            
           <ion-item>
             <ion-label position="stacked">Nombre</ion-label>
             <ion-input formControlName="vnombre" name="vnombre"  [(ngModel)]="cliente.nombre"></ion-input>
@@ -55,7 +59,9 @@
         <ion-button expand="block" [disabled]="frmCliente.invalid" (click)="grabar()" color="verdec">Registrar</ion-button>
       </form>
     <div *ngIf="cliente.id" >
-      <h1>Datos Depositos</h1>
+        <ion-list-header color="medium">
+            <ion-label>DEPOSITOS CLIENTE</ion-label>
+          </ion-list-header>
       <ion-grid>
         <ion-row class="cabecera-tabla">
           <ion-col size="3">Tipo</ion-col>

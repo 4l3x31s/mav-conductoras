@@ -1,6 +1,9 @@
-<cabecera titulo="Detalle Contrato"></cabecera>
+<cabecera-back titulo="Detalle Contrato"></cabecera-back>
 
-<ion-content padding>
+<ion-content>
+        <ion-list-header color="medium">
+                <ion-label>REGISTRO CONTRATO</ion-label>
+              </ion-list-header>
     <form [formGroup]="frmContrato" novalidate>
         <ion-list>
             <ion-item>
@@ -91,10 +94,10 @@
             </ion-item>
             <print-error [control]="f.vDias"></print-error>
             <ion-item>
-                <ion-label position="stacked">Hora</ion-label>
-                <ion-datetime formControlName="vHora" [(ngModel)]="contrato.hora" display-format="HH:mm"></ion-datetime>
+                <ion-label position="stacked">Descripcion Lugar</ion-label>
+                <ion-textarea formControlName="vDescLugar" [(ngModel)]="txtDescripcionLugar" ></ion-textarea>
             </ion-item>
-            <print-error [control]="f.vHora"></print-error>
+            <print-error [control]="f.vDescLugar"></print-error>
             <ion-item>
                 <ion-label position="stacked">Tipo</ion-label>
                 <ion-select placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
