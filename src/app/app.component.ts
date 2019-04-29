@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 
-import { Platform, NavController, Events } from '@ionic/angular';
+import { Platform, NavController, Events, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SesionService } from './services/sesion.service';
 import { ConductoraService } from './services/db/conductora.service';
 import { MdlConductora } from './modelo/mldConductora';
 import { NavParamService } from './services/nav-param.service';
+import { LoadingService } from './services/util/loading.service';
+import { AlertService } from './services/util/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -18,44 +20,34 @@ export class AppComponent {
 
   public appPages = [
     {
-      title: 'Home',
+      title: 'Inicio',
       url: '/home',
       icon: 'home'
     },
     {
-      title: 'Detalle Conductora',
-      url: '/detalle-conductora',
-      icon: 'contact'
-    },
-    {
       title: 'Lista Conductoras',
       url: '/lista-conductoras',
-      icon: 'person'
+      icon: 'people'
     },
     {
       title: 'Registro Feriados',
       url: '/reg-feriados',
-      icon: 'person'
+      icon: 'calendar'
     },
     {
       title: 'Lista Clientes',
       url: '/lista-clientes',
-      icon: 'person'
+      icon: 'people'
     },
     {
       title: 'Lista Parametros',
       url: '/lista-parametros',
-      icon: 'person'
+      icon: 'analytics'
     },
     {
       title: 'Carreras',
       url: '/detalle-carreras',
-      icon: 'calendar'
-    },
-    {
-      title: 'Login',
-      url: '/login',
-      icon: 'list'
+      icon: 'car'
     },
   ];
 
@@ -67,7 +59,10 @@ export class AppComponent {
     public conductoraService: ConductoraService,
     public navController: NavController,
     public navParam: NavParamService,
-    public events: Events
+    public events: Events,
+    public alertController: AlertController,
+    public loadingService: LoadingService,
+    public alertService: AlertService,
   ) {
     this.initializeApp();
     events.subscribe('user:login', () => {
@@ -113,5 +108,48 @@ export class AppComponent {
   irPagina(pagina:any){
     this.navParam.set({conductora:this.conductora})
     this.navController.navigateRoot(pagina.url);
+  }
+
+  irDetalleConductora(){
+    this.navParam.set({conductora:this.conductora})
+    this.navController.navigateRoot('/detalle-conductora');
+  }
+
+  async irCerrarSesion(){
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: '¿Esta segur@ de cerrar su sesión?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            //console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Si',
+          cssClass: 'primary',
+          handler: () => {
+            this.loadingService.present()
+              .then(() => {
+                this.sesionService.cerrarSesion()
+                  .then(()=>{
+                    this.events.publish('user:logout');
+                    this.loadingService.dismiss();
+                    this.navController.navigateRoot('/login');
+                  })
+                  .catch(e=>{
+                    console.log(e);
+                    this.alertService.present('Error','Error al cerrar la sesion');
+                    this.loadingService.dismiss();
+                  })
+              });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

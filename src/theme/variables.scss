@@ -189,3 +189,14 @@ ion-label.titulo-pagina{
   margin-bottom: 15px;
   background-color: var(--ion-color-plomoo);
 }
+.banner-menu{
+  width: 100%;
+  display: block;
+  background: url('../assets/image/banner-menu.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: var(--ion-color-light);
+  padding: 1rem;
+}
