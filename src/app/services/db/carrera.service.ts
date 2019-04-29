@@ -12,12 +12,15 @@ export class CarreraService {
   constructor(public afDB: AngularFireDatabase) {
     this.rootRef = this.afDB.database.ref();
   }
-  insertarFeriado(carrera: MdlCarrera): Promise<any> {
+  insertarCarrera(carrera: MdlCarrera): Promise<any> {
     if (!carrera.id) {
       carrera.id = Date.now();
     }
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
+  /*insertarLista(listaCarrera: any) {
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }*/
 
   getCarrerasPorConductora(idConductora: number): Observable<MdlCarrera[]> {
     /*return this.afDB.list<MdlCarrera>('carrera', 

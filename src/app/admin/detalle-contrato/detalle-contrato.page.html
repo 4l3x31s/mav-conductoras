@@ -1,6 +1,9 @@
-<cabecera titulo="Detalle Contrato"></cabecera>
+<cabecera-back titulo="Detalle Contrato"></cabecera-back>
 
-<ion-content padding>
+<ion-content>
+        <ion-list-header color="medium">
+                <ion-label>REGISTRO CONTRATO</ion-label>
+              </ion-list-header>
     <form [formGroup]="frmContrato" novalidate>
         <ion-list>
             <ion-item>
@@ -43,9 +46,9 @@
             </ion-item>
             <print-error [control]="f.vConductora"></print-error>
             <ion-item>
-                <ion-label position="stacked">Fecha Inicio</ion-label>
+                <ion-label position="stacked">Fecha/Hora Inicio</ion-label>
                 <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio"
-                              display-format="DD/MM/YYYY"></ion-datetime>
+                              display-format="DD/MM/YYYY HH:mm" ></ion-datetime>
             </ion-item>
             <print-error [control]="f.vFechaInicio"></print-error>
             <ion-item>
@@ -79,7 +82,7 @@
                 <ion-input formControlName="vLongDestino" [(ngModel)]="contrato.longDestino" readonly></ion-input>
             </ion-item>
             <print-error [control]="f.vLongDestino"></print-error>
-            <ion-item (click)="determinarDistanciaTiempo()">
+            <ion-item>
                 <ion-label position="stacked">Monto Total</ion-label>
                 <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
             </ion-item>
@@ -91,10 +94,10 @@
             </ion-item>
             <print-error [control]="f.vDias"></print-error>
             <ion-item>
-                <ion-label position="stacked">Hora</ion-label>
-                <ion-datetime formControlName="vHora" [(ngModel)]="contrato.hora" display-format="HH:mm"></ion-datetime>
+                <ion-label position="stacked">Descripcion Lugar</ion-label>
+                <ion-textarea formControlName="vDescLugar" [(ngModel)]="txtDescripcionLugar" ></ion-textarea>
             </ion-item>
-            <print-error [control]="f.vHora"></print-error>
+            <print-error [control]="f.vDescLugar"></print-error>
             <ion-item>
                 <ion-label position="stacked">Tipo</ion-label>
                 <ion-select placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
@@ -115,7 +118,7 @@
 
     </form>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button [disabled]="frmContrato.invalid" (click)="grabar()">
+        <ion-fab-button color="verdec" [disabled]="frmContrato.invalid" (click)="grabar()">
             <ion-icon name="send"></ion-icon>
         </ion-fab-button>
     </ion-fab>

@@ -19,6 +19,9 @@ import {LoadingService} from 'src/app/services/util/loading.service';
 import {MdlParametrosCarrera} from 'src/app/modelo/mdlParametrosCarrera';
 import {DataUtilService} from 'src/app/services/util/data-util.service';
 import {Observable} from 'rxjs';
+import * as moment from 'moment';
+import { ContratoService } from './../../services/db/contrato.service';
+import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
 
 declare var google: any;
 
@@ -40,6 +43,12 @@ export class DetalleContratoPage implements OnInit {
     public lstPaisesFiltrados = [];
     public cliente: MdlCliente;
     public ciudadSeleccionada: string;
+    public txtDescripcionLugar: string;
+
+    public numDias: Array<any> = [];
+    public diasArray: Array<any> = [];
+
+    public lstCarreras: Array<MdlCarrera> = [];
 
     // directionsService = new google.maps.DirectionsService;
     // directionsDisplay = new google.maps.DirectionsRenderer;
@@ -58,7 +67,9 @@ export class DetalleContratoPage implements OnInit {
                 public navParams: NavParamService,
                 public alertService: AlertService,
                 public alertController: AlertController,
-                public dataUtilService: DataUtilService) {
+                public dataUtilService: DataUtilService,
+                public contratoService: ContratoService
+                ) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
     }
@@ -97,12 +108,111 @@ export class DetalleContratoPage implements OnInit {
     }
 
     grabar() {
+        
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
         } else {
             this.alertService.present('Alerta',
                 'No existe una conductora seleccionada o no existen conductoras disponibles para la radicatoria.');
+                return;
         }
+        this.loading.present();
+        let fechaIMoment = moment(this.contrato.fechaInicio);
+        let fechaFMoment = moment(this.contrato.fechaFin);
+        let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
+        let dias = duracion.asDays();
+        let finalDias = dias * -1;
+        console.log(dias);
+        this.diasArray = this.contrato.dias.split(',');
+        console.log('****************************************');
+        console.log(this.diasArray);
+        for (let di of this.diasArray) {
+        switch (di) {
+            case 'LU':
+            this.numDias.push(1);
+            break;
+            case 'MA':
+            this.numDias.push(2);
+            break;
+            case 'MI':
+            this.numDias.push(3);
+            break;
+            case 'JU':
+            this.numDias.push(4);
+            break;
+            case 'VI':
+            this.numDias.push(5);
+            break;
+            case 'SA':
+            this.numDias.push(6);
+            break;
+            case 'DO':
+            this.numDias.push(0);
+            break;
+            default:
+            console.log('Lo lamentamos, por el momento no disponemos de ');
+        }
+        }
+        console.log(this.numDias);
+        let carrera: MdlCarrera = new MdlCarrera(
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null);
+        for (let i = 0; i <= finalDias; i++) {
+            let fechaModificada:any;
+            if (i === 0) {
+                fechaModificada = fechaIMoment.add(0, 'd');
+            } else {
+                fechaModificada = fechaIMoment.add(1, 'd');
+            }
+            for (let numDi of this.numDias) {
+                let numSelecDia = fechaModificada.day();
+                if (numSelecDia === numDi) {
+                console.log('Genera Insert');
+                console.log(fechaModificada.format());
+                carrera = new MdlCarrera(
+                    null, null, null, null, null,
+                    null, null, null, null, null,
+                    null, null, null, null, null,
+                    null, null, null, null, null,
+                    null);
+                //carrera.id = Date.now();
+                carrera.idConductora = this.contrato.idConductora;
+                carrera.idUsuario = this.contrato.idUsuario;
+                carrera.latInicio = this.contrato.latOrigen;
+                carrera.longInicio = this.contrato.longOrigen;
+                carrera.latFin = this.contrato.latDestino;
+                carrera.longFin = this.contrato.longDestino;
+                carrera.costo = this.contrato.montoTotal;
+                carrera.moneda = 'BS';
+                carrera.descLugar = this.txtDescripcionLugar;
+                carrera.fechaInicio = this.contrato.fechaInicio;
+                carrera.tipoPago = this.contrato.tipoPago;
+                carrera.estado = 0;
+                this.lstCarreras.push(carrera);
+                }
+            }
+        }
+        
+        this.contratoService.insertarContrato(this.contrato)
+        .then( async data => {
+            console.log(this.lstCarreras);
+            for (let carrera of this.lstCarreras){
+                this.carreraService.insertarCarrera(carrera)
+                .then( async carreraInsertada => {
+                    console.log('inserto carrera');
+                    console.log(carreraInsertada);
+                });
+            }
+            await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
+                await this.navController.navigateForward('/lista-clientes');
+            });
+            
+            this.loading.dismiss();
+        });
+
     }
 
     obtenerConductoras() {
@@ -192,7 +302,7 @@ export class DetalleContratoPage implements OnInit {
             vDias: ['', [
                 Validators.required,
             ]],
-            vHora: ['', [
+            vDescLugar: ['', [
                 Validators.required,
             ]],
             vTipoPago: ['', [
@@ -231,6 +341,7 @@ export class DetalleContratoPage implements OnInit {
                 console.log(resultado.data);
                 this.contrato.latDestino = resultado.data.lat;
                 this.contrato.longDestino = resultado.data.lng;
+                this.determinarDistanciaTiempo();
             });
         });
     }
@@ -371,7 +482,7 @@ export class DetalleContratoPage implements OnInit {
                         const time = element.duration.value;
                         console.log(distance, time);
                         // calcular costos UBER: https://calculouber.netlify.com/
-                        let montoFinal: number = (ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia));
+                        let montoFinal: number = Math.round((ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia))* ciudadParametro[0].tarifaDinamica + ciudadParametro[0].cuotaSolicitud);
                         console.log(montoFinal);
                         if (montoFinal < 10) {
                             this.contrato.montoTotal = 10;

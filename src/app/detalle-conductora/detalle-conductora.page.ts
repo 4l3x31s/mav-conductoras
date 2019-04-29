@@ -25,6 +25,7 @@ export class DetalleConductoraPage implements OnInit {
   public lstPaisesFiltrados = [];
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstParametros: MdlParametrosCarrera [] = [];
+  public esAdmin: boolean = false;
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -114,6 +115,7 @@ export class DetalleConductoraPage implements OnInit {
     this.iniciarValidaciones();
     if (this.navParam.get() && this.navParam.get().conductora){
       this.conductora = this.navParam.get().conductora;
+      this.esAdmin = this.navParam.get().esAdmin;
     } else {
       this.conductora = new MdlConductora(
         null, null, null, null, null, null, null, null, null, null, null,
@@ -125,7 +127,7 @@ export class DetalleConductoraPage implements OnInit {
 
   obtenerParametros() {
     this.loadingService.present()
-      .then(()=>{
+      .then(() => {
         this.parametrosService.listarParametros().subscribe(data => {
           this.loadingService.dismiss();
           this.lstParametros = Object.assign(data);
@@ -152,11 +154,17 @@ export class DetalleConductoraPage implements OnInit {
 
   grabar() {
     this.loadingService.present().then(() => {
+      if (this.esAdmin) {
+        this.conductora.estado = true;
+      }
       this.conductoraService.grabarConductora(this.conductora)
         .then((conductora) => {
-          this.conductora=conductora;
+          this.conductora = conductora;
           this.loadingService.dismiss();
-          this.alertService.present('Info','Datos guardados correctamente.');
+          this.alertService.present('Info', 'Datos guardados correctamente.');
+          if (this.esAdmin) {
+            this.navController.navigateBack('/lista-conductoras');
+          }
         })
         .catch(error => {
           this.loadingService.dismiss();

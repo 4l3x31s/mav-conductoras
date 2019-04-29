@@ -25,13 +25,15 @@ const routes: Routes = [
   { path: 'reg-feriados', loadChildren: './admin/reg-feriados/reg-feriados.module#RegFeriadosPageModule' },
   { path: 'lista-clientes', loadChildren: './admin/lista-clientes/lista-clientes.module#ListaClientesPageModule' },
   { path: 'reg-clientes', loadChildren: './admin/reg-clientes/reg-clientes.module#RegClientesPageModule' },
-  { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' },  { path: 'reg-parametros', loadChildren: './admin/reg-parametros/reg-parametros.module#RegParametrosPageModule' },
+  { path: 'reg-depositos', loadChildren: './admin/reg-depositos/reg-depositos.module#RegDepositosPageModule' },
+  { path: 'reg-parametros', loadChildren: './admin/reg-parametros/reg-parametros.module#RegParametrosPageModule' },
   { path: 'lista-parametros', loadChildren: './admin/lista-parametros/lista-parametros.module#ListaParametrosPageModule' },
-  { path: 'detalle-imagenes-conductora', loadChildren: './detalle-imagenes-conductora/detalle-imagenes-conductora.module#DetalleImagenesConductoraPageModule' },
+  { path: 'detalle-imagenes-conductora', 
+    loadChildren: './detalle-imagenes-conductora/detalle-imagenes-conductora.module#DetalleImagenesConductoraPageModule' },
   { path: 'calendario', loadChildren: './comun/calendario/calendario.module#CalendarioPageModule' },
   { path: 'lista-contratos', loadChildren: './admin/lista-contratos/lista-contratos.module#ListaContratosPageModule' },
   { path: 'detalle-carreras', loadChildren: './detalle-carreras/detalle-carreras.module#DetalleCarrerasPageModule' },
-  { path: 'detalle-carrera', loadChildren: './comun/detalle-carrera/detalle-carrera.module#DetalleCarreraPageModule' }
+  { path: 'detalle-carrera', loadChildren: './comun/detalle-carrera/detalle-carrera.module#DetalleCarreraPageModule' },
 ];
 
 @NgModule({
