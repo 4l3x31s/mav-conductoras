@@ -166,3 +166,26 @@
 }
 
 tabbed-navigator.can-go-back ion-back-button { display: block; }
+
+
+ion-toolbar.menu-header{
+  --padding-bottom: 0;
+  --padding-end: 0;
+  --padding-start: 0;
+  --padding-top : 0;
+}
+.logo-header{
+  width: 100%;
+  display: block;
+}
+
+.opcion{
+  padding: 0 0 0 10px;
+}
+ion-label.titulo-pagina{
+  font-size: 13px !important;
+}
+.separador-menu {
+  margin-bottom: 15px;
+  background-color: var(--ion-color-plomoo);
+}
