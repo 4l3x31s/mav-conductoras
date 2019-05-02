@@ -72,6 +72,7 @@ export class DetalleContratoPage implements OnInit {
                 ) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
+        this.contrato.idUsuario = this.cliente.id;
     }
 
     ngOnInit() {
@@ -161,7 +162,7 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null);
         for (let i = 0; i <= finalDias; i++) {
-            let fechaModificada:any;
+            let fechaModificada: any;
             if (i === 0) {
                 fechaModificada = fechaIMoment.add(0, 'd');
             } else {
@@ -170,40 +171,45 @@ export class DetalleContratoPage implements OnInit {
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
                 if (numSelecDia === numDi) {
-                console.log('Genera Insert');
-                console.log(fechaModificada.format());
-                carrera = new MdlCarrera(
-                    null, null, null, null, null,
-                    null, null, null, null, null,
-                    null, null, null, null, null,
-                    null, null, null, null, null,
-                    null);
-                //carrera.id = Date.now();
-                carrera.idConductora = this.contrato.idConductora;
-                carrera.idUsuario = this.contrato.idUsuario;
-                carrera.latInicio = this.contrato.latOrigen;
-                carrera.longInicio = this.contrato.longOrigen;
-                carrera.latFin = this.contrato.latDestino;
-                carrera.longFin = this.contrato.longDestino;
-                carrera.costo = this.contrato.montoTotal;
-                carrera.moneda = 'BS';
-                carrera.descLugar = this.txtDescripcionLugar;
-                carrera.fechaInicio = this.contrato.fechaInicio;
-                carrera.tipoPago = this.contrato.tipoPago;
-                carrera.estado = 0;
-                this.lstCarreras.push(carrera);
+                    console.log('Genera Insert');
+                    console.log(fechaModificada.format('YYYY-MM-DD HH:mm'));
+                    carrera = new MdlCarrera(
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        null);
+                    //carrera.id = Date.now();
+                    carrera.idConductora = Number(this.contrato.idConductora);
+                    carrera.idUsuario = this.contrato.idUsuario;
+                    carrera.latInicio = this.contrato.latOrigen;
+                    carrera.longInicio = this.contrato.longOrigen;
+                    carrera.latFin = this.contrato.latDestino;
+                    carrera.longFin = this.contrato.longDestino;
+                    carrera.costo = this.contrato.montoTotal;
+                    carrera.moneda = 'BS';
+                    carrera.descLugar = this.txtDescripcionLugar;
+                    carrera.fechaInicio = fechaModificada.format('YYYY-MM-DD HH:mm');
+                    carrera.tipoPago = this.contrato.tipoPago;
+                    carrera.estado = 0;
+                    this.lstCarreras.push(carrera);
                 }
             }
         }
-        
+        if (!this.contrato.id) {
+            this.contrato.id = Date.now();
+        }
         this.contratoService.insertarContrato(this.contrato)
         .then( async data => {
             console.log(this.lstCarreras);
-            for (let carrera of this.lstCarreras){
+            for (let carrera of this.lstCarreras) {
+                carrera.idContrato = this.contrato.id;
                 this.carreraService.insertarCarrera(carrera)
-                .then( async carreraInsertada => {
+                .then( carreraInsertada => {
                     console.log('inserto carrera');
                     console.log(carreraInsertada);
+                }).catch(err => {
+                    console.log(err);
                 });
             }
             await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
