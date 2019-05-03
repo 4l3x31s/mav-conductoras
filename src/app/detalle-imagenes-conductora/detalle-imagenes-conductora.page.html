@@ -2,8 +2,12 @@
 
 <ion-content>
   <form>
-    <subir-imagen titulo="Carnet de Identidad" 
+    <subir-imagen titulo="Carnet de Identidad (Anverso)" 
       [url-imagen]="'mav/conductora/'+conductora.id+'-ci'">
+    </subir-imagen>
+
+    <subir-imagen titulo="Carnet de Identidad (Reverso)" 
+      [url-imagen]="'mav/conductora/'+conductora.id+'-cireverso'">
     </subir-imagen>
 
     <subir-imagen titulo="Licencia" 
