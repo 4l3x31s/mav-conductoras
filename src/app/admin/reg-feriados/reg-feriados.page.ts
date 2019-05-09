@@ -1,3 +1,4 @@
+import { NavParamService } from 'src/app/services/nav-param.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { AlertService } from './../../services/util/alert.service';
 import { MdlFeriado } from './../../modelo/mdlFeriado';
@@ -12,14 +13,24 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class RegFeriadosPage implements OnInit {
   frmFeriados: FormGroup;
-  public feriados: MdlFeriado = new MdlFeriado(null, null, null, null);
+  public feriados: MdlFeriado;
   constructor(
     public fb: FormBuilder,
     public feriadoService: FeriadosService,
     public alertController: AlertService,
     public navController: NavController,
-    public alertCtrl: AlertController
-  ) { }
+    public alertCtrl: AlertController,
+    public navParams: NavParamService,
+  ) {
+    console.log(this.navParams.get().feriado);
+    if (navParams.get().feriado) {
+      this.feriados = this.navParams.get().feriado;
+    } else {
+      this.feriados = new MdlFeriado(null, null, null, null);
+    }
+    console.log(this.feriados);
+
+  }
   ngOnInit() {
     this.initValidaciones();
     this.feriados.estado = true;

@@ -1,0 +1,31 @@
+<cabecera titulo="Feriados"></cabecera>
+
+
+<ion-content>
+  <ion-list-header color="medium">
+      <ion-label>LISTA FERIADOS</ion-label>
+    </ion-list-header>
+<ion-card>
+    <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarParametros" (ionChange)="filtrar()" ></ion-searchbar>
+    <ion-grid>
+      <ion-row class="cabecera-tabla">
+        <ion-col size="4">Feriado</ion-col>
+        <ion-col size="2">Fecha</ion-col>
+        <ion-col size="3">Estado</ion-col>
+        
+      </ion-row>
+      <ion-row *ngFor="let feriado of listFeriadosFiltrado" (click)="seleccionarFeriado(feriado)" nowrap >
+        <ion-col size="4">{{feriado.descFeriado}}</ion-col>
+        <ion-col size="2">{{feriado.fecha}}</ion-col>
+        <ion-col size="3">{{feriado.estado}}</ion-col>
+      </ion-row>
+  
+    </ion-grid>
+  </ion-card>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="verdec" (click)="presentActionSheet()" >
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-content>
+

@@ -30,8 +30,8 @@ export class AppComponent {
       icon: 'people'
     },
     {
-      title: 'Registro Feriados',
-      url: '/reg-feriados',
+      title: 'Lista Feriados',
+      url: '/lista-feriados',
       icon: 'calendar'
     },
     {
