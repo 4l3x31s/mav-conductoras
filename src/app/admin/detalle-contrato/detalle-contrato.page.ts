@@ -189,9 +189,9 @@ export class DetalleContratoPage implements OnInit {
                     carrera.costo = this.contrato.montoTotal;
                     carrera.moneda = 'BS';
                     carrera.descLugar = this.txtDescripcionLugar;
-                    carrera.fechaInicio = fechaModificada.format('YYYY-MM-DD HH:mm');
+                    carrera.fechaInicio = fechaModificada;
                     carrera.tipoPago = this.contrato.tipoPago;
-                    carrera.estado = 0;
+                    carrera.estado = 2;
                     this.lstCarreras.push(carrera);
                 }
             }
