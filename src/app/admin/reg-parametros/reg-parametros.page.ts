@@ -24,10 +24,14 @@ export class RegParametrosPage implements OnInit {
     public actionSheetController: ActionSheetController,
     public parametrosService: ParametrosCarreraService
   ) {
-    if (navParams.get().parametro) {
-      this.parametroCarrera = this.navParams.get().parametro;
+    if(this.navParams.get()){
+      if (this.navParams.get().parametro) {
+        this.parametroCarrera = this.navParams.get().parametro;
+      } else {
+        this.parametroCarrera = new MdlParametrosCarrera(null, null, null, null, null, null, null, null, null, null);
+      }
     } else {
-      this.parametroCarrera = new MdlParametrosCarrera(null, null, null, null, null, null, null, null, null, null);
+      this.parametroCarrera = new MdlParametrosCarrera(null, null, null, null, null, null, null, null, null, null); 
     }
   }
 

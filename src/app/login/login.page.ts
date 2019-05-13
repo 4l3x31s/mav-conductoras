@@ -29,8 +29,8 @@ export class LoginPage implements OnInit {
     this.iniciaValidaciones();
     if(environment.isSesionPrueba){
       //datos prueba
-      this.user='alvarez';
-      this.pass='l1234567';
+      this.user='jromero';
+      this.pass='123qwerty';
     }
     this.loadingService.present()
       .then(()=>{
@@ -46,7 +46,7 @@ export class LoginPage implements OnInit {
             .catch(e=>{
               console.log(e);
               this.loadingService.dismiss();
-              this.alertService.present('Error','Error al obtener la sesion.');
+              this.alertService.present('Error', 'Error al obtener la sesion.');
             });
         })
         .catch(e=>{
@@ -88,5 +88,8 @@ export class LoginPage implements OnInit {
           });
       })
 
+  }
+  registrar() {
+    this.navController.navigateRoot('/detalle-conductora');
   }
 }

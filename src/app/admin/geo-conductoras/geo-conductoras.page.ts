@@ -67,7 +67,7 @@ export class GeoConductorasPage implements OnInit {
     watch.subscribe((data) => {
       this.deleteMarkers();
       //this.updateGeolocation(this.device.uuid, data.coords.latitude,data.coords.longitude);
-      let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
+      let updatelocation = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       let image = 'assets/imgs/blue-bike.png';
       //this.addMarker(updatelocation,image);
       this.setMapOnAll(this.map);
