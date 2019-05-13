@@ -113,6 +113,17 @@
                 <ion-input formControlName="vEstadoPago" [(ngModel)]="contrato.estadoPago"></ion-input>
             </ion-item>
             <print-error [control]="f.vEstadoPago"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Estado Contrato</ion-label>
+                <ion-select interface="popover" formControlName="vEstadoContrato" placeholder="Seleccione el Estado del Contrato"
+                            [(ngModel)]="contrato.estado">
+                    <ion-select-option value="0">Solcitado</ion-select-option>
+                    <ion-select-option value="1">Aprobado</ion-select-option>
+                    <ion-select-option value="2">Terminado</ion-select-option>
+                    <ion-select-option value="3">Extendido</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <print-error [control]="f.vEstadoContrato"></print-error>
         </ion-list>
 
 

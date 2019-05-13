@@ -145,6 +145,17 @@ export class RegClientesPage implements OnInit {
         }
       },
       {
+        text: 'Lista Contratos Cliente',
+        icon: 'cash',
+        handler: () => {
+          console.log('Share clicked');
+          this.navParams.set({
+            cliente: this.cliente
+          });
+          this.navController.navigateForward('/lista-contratos');
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',

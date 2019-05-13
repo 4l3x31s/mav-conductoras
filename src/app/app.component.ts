@@ -52,6 +52,11 @@ export class AppComponent {
       url: '/detalle-carreras',
       icon: 'car'
     },
+    {
+      title: 'Ubicación Conductoras',
+      url: '/geo-conductoras',
+      icon: 'map'
+    },
   ];
 
   constructor(

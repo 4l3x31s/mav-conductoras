@@ -72,6 +72,12 @@ export class DetalleContratoPage implements OnInit {
                 ) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
+        if (navParams.get().contrato) {
+            this.contrato = this.navParams.get().contrato;
+        } else {
+            this.contrato = new MdlContrato(null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        }
         this.contrato.idUsuario = this.cliente.id;
     }
 
@@ -109,7 +115,6 @@ export class DetalleContratoPage implements OnInit {
     }
 
     grabar() {
-        
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
         } else {
@@ -212,11 +217,10 @@ export class DetalleContratoPage implements OnInit {
                     console.log(err);
                 });
             }
+            this.loading.dismiss();
             await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
                 await this.navController.navigateForward('/lista-clientes');
             });
-            
-            this.loading.dismiss();
         });
 
     }
@@ -315,6 +319,9 @@ export class DetalleContratoPage implements OnInit {
                 Validators.required,
             ]],
             vEstadoPago: ['', [
+                Validators.required,
+            ]],
+            vEstadoContrato: ['', [
                 Validators.required,
             ]],
 
