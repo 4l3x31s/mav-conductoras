@@ -20,6 +20,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DetalleCarreraPageModule } from './comun/detalle-carrera/detalle-carrera.module';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
@@ -51,6 +52,7 @@ export const firebaseConfig = {
     SQLite,
     Geolocation,
     InAppBrowser,
+    LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

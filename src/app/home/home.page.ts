@@ -36,6 +36,7 @@ export class HomePage implements OnInit {
           });
       });
   }
+  
   async irCerrarSesion(){
     const alert = await this.alertController.create({
       header: 'Confirmar',

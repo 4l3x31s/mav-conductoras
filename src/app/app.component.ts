@@ -1,3 +1,5 @@
+import { MdlGeoLocalizacion } from './modelo/mdlGeoLocalizacion';
+import { GeolocalizacionService } from './services/db/geolocalizacion.service';
 import { Component } from '@angular/core';
 
 import { Platform, NavController, Events, AlertController } from '@ionic/angular';
@@ -9,6 +11,7 @@ import { MdlConductora } from './modelo/mldConductora';
 import { NavParamService } from './services/nav-param.service';
 import { LoadingService } from './services/util/loading.service';
 import { AlertService } from './services/util/alert.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-root',
@@ -63,6 +66,8 @@ export class AppComponent {
     public alertController: AlertController,
     public loadingService: LoadingService,
     public alertService: AlertService,
+    private geolocation: Geolocation,
+    public geolocalizacionService: GeolocalizacionService,
   ) {
     this.initializeApp();
     events.subscribe('user:login', () => {
@@ -90,6 +95,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.initGeolocation(); // inicia geolocalizacion
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
@@ -104,9 +110,16 @@ export class AppComponent {
       });
     });
   }
+  initGeolocation() {
+    let watch = this.geolocation.watchPosition();
+    watch.subscribe( data => {
+      let mdlGeoLocalizacion: MdlGeoLocalizacion = new MdlGeoLocalizacion(this.conductora.id, data.coords.latitude, data.coords.longitude);
+      this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
+    });
+  }
 
   irPagina(pagina:any){
-    this.navParam.set({conductora:this.conductora})
+    this.navParam.set({conductora: this.conductora });
     this.navController.navigateRoot(pagina.url);
   }
 
