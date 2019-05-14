@@ -1,3 +1,4 @@
+import { MdlGeoLocalizacion } from './../../modelo/mdlGeoLocalizacion';
 import { MdlConductora } from './../../modelo/mldConductora';
 import { GeolocalizacionService } from './../../services/db/geolocalizacion.service';
 import { AlertService } from './../../services/util/alert.service';
@@ -17,60 +18,48 @@ declare var google;
   styleUrls: ['./geo-conductoras.page.scss'],
 })
 export class GeoConductorasPage implements OnInit {
-  conductora: MdlConductora;
-  @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('mapge') mapElement: ElementRef;
   map: any;
   markers = [];
-  constructor(
-    public sesionService: SesionService,
-    public navParam: NavParamService,
-    public navController: NavController,
-    public toastCtrl: ToastService,
-    public modalController: ModalController,
-    public alertController: AlertService,
-    public platform: Platform,
-    private geolocation: Geolocation,
-    public geolocalizacionService: GeolocalizacionService
-    ) {
-      this.sesionService.crearSesionBase()
-      .then(() => {
-        this.sesionService.getSesion()
-          .then((conductora) => {
-            if (conductora) {
-              this.conductora = conductora;
-            } else {
-              this.navController.navigateRoot('/login');
-            }
-          });
-      });
-      platform.ready().then(() => {
-        this.initMap();
-      });
-      this.geolocalizacionService.listarCambios().subscribe( data => {
-        console.log(data);
-      })
-    }
-
-
+  listaGeoPosicionamiento: MdlGeoLocalizacion[] = [];
+  constructor(public navCtrl: NavController,
+    public geolocation: Geolocation,
+    public geolocalizacionService: GeolocalizacionService) {}
   ngOnInit() {
-
-  }
-  initMap() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
-      this.map = new google.maps.Map(this.mapElement.nativeElement, {
-        zoom: 15,
-        center: mylocation
-      });
+    this.initMap();
+    this.geolocalizacionService.listarCambios().subscribe( data => {
+      console.log(data);
+      this.listaGeoPosicionamiento = Object.assign(data);
+      for (let geoObj of this.listaGeoPosicionamiento) {
+        let image = 'assets/image/blue-bike.png';
+          let updatelocation = new google.maps.LatLng(geoObj.latitude, geoObj.longitude);
+          this.addMarker(updatelocation,image);
+          this.setMapOnAll(this.map);
+      }
     });
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe((data) => {
-      this.deleteMarkers();
-      //this.updateGeolocation(this.device.uuid, data.coords.latitude,data.coords.longitude);
-      let updatelocation = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
-      let image = 'assets/imgs/blue-bike.png';
-      //this.addMarker(updatelocation,image);
-      this.setMapOnAll(this.map);
+  }
+
+  initMap(): Promise<any> {
+    return new Promise((resolve) => {
+      this.geolocation.getCurrentPosition({ maximumAge: 0, timeout: 0, enableHighAccuracy: true }).then((resp) => {
+        let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
+        this.map = new google.maps.Map(this.mapElement.nativeElement, {
+          zoom: 15,
+          center: mylocation
+        });
+      }, err => {
+        console.log(err);
+      });
+      let watch = this.geolocation.watchPosition();
+      watch.subscribe((data) => {
+        this.deleteMarkers();
+        let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
+        let image = 'assets/image/blue-bike.png';
+        this.addMarker(updatelocation,image);
+        this.setMapOnAll(this.map);
+      }, err => {
+        console.log(err);
+      });
     });
   }
   addMarker(location, image) {
@@ -81,19 +70,19 @@ export class GeoConductorasPage implements OnInit {
     });
     this.markers.push(marker);
   }
-
   setMapOnAll(map) {
-    for (var i = 0; i < this.markers.length; i++) {
+    for (let i = 0; i < this.markers.length; i++) {
       this.markers[i].setMap(map);
     }
   }
-
   clearMarkers() {
     this.setMapOnAll(null);
   }
-
   deleteMarkers() {
     this.clearMarkers();
-    this.markers = [];
+    //this.markers = [];
+  }
+  updateGeolocation(geoposicionamineto: MdlGeoLocalizacion) {
+    this.geolocalizacionService.crearGeolocalizacion(geoposicionamineto);
   }
 }
