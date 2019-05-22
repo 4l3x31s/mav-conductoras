@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
 import { MdlConductora } from '../modelo/mldConductora';
 import { ConductoraService } from '../services/db/conductora.service';
 import { AlertService } from '../services/util/alert.service';
@@ -10,6 +10,7 @@ import { NavParamService } from '../services/nav-param.service';
 import { MapaPage } from '../comun/mapa/mapa.page';
 import { MdlParametrosCarrera } from '../modelo/mdlParametrosCarrera';
 import { ParametrosCarreraService } from '../services/db/parametros-carrera.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -25,7 +26,8 @@ export class DetalleConductoraPage implements OnInit {
   public lstPaisesFiltrados = [];
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstParametros: MdlParametrosCarrera [] = [];
-  public esAdmin: boolean = false;
+  public isSesionAdmin: boolean = false;
+
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -86,15 +88,19 @@ export class DetalleConductoraPage implements OnInit {
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(8),
+      ],[
+        this.validarCelularUnico.bind(this)
       ]],
       vnroresidencia: ['', [
         Validators.minLength(1),
         Validators.maxLength(10),
       ]],
-      vuser: ['', [
+      vemail: ['', [
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(30),
+      ],[
+        this.validarEmailUnico.bind(this)
       ]],
       vpass: ['', [
         Validators.required,
@@ -107,22 +113,68 @@ export class DetalleConductoraPage implements OnInit {
       vCiudad: ['', [
         Validators.required
       ]],
+      vestado: ['', []],
+      vadmin: ['', []],
     });
   }
+
+  validarEmailUnico(control: FormControl):Observable<any>{
+    return new Observable<any>(observer => {
+      this.conductoraService.getConductoraPorEmail(control.value)
+        .subscribe(conductora => {
+          if(conductora && conductora.length>0
+              && this.conductora.id != conductora[0].id){
+            observer.next({ validarUnico: true });
+            observer.complete();
+          } else {
+            observer.next(null);
+            observer.complete();
+          }
+        },error=>{
+          observer.error(error);
+          observer.complete();
+        });
+    });
+  }
+
+  validarCelularUnico(control: FormControl):Observable<any>{
+    return new Observable<any>(observer => {
+      this.conductoraService.getConductoraPorCelular(control.value)
+        .subscribe(conductora => {
+          if(conductora && conductora.length>0
+              && this.conductora.id != conductora[0].id){
+            observer.next({ validarUnico: true });
+            observer.complete();
+          } else {
+            observer.next(null);
+            observer.complete();
+          }
+        },error=>{
+          observer.error(error);
+          observer.complete();
+        });
+    });
+  }
+
   get f() { return this.form.controls; }
 
   ngOnInit() {
     this.iniciarValidaciones();
     if (this.navParam.get() && this.navParam.get().conductora){
       this.conductora = this.navParam.get().conductora;
-      this.esAdmin = this.navParam.get().esAdmin;
     } else {
       this.conductora = new MdlConductora(
         null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null, null, false, false
       );
     }
     this.obtenerParametros();
+    this.sesionService.getSesion()
+      .then(conductora=>{
+        if(conductora && conductora.admin){
+          this.isSesionAdmin = true;
+        }
+      });
   }
 
   obtenerParametros() {
@@ -154,7 +206,8 @@ export class DetalleConductoraPage implements OnInit {
 
   grabar() {
     this.loadingService.present().then(() => {
-      if (this.esAdmin) {
+      this.conductora.user = this.conductora.email;
+      if (this.isSesionAdmin) {
         this.conductora.estado = true;
       }
       this.conductoraService.grabarConductora(this.conductora)
@@ -162,7 +215,7 @@ export class DetalleConductoraPage implements OnInit {
           this.conductora = conductora;
           this.loadingService.dismiss();
           this.alertService.present('Info', 'Datos guardados correctamente.');
-          if (this.esAdmin) {
+          if (this.isSesionAdmin) {
             this.navController.navigateBack('/lista-conductoras');
           }
         })

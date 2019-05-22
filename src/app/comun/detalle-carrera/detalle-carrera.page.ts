@@ -97,10 +97,19 @@ export class DetalleCarreraPage implements OnInit {
         
       }
     });
-    if(this.carrera.estado != 3){
+    if(this.carrera.estado == 2){
       opciones.push({
         text: 'Terminar Carrera',
         icon: 'skip-forward',
+        handler: () => {
+          
+        }
+      });
+    }
+    if(this.carrera.estado == 1){
+      opciones.push({
+        text: 'Tomar Carrera',
+        icon: 'car',
         handler: () => {
           
         }

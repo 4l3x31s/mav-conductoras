@@ -73,14 +73,17 @@ export class LoginPage implements OnInit {
     this.loadingService.present()
       .then(() => {
         this.sesionService.login(this.user, this.pass)
-          .subscribe(() => {
+          .subscribe((conductora) => {
             this.events.publish('user:login');
-            this.navController.navigateRoot('/home');
+            if(conductora.admin){
+              this.navController.navigateRoot('/home-admin');
+            } else {
+              this.navController.navigateRoot('/home');
+            }
             this.loadingService.dismiss();
           }, error => {
-            console.log('error-login', error);
             if (error.message) {
-              this.alertService.present('Error', error.message);
+              this.alertService.present('Información', error.message);
             } else {
               this.alertService.present('Error', 'Hubo un error al ingresar.');
             }

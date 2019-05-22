@@ -35,6 +35,7 @@ const routes: Routes = [
   { path: 'detalle-carreras', loadChildren: './detalle-carreras/detalle-carreras.module#DetalleCarrerasPageModule' },
   { path: 'detalle-carrera', loadChildren: './comun/detalle-carrera/detalle-carrera.module#DetalleCarreraPageModule' },  { path: 'lista-feriados', loadChildren: './admin/lista-feriados/lista-feriados.module#ListaFeriadosPageModule' },
   { path: 'geo-conductoras', loadChildren: './admin/geo-conductoras/geo-conductoras.module#GeoConductorasPageModule' },
+  { path: 'home-admin', loadChildren: './home-admin/home-admin.module#HomeAdminPageModule' },
 
 ];
 

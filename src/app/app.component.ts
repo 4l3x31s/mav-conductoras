@@ -25,37 +25,50 @@ export class AppComponent {
     {
       title: 'Inicio',
       url: '/home',
-      icon: 'home'
+      icon: 'home',
+      admin: false
+    },
+    {
+      title: 'Inicio',
+      url: '/home-admin',
+      icon: 'home',
+      admin: true
     },
     {
       title: 'Lista Conductoras',
       url: '/lista-conductoras',
-      icon: 'people'
+      icon: 'people',
+      admin: true
     },
     {
       title: 'Lista Feriados',
       url: '/lista-feriados',
-      icon: 'calendar'
+      icon: 'calendar',
+      admin: true
     },
     {
       title: 'Lista Clientes',
       url: '/lista-clientes',
-      icon: 'people'
+      icon: 'people',
+      admin: true
     },
     {
       title: 'Lista Parametros',
       url: '/lista-parametros',
-      icon: 'analytics'
+      icon: 'analytics',
+      admin: true
     },
     {
       title: 'Carreras',
       url: '/detalle-carreras',
-      icon: 'car'
+      icon: 'car',
+      admin: false
     },
     {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
-      icon: 'map'
+      icon: 'map',
+      admin: true
     },
   ];
 

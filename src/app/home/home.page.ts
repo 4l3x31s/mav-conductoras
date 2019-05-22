@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SesionService } from '../services/sesion.service';
 import { MdlConductora } from '../modelo/mldConductora';
-import { NavController, AlertController, Events } from '@ionic/angular';
+import { NavController, AlertController, Events, ModalController } from '@ionic/angular';
 import { LoadingService } from '../services/util/loading.service';
 import { AlertService } from '../services/util/alert.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { MdlCarrera } from '../modelo/mdlCarrera';
+import { CarreraService } from '../services/db/carrera.service';
+import { DetalleCarreraPage } from '../comun/detalle-carrera/detalle-carrera.page';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +16,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class HomePage implements OnInit {
   conductora: MdlConductora;
+  pendientes: MdlCarrera[];
   constructor(
     public sesionService: SesionService,
     public navController: NavController,
@@ -21,6 +25,8 @@ export class HomePage implements OnInit {
     public alertService: AlertService,
     public events: Events,
     public iab: InAppBrowser,
+    public carreraService: CarreraService,
+    public modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -30,6 +36,16 @@ export class HomePage implements OnInit {
           .then((conductora) => {
             if (conductora) {
               this.conductora = conductora;
+              this.carreraService.getCarrerasPendientes()
+                .subscribe(carreras=>{
+                  this.pendientes = carreras;
+                  this.pendientes = carreras.filter(
+                    carrera => !carrera.idConductora && !carrera.idContrato
+                  );
+                  this.pendientes.sort(function (a, b) {
+                    return a.id - b.id;
+                  });
+                });
             } else {
               this.navController.navigateRoot('/login');
             }
@@ -76,5 +92,14 @@ export class HomePage implements OnInit {
   }
   abrirWhatsapp() {
     this.iab.create(`https://api.whatsapp.com/send?phone=59177232781&text=Un%20Movil%20porfavor`, '_system', 'location=yes');
+  }
+  async irDetalleCarrera(carrera) {
+    const modal = await this.modalController.create({
+      component: DetalleCarreraPage,
+      componentProps: { 
+        carrera: carrera
+      }
+    });
+    return await modal.present();
   }
 }

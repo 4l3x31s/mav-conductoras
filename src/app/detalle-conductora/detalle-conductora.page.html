@@ -25,8 +25,8 @@
       <print-error [control]="f.vmaterno"></print-error>
 
       <ion-item>
-        <ion-label position="stacked">Fecha Nacimiento</ion-label>
-        <ion-input type="date" formControlName="vfechanac" [(ngModel)]="conductora.fechaNac"></ion-input>
+        <ion-label position="floating">Fecha Nacimiento</ion-label>
+        <ion-datetime display-format="DD/MM/YYYY" formControlName="vfechanac" [(ngModel)]="conductora.fechaNac"></ion-datetime>
       </ion-item>
       <print-error [control]="f.vfechanac"></print-error>
 
@@ -123,14 +123,19 @@
       </ion-item>
 
       <ion-list-header color="medium">
-        <ion-label>CREDENCIALES</ion-label>
+        <ion-label>CUENTA</ion-label>
       </ion-list-header>
 
       <ion-item>
-        <ion-label position="floating">Nombre de Usuario</ion-label>
-        <ion-input formControlName="vuser" [(ngModel)]="conductora.user"></ion-input>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input formControlName="vemail" [(ngModel)]="conductora.email"></ion-input>
       </ion-item>
-      <print-error [control]="f.vuser"></print-error>
+      <print-error [control]="f.vemail"></print-error>
+
+      <ion-item>
+        <ion-label position="floating">Nombre de Usuario</ion-label>
+        <ion-input value="{{ conductora.email }}" readonly></ion-input>
+      </ion-item>
 
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
@@ -138,6 +143,15 @@
       </ion-item>
       <print-error [control]="f.vpass"></print-error>
 
+      <ion-item *ngIf="isSesionAdmin">
+        <ion-label>Activo</ion-label>
+        <ion-checkbox slot="end" formControlName="vestado" [(ngModel)]="conductora.estado"></ion-checkbox>
+      </ion-item>
+
+      <ion-item *ngIf="isSesionAdmin">
+        <ion-label>Administrador</ion-label>
+        <ion-checkbox slot="end" formControlName="vadmin" [(ngModel)]="conductora.admin"></ion-checkbox>
+      </ion-item>
     </ion-list>
     <div padding>
       <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">

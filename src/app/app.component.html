@@ -43,7 +43,7 @@
       <ion-content>
         <ion-list *ngIf="conductora">
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)">
+            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)" *ngIf="p.admin == conductora.admin">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}

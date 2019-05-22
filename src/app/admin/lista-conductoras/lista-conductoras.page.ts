@@ -41,8 +41,7 @@ export class ListaConductorasPage implements OnInit {
   public seleccionarConductora(conductora: MdlConductora) {
     console.log(conductora);
     this.navParams.set({
-      conductora: conductora,
-      esAdmin: true
+      conductora: conductora
     });
     this.navController.navigateForward('/detalle-conductora');
   }

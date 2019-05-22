@@ -18,26 +18,32 @@ export class SesionService {
     public sqlite: SqliteService
   ) { }
 
-  login(user: string, pass: string) : Observable<any> {
-    return new Observable<boolean>(observer => {
+  login(user: string, pass: string) : Observable<MdlConductora> {
+    return new Observable<MdlConductora>(observer => {
       this.conductoraService.getConductoraPorUserPass(user, pass)
         .subscribe(conductora=>{
           if(conductora){
-            if(environment.isSesionPrueba){
-              this.conductoraSesionPrueba = conductora[0];
-              observer.next();
-              observer.complete();
+            if(conductora[0].estado){
+              if(environment.isSesionPrueba){
+                this.conductoraSesionPrueba = conductora[0];
+                observer.next(this.conductoraSesionPrueba);
+                observer.complete();
+              } else {
+                this.sqlite.setConductoraSesion(conductora[0])
+                  .then(()=>{
+                    observer.next(conductora[0]);
+                    observer.complete();
+                  })
+                  .catch(e=>{
+                    observer.error(e);
+                    observer.complete();
+                  });
+              }
             } else {
-              this.sqlite.setConductoraSesion(conductora[0])
-                .then(()=>{
-                  observer.next();
-                  observer.complete();
-                })
-                .catch(e=>{
-                  observer.error(e);
-                  observer.complete();
-                });
+              observer.error({message:'Usuario no habilitado por el administrador'});
+              observer.complete();
             }
+            
           } else {
             observer.error({message:'Usuario y/o contraseña inválida'});
             observer.complete();
@@ -71,4 +77,8 @@ export class SesionService {
     }
   }
   
+  async isAdmin() {
+    let conductora = await this.getSesion();
+    return conductora && conductora.admin;
+  }
 }

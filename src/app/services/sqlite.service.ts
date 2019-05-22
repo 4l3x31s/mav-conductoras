@@ -40,8 +40,31 @@ export class SqliteService {
             "delete from conductora_sesion"
           ]);
           udpates.push([
-            "insert into conductora_sesion values(?,?,?,?)",
-            [conductora.id, conductora.nombre, conductora.materno, conductora.paterno]
+            "insert into conductora_sesion values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [ conductora.id,
+              conductora.nombre,
+              conductora.materno,
+              conductora.paterno,
+              conductora.fechaNac,
+              conductora.ci,
+              conductora.tipoLicencia,
+              conductora.direccion,
+              conductora.genero,
+              conductora.nroCtaBancaria,
+              conductora.telefono,
+              conductora.celular,
+              conductora.nroResidencia,
+              conductora.user,
+              conductora.email,
+              conductora.pass,
+              conductora.lat,
+              conductora.long,
+              conductora.pais,
+              conductora.ciudad,
+              conductora.foto,
+              conductora.admin,
+              conductora.estado,
+            ]
           ]);
           return db.sqlBatch(udpates)
               .then(() => {
@@ -84,7 +107,9 @@ export class SqliteService {
                 null,
                 null,
                 null,
-                null
+                null,
+                data.rows.item(0).admin,
+                data.rows.item(0).estado,
               );
             }
             return Promise.resolve(conductora);
@@ -100,7 +125,30 @@ export class SqliteService {
       .then((db: SQLiteObject) => {
         let ddl=[];
         ddl.push([
-          "create table IF NOT EXISTS conductora_sesion (id, nombre, paterno, materno)", []
+        `create table IF NOT EXISTS conductora_sesion (
+            id,
+            nombre,
+            paterno,
+            materno,
+            fechaNac,
+            ci,
+            tipoLicencia,
+            direccion,
+            genero,
+            nroCtaBancaria,
+            telefono,
+            celular,
+            nroResidencia,
+            user,
+            email,
+            pass,
+            lat,
+            long,
+            pais,
+            ciudad,
+            foto,
+            admin,
+            estado)`, []
         ]);
         return db.sqlBatch(ddl)
           .then(() => {

@@ -37,7 +37,6 @@ export class ConductoraService {
       this.afDB.list<MdlConductora>('conductora/',
         ref => ref.orderByChild('user').equalTo(user)).valueChanges()
         .subscribe(conductoras => {
-          console.log('service', conductoras);
           if (conductoras.length > 0 && pass === conductoras[0].pass) {
             observer.next(conductoras);
           } else {
@@ -71,5 +70,14 @@ export class ConductoraService {
     });
   }
 
+  getConductoraPorEmail(email: string): Observable<MdlConductora[]> {
+    return this.afDB.list<MdlConductora>('conductora',
+      ref => ref.orderByChild('email').equalTo(email)).valueChanges();
+  }
+
+  getConductoraPorCelular(celular: number): Observable<MdlConductora[]> {
+    return this.afDB.list<MdlConductora>('conductora',
+      ref => ref.orderByChild('celular').equalTo(celular)).valueChanges();
+  }
   
 }
