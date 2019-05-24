@@ -32,5 +32,26 @@ export class CarreraService {
       ref => ref.orderByChild('estado').equalTo(1)).valueChanges();
   }
   
+  tomarCarrera(idConductora: number, carrera: MdlCarrera): Promise<any> {
+    carrera.estado = 1;
+    carrera.idConductora = idConductora;
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
 
+  terminarCarrera(carrera: MdlCarrera): Promise<any> {
+    carrera.fechaFin = (new Date()).toString();
+    carrera.estado = 2;
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
+
+  getCarreraPorId(idCarrera: number): Observable<MdlCarrera> {
+    return this.afDB.object<MdlCarrera>('carrera/' + idCarrera).valueChanges();
+  }
+
+  dejarCarrera(carrera: MdlCarrera): Promise<any> {
+    carrera.estado = 1;
+    carrera.idConductora = null;
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
+  
 }

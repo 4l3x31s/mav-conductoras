@@ -18,6 +18,7 @@ export class SubirImagenComponent implements OnInit {
   urlImagen: string;
 
   urlImagenFirebase: string;
+  cargandoImagen: boolean = false;
 
   constructor(
     private storage: AngularFireStorage,
@@ -27,11 +28,13 @@ export class SubirImagenComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.cargandoImagen = true;
     this.storage.ref(this.urlImagen).getDownloadURL()
       .subscribe(ruta => {
         this.urlImagenFirebase = ruta;
+        this.cargandoImagen = false;
       }, error => {
-        //console.log('error', error);
+        this.cargandoImagen = false;
       });
   }
 
@@ -73,9 +76,13 @@ export class SubirImagenComponent implements OnInit {
       .then(() => {
         upload = this.storage.upload(this.urlImagen, event.target.files[0]);
         upload.then(() => {
+          this.cargandoImagen = true;
           this.storage.ref(this.urlImagen).getDownloadURL()
             .subscribe(ruta => {
+              this.cargandoImagen = false;
               this.urlImagenFirebase = ruta;
+            },error=>{
+              this.cargandoImagen = false;
             });
           this.loadingService.dismiss();
           this.alertService.present('Info', 'Imagen subida correctamente.');

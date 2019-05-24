@@ -6,6 +6,10 @@ import { AlertService } from 'src/app/services/util/alert.service';
 import { MdlCliente } from 'src/app/modelo/mdlCliente';
 import { LoadingService } from 'src/app/services/util/loading.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { CarreraService } from 'src/app/services/db/carrera.service';
+import { SesionService } from 'src/app/services/sesion.service';
+import { MdlConductora } from 'src/app/modelo/mldConductora';
+import { TerminarCarreraPage } from '../terminar-carrera/terminar-carrera.page';
 
 @Component({
   selector: 'app-detalle-carrera',
@@ -21,6 +25,7 @@ export class DetalleCarreraPage implements OnInit {
   
   @ViewChild('map')
   mapElement: ElementRef;
+  conductora: MdlConductora;
 
   constructor(
     private modalCtrl:ModalController,
@@ -29,7 +34,10 @@ export class DetalleCarreraPage implements OnInit {
     public navController: NavController,
     public loadingService: LoadingService,
     public iab: InAppBrowser,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    public carreraService:CarreraService,
+    public sesionService:SesionService,
+    public modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -38,8 +46,13 @@ export class DetalleCarreraPage implements OnInit {
         this.clienteService.getCliente(this.carrera.idUsuario)
           .subscribe(cliente=>{
             this.cliente = cliente;
-            this.initAutocomplete();
-            this.loadingService.dismiss();
+            this.sesionService.getSesion()
+            .then(conductora=>{
+              this.conductora=conductora;
+              this.initAutocomplete();
+              this.loadingService.dismiss();
+            });
+            
           },error=>{
             console.error(error);
             this.loadingService.dismiss();
@@ -97,21 +110,35 @@ export class DetalleCarreraPage implements OnInit {
         
       }
     });
-    if(this.carrera.estado == 2){
+    if(this.carrera.estado == 1
+        && this.carrera.idConductora == this.conductora.id){
       opciones.push({
         text: 'Terminar Carrera',
         icon: 'skip-forward',
         handler: () => {
-          
+          this.irTerminarCarrera();
         }
       });
     }
-    if(this.carrera.estado == 1){
+    if(this.carrera.estado == 1
+        && this.carrera.idConductora == this.conductora.id
+        && !this.carrera.idContrato){
+      opciones.push({
+        text: 'Dejar Carrera',
+        icon: 'trash',
+        handler: () => {
+          this.dejarCarrera();
+        }
+      });
+    }
+    if(this.carrera.estado == 1
+        && !this.carrera.idConductora
+        && !this.carrera.idContrato){
       opciones.push({
         text: 'Tomar Carrera',
         icon: 'car',
         handler: () => {
-          
+          this.tomarCarrera();
         }
       });
     }
@@ -121,6 +148,45 @@ export class DetalleCarreraPage implements OnInit {
       buttons: opciones
     });
     await actionSheet.present();
+  }
+
+  tomarCarrera(){
+    this.carreraService.tomarCarrera(this.conductora.id,this.carrera)
+      .then(()=>{
+        this.alertService.present('Información','Se asignó correctamente.')
+          .then(()=>{
+            this.navController.navigateForward('/detalle-carreras')
+            .then(()=>{
+              this.cerrar();
+            });
+          })
+      });
+  }
+  
+  dejarCarrera() {
+    this.carreraService.dejarCarrera(this.carrera)
+      .then(()=>{
+        this.alertService.present('Información','Dejaste la carrera :(.')
+          .then(()=>{
+            this.cerrar();
+          })
+      });
+  }
+
+  async irTerminarCarrera() {
+    const modal = await this.modalController.create({
+      component: TerminarCarreraPage,
+      componentProps: { 
+        carrera: this.carrera
+      }
+    });
+    modal.onDidDismiss().then(()=>{
+      this.carreraService.getCarreraPorId(this.carrera.id)
+        .subscribe(carrera=>{
+          this.carrera = carrera;
+        })
+    });
+    return await modal.present();
   }
 
 }

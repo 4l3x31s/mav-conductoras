@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
                     carrera => !carrera.idConductora && !carrera.idContrato
                   );
                   this.pendientes.sort(function (a, b) {
-                    return a.id - b.id;
+                    return b.id - a.id;
                   });
                 });
             } else {
@@ -101,5 +101,14 @@ export class HomePage implements OnInit {
       }
     });
     return await modal.present();
+  }
+  tomarCarrera(carrera:MdlCarrera){
+    this.carreraService.tomarCarrera(this.conductora.id, carrera)
+      .then(()=>{
+        this.alertService.present('Información','Se asignó correctamente.')
+          .then(()=>{
+            this.navController.navigateForward('/detalle-carreras');
+          });
+      });
   }
 }

@@ -11,7 +11,7 @@ export class MdlCarrera {
         public costo: number,
         public moneda: string,
         public califCliente: string,
-        public califConductora: string,
+        public califConductora: number, // 1-5
         public obsCliente: string,
         public obsConductora: string,
         public obsCarrera: string,
@@ -20,7 +20,7 @@ export class MdlCarrera {
         public fechaFin: string,
         public tipoPago: string, // El tipo pago, (empresa, efectivo, total, deposito)
         public cobro: string,
-        public estado: number
+        public estado: number // 1: pendiente, 2: terminado
     ) {
 
     }

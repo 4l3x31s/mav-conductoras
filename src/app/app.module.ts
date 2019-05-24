@@ -21,6 +21,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { DetalleCarreraPageModule } from './comun/detalle-carrera/detalle-carrera.module';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { TerminarCarreraPageModule } from './comun/terminar-carrera/terminar-carrera.module';
+import { IonicRatingModule } from 'ionic4-rating';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
@@ -35,6 +37,7 @@ export const firebaseConfig = {
   entryComponents: [],
   imports: [
     BrowserModule,
+    IonicRatingModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
@@ -42,7 +45,8 @@ export const firebaseConfig = {
     AngularFireStorageModule,
     AngularFireAuthModule,
     MapaPageModule,
-    DetalleCarreraPageModule
+    DetalleCarreraPageModule,
+    TerminarCarreraPageModule
   ],
   providers: [
     StatusBar,

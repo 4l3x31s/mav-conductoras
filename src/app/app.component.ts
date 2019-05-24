@@ -12,6 +12,7 @@ import { NavParamService } from './services/nav-param.service';
 import { LoadingService } from './services/util/loading.service';
 import { AlertService } from './services/util/alert.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-root',
@@ -71,6 +72,7 @@ export class AppComponent {
       admin: true
     },
   ];
+  urlFoto: string;
 
   constructor(
     private platform: Platform,
@@ -86,6 +88,7 @@ export class AppComponent {
     public alertService: AlertService,
     private geolocation: Geolocation,
     public geolocalizacionService: GeolocalizacionService,
+    private storage: AngularFireStorage,
   ) {
     this.initializeApp();
     events.subscribe('user:login', () => {
@@ -103,6 +106,13 @@ export class AppComponent {
         this.conductoraService.getConductora(conductora.id)
           .subscribe( conductora => {
             this.conductora = conductora;
+            this.storage.ref('mav/conductora/'+conductora.id+'-foto').getDownloadURL()
+              .subscribe(ruta => {
+                this.urlFoto = ruta;
+              }, error => {
+                this.urlFoto = undefined;
+                //console.error(error);
+              });
           });
       });
   }

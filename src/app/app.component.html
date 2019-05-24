@@ -6,7 +6,8 @@
           <div>
             <div style="float: left;">
               <ion-thumbnail slot="start">
-                <img src="assets/image/photo.png">
+                <img [src]="urlFoto" *ngIf="urlFoto">
+                <img src="assets/image/photo.png" *ngIf="!urlFoto">
               </ion-thumbnail>
             </div>
             <div style="float: right;">
