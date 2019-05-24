@@ -93,6 +93,6 @@ export class LoginPage implements OnInit {
 
   }
   registrar() {
-    this.navController.navigateRoot('/detalle-conductora');
+    this.navController.navigateForward('/detalle-conductora');
   }
 }
