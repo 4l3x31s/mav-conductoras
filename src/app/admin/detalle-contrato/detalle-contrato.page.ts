@@ -1,4 +1,5 @@
 /// <reference types="@types/googlemaps" />
+import { MapParamService } from './../../services/map-param.service';
 
 import {AlertService} from 'src/app/services/util/alert.service';
 import {ParametrosCarreraService} from './../../services/db/parametros-carrera.service';
@@ -68,7 +69,8 @@ export class DetalleContratoPage implements OnInit {
                 public alertService: AlertService,
                 public alertController: AlertController,
                 public dataUtilService: DataUtilService,
-                public contratoService: ContratoService
+                public contratoService: ContratoService,
+                public mapParamService: MapParamService
                 ) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
@@ -333,6 +335,12 @@ export class DetalleContratoPage implements OnInit {
     }
 
     async irMapaOrigen() {
+        if (this.contrato.latOrigen) {
+            this.mapParamService.set({
+                lat: this.contrato.latOrigen,
+                lng: this.contrato.longOrigen
+            });
+        }
         const modal = await this.modalController.create({
             component: MapaPage
         }).then(dato => {
@@ -346,6 +354,12 @@ export class DetalleContratoPage implements OnInit {
     }
 
     async irMapaDestino() {
+        if (this.contrato.latOrigen) {
+            this.mapParamService.set({
+                lat: this.contrato.latDestino,
+                lng: this.contrato.longDestino
+            });
+        }
         const modal = await this.modalController.create({
             component: MapaPage
         }).then(dato => {

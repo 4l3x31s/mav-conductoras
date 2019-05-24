@@ -1,9 +1,11 @@
+import { MapParamService } from './../../services/map-param.service';
 import { AlertService } from './../../services/util/alert.service';
 import { ToastService } from './../../services/util/toast.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { NavParamService } from './../../services/nav-param.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DataUtilService } from 'src/app/services/util/data-util.service';
 
 declare var google;
 
@@ -25,7 +27,8 @@ export class MapaPage implements OnInit {
     public navCtrl: NavController,
     public toastCtrl: ToastService,
     public modalController: ModalController,
-    public alertController: AlertService
+    public alertController: AlertService,
+    public mapParamService: MapParamService
     ) { }
 
   ngOnInit() {
@@ -37,7 +40,13 @@ export class MapaPage implements OnInit {
     this.initAutocomplete();
   }
   initAutocomplete() {
-    const myLatlng = { lat: -16.4978888, lng: -68.1314424};
+    let valores = this.mapParamService.get();
+    let myLatlng: any = { lat: -16.4971653, lng: -68.1320507};
+    if (valores) {
+      if (valores.lat !== null) {
+        myLatlng = { lat: parseFloat(valores.lat), lng: parseFloat(valores.lng)};
+      }
+    }
     const mapOptions = {
       zoom: 16,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
