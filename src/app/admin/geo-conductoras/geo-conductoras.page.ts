@@ -5,7 +5,7 @@ import { AlertService } from './../../services/util/alert.service';
 import { ToastService } from './../../services/util/toast.service';
 import { NavController, ModalController, Platform } from '@ionic/angular';
 import { NavParamService } from './../../services/nav-param.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { SesionService } from 'src/app/services/sesion.service';
@@ -17,7 +17,8 @@ declare var google;
   templateUrl: './geo-conductoras.page.html',
   styleUrls: ['./geo-conductoras.page.scss'],
 })
-export class GeoConductorasPage implements OnInit {
+export class GeoConductorasPage implements OnInit, OnDestroy {
+  
   @ViewChild('mapge') mapElement: ElementRef;
   map: any;
   markers = [];
@@ -41,8 +42,8 @@ export class GeoConductorasPage implements OnInit {
 
   initMap(): Promise<any> {
     return new Promise((resolve) => {
-      this.geolocation.getCurrentPosition({ maximumAge: 0, timeout: 0, enableHighAccuracy: true }).then((resp) => {
-        let mylocation = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
+      this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+        let mylocation = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
         this.map = new google.maps.Map(this.mapElement.nativeElement, {
           zoom: 15,
           center: mylocation
@@ -80,9 +81,13 @@ export class GeoConductorasPage implements OnInit {
   }
   deleteMarkers() {
     this.clearMarkers();
-    //this.markers = [];
   }
   updateGeolocation(geoposicionamineto: MdlGeoLocalizacion) {
     this.geolocalizacionService.crearGeolocalizacion(geoposicionamineto);
+  }
+  ngOnDestroy(): void {
+    this.initMap().finally( () => {
+      console.log('Finaliza init Map');
+    });
   }
 }
