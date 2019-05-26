@@ -31,7 +31,7 @@ export class CarreraService {
     return this.afDB.list<MdlCarrera>('carrera', 
       ref => ref.orderByChild('estado').equalTo(1)).valueChanges();
   }
-  
+
   tomarCarrera(idConductora: number, carrera: MdlCarrera): Promise<any> {
     carrera.estado = 2;
     carrera.idConductora = idConductora;
