@@ -33,14 +33,14 @@ export class CarreraService {
   }
   
   tomarCarrera(idConductora: number, carrera: MdlCarrera): Promise<any> {
-    carrera.estado = 1;
+    carrera.estado = 2;
     carrera.idConductora = idConductora;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
 
   terminarCarrera(carrera: MdlCarrera): Promise<any> {
     carrera.fechaFin = (new Date()).toString();
-    carrera.estado = 2;
+    carrera.estado = 3;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
 
