@@ -110,7 +110,7 @@ export class DetalleCarreraPage implements OnInit {
         
       }
     });
-    if(this.carrera.estado == 1
+    if(this.carrera.estado == 2
         && this.carrera.idConductora == this.conductora.id){
       opciones.push({
         text: 'Terminar Carrera',
@@ -120,7 +120,7 @@ export class DetalleCarreraPage implements OnInit {
         }
       });
     }
-    if(this.carrera.estado == 1
+    if(this.carrera.estado == 2
         && this.carrera.idConductora == this.conductora.id
         && !this.carrera.idContrato){
       opciones.push({
