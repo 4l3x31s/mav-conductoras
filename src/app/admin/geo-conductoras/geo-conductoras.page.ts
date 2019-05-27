@@ -55,6 +55,28 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
           rotateControl: false,
           fullscreenControl: false
         });
+        let geoResults = [];
+        let geoResults1 = [];
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'location': mylocation}, function(results, status){
+          if (status === 'OK') {
+            geoResults  = results[0];
+            geoResults1 = geoResults['address_components'];
+            for(var i=0; i < geoResults1.length; i++){
+              if(geoResults1[i].types[0]=='locality'){
+                this.ciudad=geoResults1[i].short_name;
+              }
+              if(geoResults1[i].types[0]=='country'){
+                this.pais=geoResults1[i].long_name;
+              }
+            }
+            console.log(this.ciudad);
+            console.log(this.pais);
+            geoResults = [];
+            geoResults1 = [];
+          }
+        })
+
       }, (error) => {
         console.log("error current position")
         console.log(error);
