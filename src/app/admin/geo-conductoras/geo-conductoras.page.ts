@@ -22,6 +22,7 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
   @ViewChild('mapge') mapElement: ElementRef;
   map: any;
   markers = [];
+  watchID: any;
   listaGeoPosicionamiento: MdlGeoLocalizacion[] = [];
   constructor(public navCtrl: NavController,
     public geolocation: Geolocation,
@@ -40,18 +41,53 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
     });
   }
 
-  initMap(): Promise<any> {
-    return new Promise((resolve) => {
-      this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+  initMap() {
+      navigator.geolocation.getCurrentPosition((resp) => {
         let mylocation = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
         this.map = new google.maps.Map(this.mapElement.nativeElement, {
           zoom: 15,
-          center: mylocation
+          center: mylocation,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullScreenControl: false,
+          zoomControl: false,
+          scaleControl: false,
+          rotateControl: false,
+          fullscreenControl: false
+        });
+      }, (error) => {
+        console.log("error current position")
+        console.log(error);
+      }, { enableHighAccuracy: true });
+
+      //navigator.geolocation.clearWatch(watchID);
+      /*this.geolocation.getCurrentPosition({ enableHighAccuracy: true }).then((resp) => {
+        let mylocation = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+        this.map = new google.maps.Map(this.mapElement.nativeElement, {
+          zoom: 15,
+          center: mylocation,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullScreenControl: false,
+          zoomControl: false,
+          scaleControl: false,
+          rotateControl: false,
+          fullscreenControl: false
         });
       }, err => {
         console.log(err);
+      });*/
+
+        this.watchID = navigator.geolocation.watchPosition((data) => {
+        this.deleteMarkers();
+        let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
+        let image = 'assets/image/blue-bike.png';
+        this.addMarker(updatelocation,image);
+        this.setMapOnAll(this.map);
+      }, error => {
+        console.log(error);
       });
-      let watch = this.geolocation.watchPosition();
+      /*let watch = this.geolocation.watchPosition();
       watch.subscribe((data) => {
         this.deleteMarkers();
         let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
@@ -60,8 +96,7 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
         this.setMapOnAll(this.map);
       }, err => {
         console.log(err);
-      });
-    });
+      });*/
   }
   addMarker(location, image) {
     let marker = new google.maps.Marker({
@@ -86,8 +121,6 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
     this.geolocalizacionService.crearGeolocalizacion(geoposicionamineto);
   }
   ngOnDestroy(): void {
-    this.initMap().finally( () => {
-      console.log('Finaliza init Map');
-    });
+    navigator.geolocation.clearWatch(this.watchID);
   }
 }

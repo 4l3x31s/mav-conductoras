@@ -45,8 +45,9 @@
         <ion-list *ngIf="conductora">
           
           <ion-menu-toggle auto-hide="false" >
-            
-            Menu Administracion
+            <div class="titulos-menu">
+            Administracion
+            </div>
             <div *ngFor="let p of appPages">
                 <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)" *ngIf="p.admin === conductora.admin">
                     <ion-icon slot="start" [name]="p.icon"></ion-icon>
@@ -55,7 +56,9 @@
                     </ion-label>
                   </ion-item>
             </div>
-            Menu Conductoras
+            <div class="titulos-menu">
+            Conductoras
+            </div>
             <div *ngFor="let p of appPages">
                 <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)" *ngIf="p.admin !== conductora.admin">
                     <ion-icon slot="start" [name]="p.icon"></ion-icon>

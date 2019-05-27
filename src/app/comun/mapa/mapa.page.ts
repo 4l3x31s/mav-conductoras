@@ -51,8 +51,12 @@ export class MapaPage implements OnInit {
       zoom: 16,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
-      streetViewControl: true,
+      streetViewControl: false,
       fullScreenControl: false,
+      zoomControl: false,
+      scaleControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
       center: myLatlng
     };
     this.latitud = myLatlng.lat.toString();
