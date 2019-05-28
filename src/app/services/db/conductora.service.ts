@@ -32,12 +32,12 @@ export class ConductoraService {
                   return Promise.reject(e);
                 });
   }
-  getConductoraPorUserPass(user: string, pass: string): Observable<MdlConductora[]> {
+  getConductoraPorUserPass(user: string): Observable<MdlConductora[]> {
     return new Observable<MdlConductora[]>(observer => {
       this.afDB.list<MdlConductora>('conductora/',
         ref => ref.orderByChild('user').equalTo(user)).valueChanges()
         .subscribe(conductoras => {
-          if (conductoras.length > 0 && pass === conductoras[0].pass) {
+          if (conductoras.length > 0) {
             observer.next(conductoras);
           } else {
             observer.next();

@@ -1,3 +1,4 @@
+import { AuthService } from './../services/firebase/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
 import { MdlConductora } from '../modelo/mldConductora';
@@ -26,8 +27,8 @@ export class DetalleConductoraPage implements OnInit {
   public lstPaisesFiltrados = [];
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstParametros: MdlParametrosCarrera [] = [];
-  public isSesionAdmin: boolean = false;
-
+  public isSesionAdmin = false;
+  public isRegister = false;
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -38,7 +39,8 @@ export class DetalleConductoraPage implements OnInit {
     public navParam: NavParamService,
     public modalController: ModalController,
     public parametrosService: ParametrosCarreraService,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    public authService: AuthService
   ) { }
 
   iniciarValidaciones() {
@@ -118,12 +120,12 @@ export class DetalleConductoraPage implements OnInit {
     });
   }
 
-  validarEmailUnico(control: FormControl):Observable<any>{
+  validarEmailUnico(control: FormControl): Observable<any> {
     return new Observable<any>(observer => {
       this.conductoraService.getConductoraPorEmail(control.value)
         .subscribe(conductora => {
-          if(conductora && conductora.length>0
-              && this.conductora.id != conductora[0].id){
+          if(conductora && conductora.length > 0
+              && this.conductora.id !== conductora[0].id){
             observer.next({ validarUnico: true });
             observer.complete();
           } else {
@@ -141,15 +143,15 @@ export class DetalleConductoraPage implements OnInit {
     return new Observable<any>(observer => {
       this.conductoraService.getConductoraPorCelular(control.value)
         .subscribe(conductora => {
-          if(conductora && conductora.length>0
-              && this.conductora.id != conductora[0].id){
+          if (conductora && conductora.length > 0
+              && this.conductora.id !== conductora[0].id) {
             observer.next({ validarUnico: true });
             observer.complete();
           } else {
             observer.next(null);
             observer.complete();
           }
-        },error=>{
+        }, error => {
           observer.error(error);
           observer.complete();
         });
@@ -160,18 +162,19 @@ export class DetalleConductoraPage implements OnInit {
 
   ngOnInit() {
     this.iniciarValidaciones();
-    if (this.navParam.get() && this.navParam.get().conductora){
+    if (this.navParam.get() && this.navParam.get().conductora) {
       this.conductora = this.navParam.get().conductora;
     } else {
       this.conductora = new MdlConductora(
         null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, false, false
       );
+      this.isRegister = true;
     }
     this.obtenerParametros();
     this.sesionService.getSesion()
-      .then(conductora=>{
-        if(conductora && conductora.admin){
+      .then(conductora => {
+        if (conductora && conductora.admin) {
           this.isSesionAdmin = true;
         }
       });
@@ -195,7 +198,6 @@ export class DetalleConductoraPage implements OnInit {
           console.log(error);
         });
       });
-    
   }
 
   filtrarCiudades(event) {
@@ -210,21 +212,53 @@ export class DetalleConductoraPage implements OnInit {
       if (this.isSesionAdmin) {
         this.conductora.estado = true;
       }
-      this.conductoraService.grabarConductora(this.conductora)
+      if (this.conductora && this.conductora.id != null) {
+        this.conductoraService.grabarConductora(this.conductora)
         .then((conductora) => {
           this.conductora = conductora;
           this.loadingService.dismiss();
           this.alertService.present('Info', 'Datos guardados correctamente.');
           if (this.isSesionAdmin) {
             this.navController.navigateBack('/lista-conductoras');
+          } else {
+            this.navController.navigateRoot('/home');
           }
         })
         .catch(error => {
           this.loadingService.dismiss();
           console.log(error);
-          this.alertService.present('Error','Hubo un error al grabar los datos');
+          this.alertService.present('Error', 'Hubo un error al grabar los datos');
           this.navController.navigateRoot('/home');
         });
+      } else {
+        this.authService.doRegister(this.conductora.user, this.conductora.pass)
+        .then(res => {
+          this.conductoraService.grabarConductora(this.conductora)
+          .then((conductora) => {
+            this.conductora = conductora;
+            this.loadingService.dismiss();
+            this.alertService.present('Info', 'Datos guardados correctamente.');
+            if (this.isSesionAdmin) {
+              this.navController.navigateBack('/lista-conductoras');
+            } else {
+              this.navController.navigateRoot('/home');
+            }
+          })
+          .catch(error => {
+            this.loadingService.dismiss();
+            console.log(error);
+            this.alertService.present('Error', 'Hubo un error al grabar los datos');
+            this.navController.navigateRoot('/home');
+          });
+        }, error => {
+          this.loadingService.dismiss();
+          console.log(error);
+          this.alertService.present('Error', 'Hubo un error al grabar los datos');
+          this.navController.navigateRoot('/home');
+        })
+      }
+
+      
     });
   }
 

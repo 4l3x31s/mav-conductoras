@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -29,7 +30,8 @@ export const firebaseConfig = {
   authDomain: 'mav-db.firebaseapp.com',
   databaseURL: 'https://mav-db.firebaseio.com',
   storageBucket: 'mav-db.appspot.com',
-  messagingSenderId: '69193804419'
+  messagingSenderId: '69193804419',
+  projectId: 'mav-db'
 };
 
 @NgModule({
@@ -44,6 +46,8 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
+    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     MapaPageModule,
     DetalleCarreraPageModule,
     TerminarCarreraPageModule

@@ -18,9 +18,9 @@ export class SesionService {
     public sqlite: SqliteService
   ) { }
 
-  login(user: string, pass: string) : Observable<MdlConductora> {
+  login(user: string) : Observable<MdlConductora> {
     return new Observable<MdlConductora>(observer => {
-      this.conductoraService.getConductoraPorUserPass(user, pass)
+      this.conductoraService.getConductoraPorUserPass(user)
         .subscribe(conductora=>{
           if(conductora){
             if(conductora[0].estado){

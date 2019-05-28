@@ -1,3 +1,4 @@
+import { AuthService } from './services/firebase/auth.service';
 import { MdlGeoLocalizacion } from './modelo/mdlGeoLocalizacion';
 import { GeolocalizacionService } from './services/db/geolocalizacion.service';
 import { Component } from '@angular/core';
@@ -89,6 +90,7 @@ export class AppComponent {
     private geolocation: Geolocation,
     public geolocalizacionService: GeolocalizacionService,
     private storage: AngularFireStorage,
+    public authService: AuthService,
   ) {
     this.initializeApp();
     events.subscribe('user:login', () => {
@@ -117,8 +119,14 @@ export class AppComponent {
       });
   }
   loggedOut() {
-    console.log("logged out");
-    this.conductora = undefined;
+    this.authService.doLogout()
+    .then( () => {
+      console.log("logged out");
+      this.conductora = undefined;
+    }, err => {
+      console.log("logged out");
+      this.conductora = undefined;
+    });
   }
 
   initializeApp() {

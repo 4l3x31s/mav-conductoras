@@ -1,3 +1,4 @@
+import { AuthService } from './../services/firebase/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SesionService } from '../services/sesion.service';
@@ -22,7 +23,8 @@ export class LoginPage implements OnInit {
     public loadingService: LoadingService,
     public navController: NavController,
     public alertService: AlertService,
-    public events: Events
+    public events: Events,
+    public authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -72,10 +74,12 @@ export class LoginPage implements OnInit {
   ingresar() {
     this.loadingService.present()
       .then(() => {
-        this.sesionService.login(this.user, this.pass)
+        this.authService.doLogin(this.user, this.pass)
+        .then( res => {
+          this.sesionService.login(this.user)
           .subscribe((conductora) => {
             this.events.publish('user:login');
-            if(conductora.admin){
+            if (conductora.admin){
               this.navController.navigateRoot('/home-admin');
             } else {
               this.navController.navigateRoot('/home');
@@ -89,6 +93,15 @@ export class LoginPage implements OnInit {
             }
             this.loadingService.dismiss();
           });
+        }, err => {
+          console.log(err);
+          if (err.message) {
+            this.alertService.present('Información', 'Usuario o Contraseña inválidos.');
+          } else {
+            this.alertService.present('Error', 'Hubo un error al ingresar.');
+          }
+          this.loadingService.dismiss();
+        });
       })
 
   }
