@@ -21,13 +21,16 @@
             <print-error [control]="f.vpass"></print-error>
 
           </ion-list>
-
+          <div class="texto-inicio">
+            <a (click)="enviarCorreo()" >Olvidaste tu contraseña?</a>
+          </div>
+          <div class="texto-inicio">
+              <a (click)="registrar()">Regístrate</a>
+            </div>
           <ion-button expand="block" color="verdec" (click)="ingresar()" [disabled]="form.invalid">
             Ingresar
           </ion-button>
-          <ion-button expand="block" color="verdec" (click)="registrar()">
-            Registrar
-          </ion-button>
+         
         </form>
       </ion-card-content>
     </ion-card>

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SesionService } from '../services/sesion.service';
 import { LoadingService } from '../services/util/loading.service';
-import { NavController, Events } from '@ionic/angular';
+import { NavController, Events, AlertController, ToastController } from '@ionic/angular';
 import { AlertService } from '../services/util/alert.service';
 import { environment } from '../../environments/environment';
 
@@ -24,7 +24,9 @@ export class LoginPage implements OnInit {
     public navController: NavController,
     public alertService: AlertService,
     public events: Events,
-    public authService: AuthService
+    public authService: AuthService,
+    public alertController: AlertController,
+    public toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -107,5 +109,56 @@ export class LoginPage implements OnInit {
   }
   registrar() {
     this.navController.navigateForward('/detalle-conductora');
+  }
+  async presentToast(mensaje: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000
+    });
+    toast.present();
+  }
+  async presentAlertPrompt() {
+    const alert = await this.alertController.create({
+      header: 'Recuperación Contraseña',
+      message: 'Ingrese su correo electrónico.',
+      inputs: [
+        {
+          name: 'txtEmailPop',
+          type: 'text',
+          placeholder: 'ejemplo@ejemplo.com',
+          label: 'Email'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Enviar',
+          handler: (data) => {
+            console.log('Confirm Ok');
+            if (data.txtEmailPop.length > 0) {
+              this.authService.resetPassword(data.txtEmailPop)
+              .then( () => {
+                this.presentToast('Se ha enviado el correo.');
+              }, err => {
+                this.presentToast('Hubo un error al enviar el correo.');
+              })
+            } else {
+              this.presentToast('Debe ingresar un correo válido.');
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  enviarCorreo() {
+    this.presentAlertPrompt();
   }
 }
