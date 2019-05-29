@@ -77,7 +77,8 @@ export class MapaPage implements OnInit {
         position: myLatlng,
         map: map,
         draggable: true,
-        title: 'Mueveme'
+        title: 'Mueveme',
+        icon: 'assets/image/pin-user.png'
       }));
     markers[0].addListener('dragend', () => {
       console.log(JSON.stringify(markers[0].getPosition()));
@@ -123,7 +124,8 @@ export class MapaPage implements OnInit {
               map: map,
               draggable: true,
               title: 'Mueveme',
-              position: place.geometry.location
+              position: place.geometry.location,
+              icon: 'assets/image/pin-end.png'
             }));
             console.log(markers.length);
             if (place.geometry.viewport) {
