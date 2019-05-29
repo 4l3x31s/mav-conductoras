@@ -20,9 +20,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  
   conductora: MdlConductora;
-
   public appPages = [
     {
       title: 'Inicio',
@@ -70,6 +68,12 @@ export class AppComponent {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
       icon: 'map',
+      admin: true
+    },
+    {
+      title: 'Lista Contratos',
+      url: '/lista-contratos',
+      icon: 'list',
       admin: true
     },
   ];

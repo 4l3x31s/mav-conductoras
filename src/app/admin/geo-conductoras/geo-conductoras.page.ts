@@ -30,6 +30,7 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.initMap();
     this.geolocalizacionService.listarCambios().subscribe( data => {
+      this.deleteMarkers();
       console.log(data);
       this.listaGeoPosicionamiento = Object.assign(data);
       for (let geoObj of this.listaGeoPosicionamiento) {
@@ -102,6 +103,14 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
 
         this.watchID = navigator.geolocation.watchPosition((data) => {
         this.deleteMarkers();
+        if(this.listaGeoPosicionamiento.length > 0) {
+          for (let geoObj of this.listaGeoPosicionamiento) {
+            let image = 'assets/image/pin-mav.png';
+              let updatelocation = new google.maps.LatLng(geoObj.latitude, geoObj.longitude);
+              this.addMarker(updatelocation,image);
+              this.setMapOnAll(this.map);
+          }
+        }
         let updatelocation = new google.maps.LatLng(data.coords.latitude,data.coords.longitude);
         let image = 'assets/image/car-pin.png';
         this.addMarker(updatelocation,image);
@@ -138,6 +147,7 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
   }
   deleteMarkers() {
     this.clearMarkers();
+    this.markers = [];
   }
   updateGeolocation(geoposicionamineto: MdlGeoLocalizacion) {
     this.geolocalizacionService.crearGeolocalizacion(geoposicionamineto);
