@@ -36,6 +36,7 @@
     "angularfire2": "^5.1.2",
     "cordova-android": "8.0.0",
     "cordova-browser": "6.0.0",
+    "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-inappbrowser": "^3.0.0",

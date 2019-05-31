@@ -81,13 +81,13 @@ export class DetalleCarreraPage implements OnInit {
       ({
         position: myLatlngFin,
         map: map,
-        label: 'B'
+        icon: 'assets/image/pin-check.png'
       }));
     markers.push(new google.maps.Marker
       ({
         position: myLatlngIni,
         map: map,
-        label: 'A'
+        icon: 'assets/image/pin-flag.png'
       }));
     
   }
