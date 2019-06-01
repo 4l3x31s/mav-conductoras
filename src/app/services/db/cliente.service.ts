@@ -8,6 +8,7 @@ import { MdlCliente } from 'src/app/modelo/mdlCliente';
   providedIn: 'root'
 })
 export class ClienteService {
+  
   rootRef: firebase.database.Reference;
   constructor(
     public afDB: AngularFireDatabase,
@@ -34,5 +35,16 @@ export class ClienteService {
   }
   getCliente(id: number): Observable<MdlCliente> {
     return this.afDB.object<MdlCliente>('cliente/' + id).valueChanges();
+  }
+
+  getColorPorCliente(idCliente: number): string {
+    let color = localStorage.getItem('colorCliente-'+idCliente);
+    if(!color){
+      color = "black";
+    }
+    return color;
+  }
+  setColorCliente(idCliente: number, color:string){
+    localStorage.setItem('colorCliente-'+idCliente, color);
   }
 }
