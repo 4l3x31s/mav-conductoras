@@ -20,7 +20,7 @@ export class GeolocalizacionService {
    return this.afDB.database.ref('geolocations/' + mdlGeoLocalizacion.id).set(this.utilService.serializar(mdlGeoLocalizacion));
  }
  listarGeolocalizacion() {
-  this.afDB.list('geolocations').snapshotChanges()
+  //this.afDB.list('geolocations').snapshotChanges()
   return this.afDB.list('geolocations').valueChanges();
  }
  listarCambios() {

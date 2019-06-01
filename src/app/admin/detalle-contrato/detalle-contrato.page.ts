@@ -76,6 +76,8 @@ export class DetalleContratoPage implements OnInit {
         this.distance = new google.maps.DistanceMatrixService();
         if (navParams.get().contrato) {
             this.contrato = this.navParams.get().contrato;
+            console.log("******************************");
+            console.log(this.contrato);
         } else {
             this.contrato = new MdlContrato(null, null, null, null,
                 null, null, null, null, null, null, null, null, null, null, null, null, null, null);
@@ -89,6 +91,7 @@ export class DetalleContratoPage implements OnInit {
         this.obtenerParametros();
         // this.obtenerConductoras();
         this.obtenerFeriados();
+        
     }
 
     filtrarCiudades(event) {
@@ -179,7 +182,7 @@ export class DetalleContratoPage implements OnInit {
                 let numSelecDia = fechaModificada.day();
                 if (numSelecDia === numDi) {
                     console.log('Genera Insert');
-                    console.log(fechaModificada.format('YYYY-MM-DD HH:mm'));
+                    console.log(fechaModificada.format());
                     carrera = new MdlCarrera(
                         null, null, null, null, null,
                         null, null, null, null, null,
@@ -196,7 +199,7 @@ export class DetalleContratoPage implements OnInit {
                     carrera.costo = this.contrato.montoTotal;
                     carrera.moneda = 'BS';
                     carrera.descLugar = this.txtDescripcionLugar;
-                    carrera.fechaInicio = fechaModificada;
+                    carrera.fechaInicio = fechaModificada.format();
                     carrera.tipoPago = this.contrato.tipoPago;
                     carrera.estado = 2;
                     this.lstCarreras.push(carrera);
@@ -242,6 +245,7 @@ export class DetalleContratoPage implements OnInit {
         await this.parametrosService.listarParametros().subscribe(data => {
             // this.loading.dismiss();
             this.lstParametros = Object.assign(data);
+            console.log(data);
             this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
                 .map(id => {
                     return {
@@ -250,6 +254,10 @@ export class DetalleContratoPage implements OnInit {
                     };
                 });
             console.log(this.lstPaisesFiltrados);
+            if(this.contrato.id) {
+                this.filtrarCiudades(this.contrato.pais);
+                this.filtrarConductoras(this.contrato.ciudad);
+            }
         }, error => {
             // this.loading.dismiss();
         });

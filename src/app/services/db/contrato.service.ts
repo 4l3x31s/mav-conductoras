@@ -25,4 +25,11 @@ export class ContratoService {
     return this.afDB.list('contrato', ref =>
       ref.orderByChild('idUsuario').equalTo(idUsuario)).valueChanges();
   }
+  listaContratosPorEstado() {
+    return this.afDB.list('contrato', ref =>
+      ref.orderByChild('estado').equalTo(0)).valueChanges();
+  }
+  listarContratos() {
+    return this.afDB.list('contrato').valueChanges();
+  }
 }

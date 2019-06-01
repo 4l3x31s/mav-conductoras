@@ -133,7 +133,7 @@
         </ion-item>
       </div>
 
-      <div *ngIf="!conductora.id">
+      <div [ngClass]="myclass" >
         <ion-item>
           <ion-label position="stacked">Correo Electrónico</ion-label>
           <ion-input formControlName="vemail" [(ngModel)]="conductora.email"></ion-input>
