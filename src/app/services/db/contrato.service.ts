@@ -2,12 +2,13 @@ import { MdlContrato } from './../../modelo/mdlContrato';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
 import { UtilService } from '../util/util.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContratoService {
-
+  
   rootRef: firebase.database.Reference;
   constructor(
     public afDB: AngularFireDatabase,
@@ -23,6 +24,12 @@ export class ContratoService {
   }
   listaContratosPorUsuario(idUsuario: number) {
     return this.afDB.list('contrato', ref =>
-      ref.orderByChild('idUsuario').equalTo(idUsuario)).valueChanges();
+      ref.orderByChild('fechaInicio').equalTo(idUsuario)).valueChanges();
   }
+
+  getContratosPorConductora(idConductora: number):Observable<MdlContrato[]> {
+    return this.afDB.list<MdlContrato>('contrato', ref =>
+      ref.orderByChild('idConductora').equalTo(idConductora)).valueChanges();
+  }
+
 }

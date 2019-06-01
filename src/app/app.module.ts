@@ -24,6 +24,7 @@ import { DetalleCarreraPageModule } from './comun/detalle-carrera/detalle-carrer
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { TerminarCarreraPageModule } from './comun/terminar-carrera/terminar-carrera.module';
 import { IonicRatingModule } from 'ionic4-rating';
+import { ClientePageModule } from './comun/cliente/cliente.module';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
@@ -50,7 +51,8 @@ export const firebaseConfig = {
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     MapaPageModule,
     DetalleCarreraPageModule,
-    TerminarCarreraPageModule
+    TerminarCarreraPageModule,
+    ClientePageModule
   ],
   providers: [
     StatusBar,

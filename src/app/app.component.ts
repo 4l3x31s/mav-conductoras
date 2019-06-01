@@ -65,6 +65,12 @@ export class AppComponent {
       admin: false
     },
     {
+      title: 'Ganancias',
+      url: '/detalle-ganancias',
+      icon: 'cash',
+      admin: false
+    },
+    {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
       icon: 'map',

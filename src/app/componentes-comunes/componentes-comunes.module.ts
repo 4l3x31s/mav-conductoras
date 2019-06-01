@@ -5,12 +5,14 @@ import { CommonModule } from '@angular/common';
 import { PrintErrorComponent } from './print-error/print-error.component';
 import { IonicModule } from '@ionic/angular';
 import { CabeceraComponent } from './cabecera/cabecera.component';
+import { NombreUsuarioColorComponent } from './nombre-usuario-color/nombre-usuario-color.component';
 
 @NgModule({
   declarations: [
     PrintErrorComponent,
     CabeceraComponent,
-    CabeceraBackComponent
+    CabeceraBackComponent,
+    NombreUsuarioColorComponent
   ],
   imports: [
     CommonModule, IonicModule
@@ -18,7 +20,8 @@ import { CabeceraComponent } from './cabecera/cabecera.component';
   exports: [
     PrintErrorComponent,
     CabeceraComponent,
-    CabeceraBackComponent
+    CabeceraBackComponent,
+    NombreUsuarioColorComponent,
   ]
 })
 export class ComponentesComunesModule { }
