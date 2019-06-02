@@ -85,6 +85,8 @@ export class AppComponent {
   ];
   urlFoto: string;
 
+  public watchID: any;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -157,10 +159,12 @@ export class AppComponent {
     });
   }
   initGeolocation() {
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe( data => {
+
+    this.watchID = navigator.geolocation.watchPosition((data) => {
       let mdlGeoLocalizacion: MdlGeoLocalizacion = new MdlGeoLocalizacion(this.conductora.id, data.coords.latitude, data.coords.longitude);
       this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
+    }, error => {
+      console.log(error);
     });
   }
 
