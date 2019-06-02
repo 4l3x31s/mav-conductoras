@@ -143,7 +143,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.initGeolocation(); // inicia geolocalizacion
+     
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
@@ -153,6 +153,7 @@ export class AppComponent {
             this.conductoraService.getConductora(conductora.id)
             .subscribe( conductora => {
               this.conductora = conductora;
+              this.initGeolocation(); // inicia geolocalizacion
             });
           }
       });

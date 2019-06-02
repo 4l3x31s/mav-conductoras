@@ -40,6 +40,7 @@ export class HomePage implements OnInit {
           .then((conductora) => {
             if (conductora) {
               this.conductora = conductora;
+              this.verLocalizacion();
               this.carreraService.getCarrerasPendientes()
                 .subscribe(carreras=>{
                   this.pendientes = carreras;
