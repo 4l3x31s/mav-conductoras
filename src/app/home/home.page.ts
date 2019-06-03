@@ -8,6 +8,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { MdlCarrera } from '../modelo/mdlCarrera';
 import { CarreraService } from '../services/db/carrera.service';
 import { DetalleCarreraPage } from '../comun/detalle-carrera/detalle-carrera.page';
+import { MdlGeoLocalizacion } from '../modelo/mdlGeoLocalizacion';
+import { GeolocalizacionService } from '../services/db/geolocalizacion.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +19,7 @@ import { DetalleCarreraPage } from '../comun/detalle-carrera/detalle-carrera.pag
 export class HomePage implements OnInit {
   conductora: MdlConductora;
   pendientes: MdlCarrera[];
+  watchID: any;
   constructor(
     public sesionService: SesionService,
     public navController: NavController,
@@ -27,6 +30,7 @@ export class HomePage implements OnInit {
     public iab: InAppBrowser,
     public carreraService: CarreraService,
     public modalController: ModalController,
+    public geolocalizacionService: GeolocalizacionService
   ) { }
 
   ngOnInit() {
@@ -36,6 +40,7 @@ export class HomePage implements OnInit {
           .then((conductora) => {
             if (conductora) {
               this.conductora = conductora;
+              this.verLocalizacion();
               this.carreraService.getCarrerasPendientes()
                 .subscribe(carreras=>{
                   this.pendientes = carreras;
@@ -110,5 +115,13 @@ export class HomePage implements OnInit {
             this.navController.navigateForward('/detalle-carreras');
           });
       });
+  }
+  verLocalizacion() {
+    this.watchID = navigator.geolocation.watchPosition((data) => {
+      let mdlGeoLocalizacion: MdlGeoLocalizacion = new MdlGeoLocalizacion(this.conductora.id, data.coords.latitude, data.coords.longitude);
+      this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
+    }, error => {
+      console.log(error);
+    });
   }
 }

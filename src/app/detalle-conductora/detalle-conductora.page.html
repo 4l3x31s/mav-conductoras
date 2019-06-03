@@ -126,23 +126,39 @@
         <ion-label>CUENTA</ion-label>
       </ion-list-header>
 
-      <ion-item>
-        <ion-label position="stacked">Correo Electrónico</ion-label>
-        <ion-input formControlName="vemail" [(ngModel)]="conductora.email"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vemail"></print-error>
+      <div *ngIf="conductora.id">
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-input value="{{conductora.email}}" readonly></ion-input>
+        </ion-item>
+      </div>
 
-      <ion-item>
-        <ion-label position="stacked">Nombre de Usuario</ion-label>
-        <ion-input value="{{ conductora.email }}" readonly></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Contraseña</ion-label>
-        <ion-input type="password" formControlName="vpass" [(ngModel)]="conductora.pass"></ion-input>
-      </ion-item>
-      <print-error [control]="f.vpass"></print-error>
-
+      <div [ngClass]="myclass" >
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-input formControlName="vemail" [(ngModel)]="conductora.email"></ion-input>
+        </ion-item>
+        <print-error [control]="f.vemail"></print-error>
+  
+        <ion-item>
+          <ion-label position="stacked">Nombre de Usuario</ion-label>
+          <ion-input value="{{ conductora.email }}" readonly></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="stacked">Contraseña</ion-label>
+          <ion-input type="password" formControlName="vpass" [(ngModel)]="conductora.pass"></ion-input>
+        </ion-item>
+        <print-error [control]="f.vpass"></print-error>
+  
+        <ion-item>
+          <ion-label position="stacked">Confirmar Contraseña</ion-label>
+          <ion-input type="password" formControlName="vconfirmPass" name="vconfirmPass" ></ion-input>
+        </ion-item>
+        <print-error [control]="f.vconfirmPass"></print-error>
+  
+      </div>
+  
       <ion-item *ngIf="isSesionAdmin">
         <ion-label>Activo</ion-label>
         <ion-checkbox slot="end" formControlName="vestado" [(ngModel)]="conductora.estado"></ion-checkbox>

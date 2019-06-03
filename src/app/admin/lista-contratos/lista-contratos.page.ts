@@ -33,6 +33,7 @@ export class ListaContratosPage implements OnInit {
      }
 
   ngOnInit() {
+    this.listarContrato();
   }
   async listarContrato() {
     this.loading.present();

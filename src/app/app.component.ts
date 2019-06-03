@@ -65,6 +65,12 @@ export class AppComponent {
       admin: false
     },
     {
+      title: 'Ganancias',
+      url: '/detalle-ganancias',
+      icon: 'cash',
+      admin: false
+    },
+    {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
       icon: 'map',
@@ -78,6 +84,8 @@ export class AppComponent {
     },
   ];
   urlFoto: string;
+
+  public watchID: any;
 
   constructor(
     private platform: Platform,
@@ -135,7 +143,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.initGeolocation(); // inicia geolocalizacion
+     
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
@@ -145,16 +153,19 @@ export class AppComponent {
             this.conductoraService.getConductora(conductora.id)
             .subscribe( conductora => {
               this.conductora = conductora;
+              this.initGeolocation(); // inicia geolocalizacion
             });
           }
       });
     });
   }
   initGeolocation() {
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe( data => {
+
+    this.watchID = navigator.geolocation.watchPosition((data) => {
       let mdlGeoLocalizacion: MdlGeoLocalizacion = new MdlGeoLocalizacion(this.conductora.id, data.coords.latitude, data.coords.longitude);
       this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
+    }, error => {
+      console.log(error);
     });
   }
 

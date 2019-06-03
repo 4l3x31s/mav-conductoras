@@ -37,7 +37,9 @@ const routes: Routes = [
   { path: 'lista-feriados', loadChildren: './admin/lista-feriados/lista-feriados.module#ListaFeriadosPageModule' },
   { path: 'geo-conductoras', loadChildren: './admin/geo-conductoras/geo-conductoras.module#GeoConductorasPageModule' },
   { path: 'home-admin', loadChildren: './home-admin/home-admin.module#HomeAdminPageModule' },
-  { path: 'terminar-carrera', loadChildren: './comun/terminar-carrera/terminar-carrera.module#TerminarCarreraPageModule' },
+  { path: 'terminar-carrera', loadChildren: './comun/terminar-carrera/terminar-carrera.module#TerminarCarreraPageModule' },  { path: 'detalle-ganancias', loadChildren: './detalle-ganancias/detalle-ganancias.module#DetalleGananciasPageModule' },
+  { path: 'cliente', loadChildren: './comun/cliente/cliente.module#ClientePageModule' },
+
 
 ];
 

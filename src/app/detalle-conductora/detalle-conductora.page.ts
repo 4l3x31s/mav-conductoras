@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 export class DetalleConductoraPage implements OnInit {
 
   form: FormGroup;
-
+  myclass: any;
   conductora: MdlConductora;
 
   public lstPaisesFiltrados = [];
@@ -41,7 +41,9 @@ export class DetalleConductoraPage implements OnInit {
     public parametrosService: ParametrosCarreraService,
     public actionSheetController: ActionSheetController,
     public authService: AuthService
-  ) { }
+  ) {
+    this.myclass = 'mostrar';
+   }
 
   iniciarValidaciones() {
     this.form = this.fb.group({
@@ -109,6 +111,7 @@ export class DetalleConductoraPage implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(30),
       ]],
+      vconfirmPass: [''],
       vPais: ['', [
         Validators.required
       ]],
@@ -117,7 +120,29 @@ export class DetalleConductoraPage implements OnInit {
       ]],
       vestado: ['', []],
       vadmin: ['', []],
+    }, {
+      validator: this.mustMatch('vpass', 'vconfirmPass')
     });
+    
+  }
+
+  mustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+          const control = formGroup.controls[controlName];
+          const matchingControl = formGroup.controls[matchingControlName];
+
+          if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+              // return if another validator has already found an error on the matchingControl
+              return;
+          }
+
+          // set error on matchingControl if validation fails
+          if (control.value !== matchingControl.value) {
+              matchingControl.setErrors({ mustMatch: 'Las contraseñas no coinciden' });
+          } else {
+              matchingControl.setErrors(null);
+          }
+      }
   }
 
   validarEmailUnico(control: FormControl): Observable<any> {
@@ -164,7 +189,12 @@ export class DetalleConductoraPage implements OnInit {
     this.iniciarValidaciones();
     if (this.navParam.get() && this.navParam.get().conductora) {
       this.conductora = this.navParam.get().conductora;
+      if (this.conductora.id) {
+        this.form.get('vconfirmPass').setValue(this.conductora.pass);
+        this.myclass = 'ocultar';
+      }
     } else {
+      this.myclass = 'mostrar';
       this.conductora = new MdlConductora(
         null, null, null, null, null, null, null, null, null, null, null,
         null, null, null, null, null, null, null, null, null, null, false, false
