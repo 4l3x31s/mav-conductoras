@@ -2,6 +2,7 @@ import { MdlCarrera } from './../../modelo/mdlCarrera';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Moment } from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,11 @@ export class CarreraService {
     carrera.estado = 1;
     carrera.idConductora = null;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
+
+  getCarrerasPorConductoraLimite(idConductora:number, limite:number):Observable<MdlCarrera[]> {
+    return this.afDB.list<MdlCarrera>('carrera', 
+      ref => ref.orderByChild('idConductora').equalTo(idConductora).limitToLast(limite)).valueChanges();
   }
   
 }

@@ -3,13 +3,13 @@
     
   <ion-item>
     <ion-label>Mes</ion-label>
-    <ion-datetime display-format="MM/YYYY" [(ngModel)]="mes"></ion-datetime>
+    <ion-datetime (ionChange)="filtrar()" display-format="MMM/YYYY" [(ngModel)]="mes" min="{{ minInicio }}"></ion-datetime>
   </ion-item>
   <ion-grid>
     <!-- contratos -->
     <ion-row *ngFor="let contrato of contratos">
       <ion-col size="9" align-self-center>
-        <nombre-usuario-color idUsuario="{{ contrato.idUsuario }}"></nombre-usuario-color>
+        {{ contrato.nombreCliente }}
       </ion-col>
       <ion-col size="3" align-self-center class="ion-text-right">{{contrato.total}}</ion-col>
     </ion-row>
