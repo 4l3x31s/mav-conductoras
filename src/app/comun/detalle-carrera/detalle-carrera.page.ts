@@ -10,6 +10,7 @@ import { CarreraService } from 'src/app/services/db/carrera.service';
 import { SesionService } from 'src/app/services/sesion.service';
 import { MdlConductora } from 'src/app/modelo/mldConductora';
 import { TerminarCarreraPage } from '../terminar-carrera/terminar-carrera.page';
+import { ClientePage } from '../cliente/cliente.page';
 
 @Component({
   selector: 'app-detalle-carrera',
@@ -189,4 +190,13 @@ export class DetalleCarreraPage implements OnInit {
     return await modal.present();
   }
 
+  async irCliente(){
+    const modal = await this.modalController.create({
+      component: ClientePage,
+      componentProps: { 
+        cliente: this.cliente
+      }
+    });
+    return await modal.present();
+  }
 }

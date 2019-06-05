@@ -7,6 +7,7 @@
     </ion-list-header>
     <ion-item *ngFor="let carrera of pendientes">
       <ion-label text-wrap (click)="irDetalleCarrera(carrera)">
+        <p><b>{{ carrera.nombreCliente }}</b></p>
         <ion-text color="primary">
           <h3>{{ carrera.descLugar }}</h3>
         </ion-text>
