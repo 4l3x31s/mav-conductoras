@@ -3,6 +3,7 @@ import { DepositoService } from './../../services/db/deposito.service';
 import { CarreraService } from './../../services/db/carrera.service';
 import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash'; 
 
 @Component({
   selector: 'app-reporte',
@@ -10,7 +11,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reporte.page.scss'],
 })
 export class ReportePage implements OnInit {
-  public lstCarreras: Array<MdlCarrera>;
+  public lstCarreras: MdlCarrera[] = [];
+  filtros = {};
+  public lstCarrerasFiltrado: MdlCarrera[] = [];
+
   constructor(public navController: NavController,
               public carreraService: CarreraService,
               public depositoService: DepositoService) { }
@@ -21,8 +25,17 @@ export class ReportePage implements OnInit {
   public obtenerCarreras() {
     this.carreraService.listCarreras().subscribe(data => {
       this.lstCarreras = data;
-      console.log(this.lstCarreras);
+      this.lstCarrerasFiltrado = this.filtrarContrato('estado', 3);
+      console.log(this.lstCarrerasFiltrado);
     });
+  }
+  public filtrarContrato(atributo: string, valor: any): any {
+    this.filtros[atributo] = val => val == valor;
+    return _.filter(this.lstCarreras, _.conforms(this.filtros));
+  }
+  public filtrarGeneral(atributo: string, valor: any): any {
+    this.filtros[atributo] = val => val == valor;
+    return _.filter(this.lstCarreras, _.conforms(this.filtros));
   }
 
 }
