@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MdlCliente } from 'src/app/modelo/mdlCliente';
 import { ModalController } from '@ionic/angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-cliente',
@@ -14,6 +15,7 @@ export class ClientePage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
+    public iab: InAppBrowser,
   ) { }
 
   ngOnInit() {
@@ -21,6 +23,10 @@ export class ClientePage implements OnInit {
 
   cerrar() {
     this.modalCtrl.dismiss();
+  }
+
+  irWhatsApp(){
+    this.iab.create('https://api.whatsapp.com/send?phone=591'+this.cliente.cel+'&text=', '_system', 'location=yes');
   }
 
 }

@@ -8,5 +8,27 @@
   </ion-header>
 
 <ion-content>
-  
+  <ion-list *ngIf="cliente">
+    <ion-item>
+      <ion-label position="stacked">Cliente</ion-label>
+      <ion-input value="{{ cliente.nombre }}" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Teléfono</ion-label>
+      <ion-input value="{{ cliente.tel }}" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Celular</ion-label>
+      <ion-input value="{{ cliente.cel }}" readonly></ion-input>
+      <ion-icon *ngIf="cliente.cel" (click)="irWhatsApp()" slot="end" name="logo-whatsapp" style="color: #00E676"></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input value="{{ cliente.email }}" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Dirección</ion-label>
+      <ion-input value="{{ cliente.direccion }}" readonly></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>

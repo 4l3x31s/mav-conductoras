@@ -20,7 +20,7 @@
 
     <ion-item>
       <ion-label position="stacked">Cliente</ion-label>
-      <ion-input value="{{ cliente.nombre }}" readonly></ion-input>
+      <ion-input value="{{ cliente.nombre }}" readonly (click)="irCliente()"></ion-input>
       <ion-icon *ngIf="cliente.cel" (click)="irWhatsApp()" slot="end" name="logo-whatsapp" style="color: #00E676"></ion-icon>
     </ion-item>
 
