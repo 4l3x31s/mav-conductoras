@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Moment } from 'moment';
+import { MdlConductora } from 'src/app/modelo/mldConductora';
 
 @Injectable({
   providedIn: 'root'
@@ -33,9 +34,10 @@ export class CarreraService {
       ref => ref.orderByChild('estado').equalTo(1)).valueChanges();
   }
 
-  tomarCarrera(idConductora: number, carrera: MdlCarrera): Promise<any> {
+  tomarCarrera(conductora: MdlConductora, carrera: MdlCarrera): Promise<any> {
     carrera.estado = 2;
-    carrera.idConductora = idConductora;
+    carrera.idConductora = conductora.id;
+    carrera.nombreConductora = conductora.nombre+' '+conductora.paterno+' '+conductora.materno;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
 
@@ -52,6 +54,7 @@ export class CarreraService {
   dejarCarrera(carrera: MdlCarrera): Promise<any> {
     carrera.estado = 1;
     carrera.idConductora = null;
+    carrera.nombreConductora = null;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
 

@@ -108,7 +108,7 @@ export class HomePage implements OnInit {
     return await modal.present();
   }
   tomarCarrera(carrera:MdlCarrera){
-    this.carreraService.tomarCarrera(this.conductora.id, carrera)
+    this.carreraService.tomarCarrera(this.conductora, carrera)
       .then(()=>{
         this.alertService.present('Información','Se asignó correctamente.')
           .then(()=>{

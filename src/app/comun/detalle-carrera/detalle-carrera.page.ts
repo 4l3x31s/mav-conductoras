@@ -151,7 +151,7 @@ export class DetalleCarreraPage implements OnInit {
   }
 
   tomarCarrera(){
-    this.carreraService.tomarCarrera(this.conductora.id,this.carrera)
+    this.carreraService.tomarCarrera(this.conductora,this.carrera)
       .then(()=>{
         this.alertService.present('Información','Se asignó correctamente.')
           .then(()=>{
