@@ -55,9 +55,11 @@ export class CarreraService {
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
 
-  getCarrerasPorConductoraLimite(idConductora:number, limite:number):Observable<MdlCarrera[]> {
-    return this.afDB.list<MdlCarrera>('carrera', 
+  getCarrerasPorConductoraLimite(idConductora: number, limite: number): Observable<MdlCarrera[]> {
+    return this.afDB.list<MdlCarrera>('carrera',
       ref => ref.orderByChild('idConductora').equalTo(idConductora).limitToLast(limite)).valueChanges();
   }
-  
+  listCarreras() {
+    return this.afDB.list<MdlCarrera>('carrera').valueChanges();
+  }
 }

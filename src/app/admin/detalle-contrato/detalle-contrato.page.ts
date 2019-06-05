@@ -202,6 +202,8 @@ export class DetalleContratoPage implements OnInit {
                     carrera.fechaInicio = fechaModificada.format();
                     carrera.tipoPago = this.contrato.tipoPago;
                     carrera.estado = 2;
+                    carrera.nombreCliente = this.cliente.nombre;
+                    
                     this.lstCarreras.push(carrera);
                 }
             }
