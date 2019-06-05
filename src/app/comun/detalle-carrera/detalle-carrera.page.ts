@@ -98,7 +98,22 @@ export class DetalleCarreraPage implements OnInit {
   }
 
   irWhatsApp(){
-    this.iab.create('https://api.whatsapp.com/send?phone=591'+this.cliente.cel+'&text=', '_system', 'location=yes');
+    this.iab.create('https://api.whatsapp.com/send?phone=591' + this.cliente.cel + '&text=Hola', '_system', 'location=yes');
+  }
+  iniciarCarrera() {
+    this.iab.create('http://www.google.com/maps/dir/'
+                    + this.carrera.latInicio
+                    + ','
+                    + this.carrera.longInicio
+                    + '/'
+                    + this.carrera.latFin
+                    + ','
+                    + this.carrera.longFin
+                    + '/@'
+                    + this.carrera.latInicio
+                    + ','
+                    + this.carrera.longInicio
+                    + ',12z/data=!4m2!4m1!3e0', '_system', 'location=yes');
   }
 
   async showOpcionesCarrera(){
@@ -118,6 +133,20 @@ export class DetalleCarreraPage implements OnInit {
         icon: 'skip-forward',
         handler: () => {
           this.irTerminarCarrera();
+        }
+      });
+      opciones.push({
+        text: 'Avisar en Camino',
+        icon: 'send',
+        handler: () => {
+          this.marcarEnCamino();
+        }
+      });
+      opciones.push({
+        text: 'Empezar Carrera',
+        icon: 'compass',
+        handler: () => {
+          this.marcarEnCamino();
         }
       });
     }
@@ -173,11 +202,20 @@ export class DetalleCarreraPage implements OnInit {
           })
       });
   }
+  marcarEnCamino() {
+    this.carreraService.enCaminoCarrera(this.carrera)
+    .then(()=>{
+      this.alertService.present('Información','Avisaste que vas en camino. :D')
+        .then(()=>{
+          this.cerrar();
+        })
+    });
+  }
 
   async irTerminarCarrera() {
     const modal = await this.modalController.create({
       component: TerminarCarreraPage,
-      componentProps: { 
+      componentProps: {
         carrera: this.carrera
       }
     });

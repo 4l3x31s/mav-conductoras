@@ -18,6 +18,7 @@ export class CarreraService {
     if (!carrera.id) {
       carrera.id = Date.now();
     }
+    carrera.enCamino = false;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
   /*insertarLista(listaCarrera: any) {
@@ -46,7 +47,11 @@ export class CarreraService {
     carrera.estado = 3;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
-
+  enCaminoCarrera(carrera: MdlCarrera): Promise<any> {
+    carrera.fechaFin = (new Date()).toString();
+    carrera.enCamino = true;
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
   getCarreraPorId(idCarrera: number): Observable<MdlCarrera> {
     return this.afDB.object<MdlCarrera>('carrera/' + idCarrera).valueChanges();
   }
@@ -58,9 +63,11 @@ export class CarreraService {
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
 
-  getCarrerasPorConductoraLimite(idConductora:number, limite:number):Observable<MdlCarrera[]> {
-    return this.afDB.list<MdlCarrera>('carrera', 
+  getCarrerasPorConductoraLimite(idConductora: number, limite: number): Observable<MdlCarrera[]> {
+    return this.afDB.list<MdlCarrera>('carrera',
       ref => ref.orderByChild('idConductora').equalTo(idConductora).limitToLast(limite)).valueChanges();
   }
-  
+  listCarreras() {
+    return this.afDB.list<MdlCarrera>('carrera').valueChanges();
+  }
 }

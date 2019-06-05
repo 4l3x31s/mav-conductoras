@@ -24,6 +24,8 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
   markers = [];
   watchID: any;
   listaGeoPosicionamiento: MdlGeoLocalizacion[] = [];
+  pais: string;
+  ciudad: string;
   constructor(public navCtrl: NavController,
     public geolocation: Geolocation,
     public geolocalizacionService: GeolocalizacionService) {}

@@ -39,6 +39,7 @@ const routes: Routes = [
   { path: 'home-admin', loadChildren: './home-admin/home-admin.module#HomeAdminPageModule' },
   { path: 'terminar-carrera', loadChildren: './comun/terminar-carrera/terminar-carrera.module#TerminarCarreraPageModule' },  { path: 'detalle-ganancias', loadChildren: './detalle-ganancias/detalle-ganancias.module#DetalleGananciasPageModule' },
   { path: 'cliente', loadChildren: './comun/cliente/cliente.module#ClientePageModule' },
+  { path: 'reporte', loadChildren: './admin/reporte/reporte.module#ReportePageModule' },
 
 
 ];

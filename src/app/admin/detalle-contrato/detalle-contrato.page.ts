@@ -1,4 +1,4 @@
-/// <reference types="@types/googlemaps" />
+/// <reference types='@types/googlemaps' />
 import { MapParamService } from './../../services/map-param.service';
 
 import {AlertService} from 'src/app/services/util/alert.service';
@@ -34,7 +34,9 @@ declare var google: any;
 export class DetalleContratoPage implements OnInit {
     frmContrato: FormGroup;
     public contrato: MdlContrato = new MdlContrato(
-        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null
+        , null, null, null, null, null, null, null, null
+        , null, null, null, null
     );
     public lstConductoras: MdlConductora[] = [];
     public lstClientes: MdlCliente[] = [];
@@ -76,11 +78,11 @@ export class DetalleContratoPage implements OnInit {
         this.distance = new google.maps.DistanceMatrixService();
         if (navParams.get().contrato) {
             this.contrato = this.navParams.get().contrato;
-            console.log("******************************");
+            console.log('******************************');
             console.log(this.contrato);
         } else {
             this.contrato = new MdlContrato(null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
         this.contrato.idUsuario = this.cliente.id;
     }
@@ -170,7 +172,9 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null, null, null);
+            null,null,null,null);
+
+
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
             if (i === 0) {
@@ -188,7 +192,7 @@ export class DetalleContratoPage implements OnInit {
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null, null);
+                        null, null,null,null);
                     //carrera.id = Date.now();
                     carrera.idConductora = Number(this.contrato.idConductora);
                     carrera.idUsuario = this.contrato.idUsuario;
@@ -202,6 +206,8 @@ export class DetalleContratoPage implements OnInit {
                     carrera.fechaInicio = fechaModificada.format();
                     carrera.tipoPago = this.contrato.tipoPago;
                     carrera.estado = 2;
+                    carrera.nombreCliente = this.cliente.nombre;
+                    
                     this.lstCarreras.push(carrera);
                 }
             }
@@ -334,6 +340,9 @@ export class DetalleContratoPage implements OnInit {
             vEstadoContrato: ['', [
                 Validators.required,
             ]],
+            vCodigoContrato: ['', [
+                Validators.required
+            ]]
 
         });
     }
