@@ -45,22 +45,24 @@
         <ion-list *ngIf="conductora">
           
           <ion-menu-toggle auto-hide="false" >
-            <div class="titulos-menu">
-            Administracion
-            </div>
-            <div *ngFor="let p of appPages">
-                <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)" *ngIf="p.admin === conductora.admin">
-                    <ion-icon slot="start" [name]="p.icon"></ion-icon>
-                    <ion-label>
-                      {{p.title}}
-                    </ion-label>
-                  </ion-item>
+            <div *ngIf="conductora.admin">
+              <div class="titulos-menu" >
+              Administracion
+              </div>
+              <div *ngFor="let p of appPagesAdmin">
+                  <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)">
+                      <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                      <ion-label>
+                        {{p.title}}
+                      </ion-label>
+                    </ion-item>
+              </div>
             </div>
             <div class="titulos-menu">
             Conductoras
             </div>
             <div *ngFor="let p of appPages">
-                <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)" *ngIf="p.admin !== conductora.admin">
+                <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)">
                     <ion-icon slot="start" [name]="p.icon"></ion-icon>
                     <ion-label>
                       {{p.title}}

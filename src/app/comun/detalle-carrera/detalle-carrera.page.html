@@ -39,10 +39,14 @@
       <ion-datetime value="{{ carrera.fechaInicio }}" readonly displayFormat="DD/MM/YYYY HH:mm"></ion-datetime>
     </ion-item>
 
-    <div *ngIf="carrera.estado == 2">
+    <div *ngIf="carrera.estado == 3">
       <ion-list-header color="medium">
         <ion-label>Información Conductora</ion-label>
       </ion-list-header>
+      <ion-item>
+        <ion-label position="stacked">Fecha/Hora Fin {{ carrera.fechaFin }}</ion-label>
+        <ion-datetime value="{{ carrera.fechaFin }}" readonly displayFormat="DD/MM/YYYY HH:mm"></ion-datetime>
+      </ion-item>
       <ion-item>
         <ion-label position="floating">Valoración Carrera</ion-label>
       </ion-item>

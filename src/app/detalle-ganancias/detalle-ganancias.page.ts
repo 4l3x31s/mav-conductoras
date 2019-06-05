@@ -20,6 +20,8 @@ export class DetalleGananciasPage implements OnInit {
   totalRemiseCobrado: number=0;
   totalRemiseDepositados: number=0;
   totalContratos: number=0;
+  minInicio: string;
+  carreras: MdlCarrera[];
 
   constructor(
     public loadingService: LoadingService,
@@ -35,27 +37,61 @@ export class DetalleGananciasPage implements OnInit {
           .then(conductora => {
             this.conductora = conductora;
             this.mes = moment().format();
-            this.carreraService.getCarrerasPorConductora(this.conductora.id)
+            //console.log('this.mes',this.mes)
+            //console.log('anio',moment(this.mes).format('YYYY'));
+            //console.log('mes',moment(this.mes).format('M'));
+            //var startDate = moment([moment(this.mes).format('YYYY'), parseInt(moment(this.mes).format('M'))-2]);
+
+            // Clone the value before .endOf()
+            //var endDate = moment(startDate).endOf('month');
+            // just for demonstration:
+            //console.log('start',startDate.toDate());
+            //console.log('fin',endDate.toDate());
+
+            this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
               .subscribe(carreras=>{
                 if(carreras && carreras.length>0){
-                  carreras.forEach(carrera => {
-                    if(carrera.estado == 3 ){
-                      if(carrera.idContrato){
-                        this.adicionarContrato(carrera);
-                      } else {
-                        if(carrera.tipoPago=='Efectivo'){
-                          this.adicionarRemiseCobrado(carrera);
-                        } else {
-                          this.adicionarRemiseDepositado(carrera);
-                        }
-                      }
+                  let inicio=moment(carreras[0].fechaFin);
+                  if(inicio.isBefore(moment())){
+                    inicio=moment(carreras[0].fechaFin).add(1,'months');
+                    if(inicio.isAfter(moment())){
+                      inicio=moment(carreras[0].fechaFin).subtract(1,'months');
                     }
-                  });
+                  }
+                  this.minInicio=inicio.format('YYYY')+'-'+inicio.format('MM')+'-01';
+                  
+                  this.carreras = carreras;
+                  this.llenarDatos();
+
                 }
                 this.loadingService.dismiss();
               });
           });
       });
+  }
+  filtrar(){
+    this.llenarDatos();
+  }
+  llenarDatos() {
+    this.contratos=undefined;
+    this.totalRemiseCobrado=0;
+    this.totalRemiseDepositados=0;
+    this.totalContratos=0;
+    this.carreras.forEach(carrera => {
+      if(carrera.estado == 3
+          && carrera.idConductora == this.conductora.id
+          && moment(carrera.fechaFin).format('M')==moment(this.mes).format('M')){
+        if(carrera.idContrato){
+          this.adicionarContrato(carrera);
+        } else {
+          if(carrera.tipoPago=='Efectivo'){
+            this.adicionarRemiseCobrado(carrera);
+          } else {
+            this.adicionarRemiseDepositado(carrera);
+          }
+        }
+      }
+    });
   }
   adicionarContrato(carrera: MdlCarrera) {
     if(!this.contratos){

@@ -25,62 +25,55 @@ export class AppComponent {
     {
       title: 'Inicio',
       url: '/home',
-      icon: 'home',
-      admin: false
-    },
-    {
-      title: 'Inicio',
-      url: '/home-admin',
-      icon: 'home',
-      admin: true
-    },
-    {
-      title: 'Lista Conductoras',
-      url: '/lista-conductoras',
-      icon: 'people',
-      admin: true
-    },
-    {
-      title: 'Lista Feriados',
-      url: '/lista-feriados',
-      icon: 'calendar',
-      admin: true
-    },
-    {
-      title: 'Lista Clientes',
-      url: '/lista-clientes',
-      icon: 'people',
-      admin: true
-    },
-    {
-      title: 'Lista Parametros',
-      url: '/lista-parametros',
-      icon: 'analytics',
-      admin: true
+      icon: 'home'
     },
     {
       title: 'Carreras',
       url: '/detalle-carreras',
-      icon: 'car',
-      admin: false
+      icon: 'car'
     },
     {
       title: 'Ganancias',
       url: '/detalle-ganancias',
-      icon: 'cash',
-      admin: false
+      icon: 'cash'
+    }
+  ];
+
+  public appPagesAdmin = [
+    {
+      title: 'Inicio',
+      url: '/home-admin',
+      icon: 'home'
+    },
+    {
+      title: 'Lista Conductoras',
+      url: '/lista-conductoras',
+      icon: 'people'
+    },
+    {
+      title: 'Lista Feriados',
+      url: '/lista-feriados',
+      icon: 'calendar'
+    },
+    {
+      title: 'Lista Clientes',
+      url: '/lista-clientes',
+      icon: 'people'
+    },
+    {
+      title: 'Lista Parametros',
+      url: '/lista-parametros',
+      icon: 'analytics'
     },
     {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
-      icon: 'map',
-      admin: true
+      icon: 'map'
     },
     {
       title: 'Lista Contratos',
       url: '/lista-contratos',
-      icon: 'list',
-      admin: true
+      icon: 'list'
     },
   ];
   urlFoto: string;

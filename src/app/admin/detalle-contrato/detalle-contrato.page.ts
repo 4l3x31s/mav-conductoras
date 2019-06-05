@@ -172,7 +172,9 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null,null);
+            null,null,null,null);
+
+
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
             if (i === 0) {
@@ -190,7 +192,7 @@ export class DetalleContratoPage implements OnInit {
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null,null);
+                        null, null,null,null);
                     //carrera.id = Date.now();
                     carrera.idConductora = Number(this.contrato.idConductora);
                     carrera.idUsuario = this.contrato.idUsuario;
@@ -204,6 +206,8 @@ export class DetalleContratoPage implements OnInit {
                     carrera.fechaInicio = fechaModificada.format();
                     carrera.tipoPago = this.contrato.tipoPago;
                     carrera.estado = 2;
+                    carrera.nombreCliente = this.cliente.nombre;
+                    
                     this.lstCarreras.push(carrera);
                 }
             }
