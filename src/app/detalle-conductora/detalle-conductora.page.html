@@ -1,4 +1,11 @@
-<cabecera titulo="Detalle Conductora"></cabecera>
+<ion-header>
+  <ion-toolbar color="rosado">
+    <ion-title>Detalle Conductora</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()"><ion-icon name="close"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content *ngIf="conductora">
   <form [formGroup]="form" novalidate>

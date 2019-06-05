@@ -111,7 +111,9 @@ export class DetalleConductoraPage implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(30),
       ]],
-      vconfirmPass: [''],
+      vconfirmPass: ['', [
+        Validators.required
+      ]],
       vPais: ['', [
         Validators.required
       ]],
@@ -345,5 +347,12 @@ export class DetalleConductoraPage implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+  public cerrar() {
+    if (this.conductora.id !== null) {
+      this.navController.navigateRoot('/home');
+    }else {
+      this.navController.navigateRoot('/login');
+    }
   }
 }

@@ -24,7 +24,7 @@ export class ContratoService {
   }
   listaContratosPorUsuario(idUsuario: number) {
     return this.afDB.list('contrato', ref =>
-      ref.orderByChild('fechaInicio').equalTo(idUsuario)).valueChanges();
+      ref.orderByChild('idUsuario').equalTo(idUsuario)).valueChanges();
   }
 
   getContratosPorConductora(idConductora: number):Observable<MdlContrato[]> {
