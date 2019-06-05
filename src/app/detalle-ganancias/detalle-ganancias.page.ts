@@ -94,17 +94,19 @@ export class DetalleGananciasPage implements OnInit {
     }
     let index = this.contratos.findIndex(i => i.idContrato === carrera.idContrato);
     if (index > -1) {
+      let aux:any=carrera.costo;
       let contrato = this.contratos[index];
-      contrato.total += carrera.costo;
+      contrato.total += parseInt(aux);
       this.contratos[index] = contrato;
-      this.totalContratos += carrera.costo;
+      this.totalContratos += parseInt(aux);
     } else {
+      let aux:any=carrera.costo;
       this.contratos.push({
         idContrato: carrera.idContrato,
         idUsuario: carrera.idUsuario,
-        total: carrera.costo
+        total: parseInt(aux)
       });
-      this.totalContratos = carrera.costo;
+      this.totalContratos = parseInt(aux);
     }
   }
   adicionarRemiseCobrado(carrera: MdlCarrera) {
