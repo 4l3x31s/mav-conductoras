@@ -35,6 +35,7 @@ export class LoginPage implements OnInit {
       //datos prueba
       this.user='alexeis.carrillo@gmail.com';
       this.pass='123qwerty';
+
     }
     this.loadingService.present()
       .then(()=>{
