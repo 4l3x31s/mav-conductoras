@@ -11,19 +11,9 @@
   <form [formGroup]="form" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label position="stacked">Moneda</ion-label>
-        <ion-select placeholder="Seleccione el tipo de Moneda" formControlName="vmoneda" [(ngModel)]="carrera.moneda" disabled>
-            <ion-select-option value="Bolivianos">Bolivianos</ion-select-option>
-            <ion-select-option value="Dolares">Dolares</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <print-error [control]="f.vmoneda"></print-error>
-      
-      <ion-item>
         <ion-label position="floating">Costo</ion-label>
-        <ion-input formControlName="vcosto" [(ngModel)]="carrera.costo"></ion-input>
+        <ion-input formControlName="vcosto" readonly value="{{ carrera.costo }} {{ carrera.moneda }}"></ion-input>
       </ion-item>
-      <print-error [control]="f.vcosto"></print-error>
 
       <ion-item>
         <ion-label position="floating">Valoración Carrera</ion-label>

@@ -80,10 +80,6 @@ export class DetalleConductoraPage implements OnInit {
       vgenero: ['', [
         Validators.required
       ]],
-      vnroctabancaria: ['', [
-        Validators.minLength(4),
-        Validators.maxLength(50),
-      ]],
       vtelefono: ['', [
         Validators.minLength(7),
         Validators.maxLength(9),

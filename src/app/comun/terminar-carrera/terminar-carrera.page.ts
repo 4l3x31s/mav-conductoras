@@ -32,12 +32,6 @@ export class TerminarCarreraPage implements OnInit {
 
   iniciarValidaciones() {
     this.form = this.fb.group({
-      vmoneda: ['', [
-        Validators.required,
-      ]],
-      vcosto: ['', [
-        Validators.required,
-      ]],
       vcalifConductora: ['', [
         Validators.required,
       ]],
