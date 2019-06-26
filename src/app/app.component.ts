@@ -69,12 +69,7 @@ export class AppComponent {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
       icon: 'map'
-    },
-    {
-      title: 'Lista Contratos',
-      url: '/lista-contratos',
-      icon: 'list'
-    },
+    }
   ];
   urlFoto: string;
 

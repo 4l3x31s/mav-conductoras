@@ -14,7 +14,7 @@
                 <ion-label position="stacked">Codigo Contrato</ion-label>
                 <ion-input formControlName="vCodigoContrato" [(ngModel)]="contrato.codigoContrato"></ion-input>
             </ion-item>
-
+            <print-error [control]="f.vCodigoContrato"></print-error>
             <ion-item>
                 <ion-label position="stacked">Pais</ion-label>
                 <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
