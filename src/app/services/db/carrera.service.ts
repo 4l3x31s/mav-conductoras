@@ -2,7 +2,7 @@ import { MdlCarrera } from './../../modelo/mdlCarrera';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Moment } from 'moment';
+import * as moment from 'moment';
 import { MdlConductora } from 'src/app/modelo/mldConductora';
 
 @Injectable({
@@ -43,12 +43,12 @@ export class CarreraService {
   }
 
   terminarCarrera(carrera: MdlCarrera): Promise<any> {
-    carrera.fechaFin = (new Date()).toString();
+    carrera.fechaFin = moment().format();
     carrera.estado = 3;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
   enCaminoCarrera(carrera: MdlCarrera): Promise<any> {
-    carrera.fechaFin = (new Date()).toString();
+    carrera.fechaFin = moment().format();
     carrera.enCamino = true;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
