@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
 import { ModalController, NavController, ActionSheetController } from '@ionic/angular';
@@ -67,16 +68,40 @@ export class DetalleCarreraPage implements OnInit {
   initAutocomplete() {
     const myLatlngIni = { lat: parseFloat(this.carrera.latInicio), lng: parseFloat(this.carrera.longInicio)};
     const myLatlngFin = { lat: parseFloat(this.carrera.latFin), lng: parseFloat(this.carrera.longFin)};
-    const mapOptions = {
+    /*const mapOptions = {
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       mapTypeControl: false,
       streetViewControl: true,
       fullScreenControl: false,
       center: myLatlngFin
-    };
-    var map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    };*/
 
+    const mapOptions = {
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullScreenControl: false,
+      zoomControl: false,
+      scaleControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
+      center: myLatlngFin
+    };
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+      suppressMarkers: true,
+      polylineOptions: {
+        strokeColor: '#EE4088'
+      }
+    });
+    var map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    directionsDisplay.setMap(map);
+    let respuesta = this.calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlngIni, myLatlngFin);
+    respuesta.subscribe(data => {
+      console.log(data);
+    });
     let markers = [];
     markers.push(new google.maps.Marker
       ({
@@ -92,8 +117,35 @@ export class DetalleCarreraPage implements OnInit {
       }));
     
   }
-
-  cerrar(){
+  calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlngIni, myLatlngFin): Observable<any> {
+      return Observable.create((observer) => {
+        directionsService.route({
+          origin: myLatlngIni,
+          destination: myLatlngFin,
+          travelMode: google.maps.TravelMode.DRIVING
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+          observer.next(response);
+          observer.complete();
+        });
+      });
+  }
+  /*respuestaRoute(response, status): Observable<any> {
+    return Observable.create((observer) => {
+      if (status === 'OK') {
+        directionsDisplay.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+      observer.next(response);
+      observer.complete();
+    });
+  }*/
+  cerrar() {
     this.modalCtrl.dismiss();
   }
 
