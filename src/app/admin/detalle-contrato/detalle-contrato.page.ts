@@ -23,6 +23,8 @@ import {Observable} from 'rxjs';
 import * as moment from 'moment';
 import { ContratoService } from './../../services/db/contrato.service';
 import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
+import * as _ from 'lodash'; 
+
 
 declare var google: any;
 
@@ -52,10 +54,13 @@ export class DetalleContratoPage implements OnInit {
     public diasArray: Array<any> = [];
 
     public lstCarreras: Array<MdlCarrera> = [];
-
+    filtros = {}
+    public lstConcudtorasFiltrado: MdlConductora[] = [];
     // directionsService = new google.maps.DirectionsService;
     // directionsDisplay = new google.maps.DirectionsRenderer;
     distance: any;
+    public conductora: MdlConductora = new MdlConductora(null,null,null,null,null,null,null,null,
+        null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
 
     constructor(public fb: FormBuilder,
                 public navController: NavController,
@@ -120,7 +125,11 @@ export class DetalleContratoPage implements OnInit {
                 this.lstConductoras = undefined;
             });
     }
-
+    public filtrarContrato(atributo: string, valor: any) {
+        this.filtros[atributo] = val => val == valor;
+        this.lstConcudtorasFiltrado = _.filter(this.lstConductoras, _.conforms(this.filtros) );
+        console.log(this.lstConcudtorasFiltrado);
+      }
     grabar() {
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
@@ -172,8 +181,9 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null,null,null,null);
-
+            null, null, null, null);
+     
+            this.filtrarContrato('id', this.contrato.idConductora);
 
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
@@ -192,8 +202,9 @@ export class DetalleContratoPage implements OnInit {
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null,null,null);
+                        null, null, null, null);
                     //carrera.id = Date.now();
+                    
                     carrera.idConductora = Number(this.contrato.idConductora);
                     carrera.idUsuario = this.contrato.idUsuario;
                     carrera.latInicio = this.contrato.latOrigen;
@@ -207,7 +218,7 @@ export class DetalleContratoPage implements OnInit {
                     carrera.tipoPago = this.contrato.tipoPago;
                     carrera.estado = 2;
                     carrera.nombreCliente = this.cliente.nombre;
-                    
+                    carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre + ' ' + this.lstConcudtorasFiltrado[0].paterno;
                     this.lstCarreras.push(carrera);
                 }
             }

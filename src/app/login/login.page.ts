@@ -33,8 +33,9 @@ export class LoginPage implements OnInit {
     this.iniciaValidaciones();
     if(environment.isSesionPrueba){
       //datos prueba
-      this.user='antoniojuan777@gmail.com';
-      this.pass='1234567';
+      this.user='alexeis.carrillo@gmail.com';
+      this.pass='123qwerty';
+
     }
     this.loadingService.present()
       .then(()=>{
