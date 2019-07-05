@@ -6,6 +6,10 @@ import { ContratoService } from '../services/db/contrato.service';
 import * as moment from 'moment';
 import { CarreraService } from '../services/db/carrera.service';
 import { MdlCarrera } from '../modelo/mdlCarrera';
+import { ClienteService } from '../services/db/cliente.service';
+import { ModalController } from '@ionic/angular';
+import { ClientePage } from '../comun/cliente/cliente.page';
+import { MdlCliente } from '../modelo/mdlCliente';
 
 @Component({
   selector: 'app-detalle-ganancias',
@@ -27,39 +31,44 @@ export class DetalleGananciasPage implements OnInit {
     public loadingService: LoadingService,
     public sesionService: SesionService,
     public contratoService: ContratoService,
-    public carreraService: CarreraService
+    public carreraService: CarreraService,
+    public clienteService: ClienteService,
+    public modalController: ModalController,
   ) { }
 
   ngOnInit() {
+    this.mes = moment().format();
+    this.cargarDatos();
+  }
+  cargarDatos(){
     this.loadingService.present()
-      .then(() => {
-        this.sesionService.getSesion()
-          .then(conductora => {
-            this.conductora = conductora;
-            this.mes = moment().format();
-
-            this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
-              .subscribe(carreras => {
-                if (carreras && carreras.length > 0) {
-                  let inicio = moment(carreras[0].fechaInicio);
-                  if (inicio.isBefore(moment())) {
-                    inicio = moment(carreras[0].fechaInicio).add(1, 'months');
-                    if (inicio.isAfter(moment())) {
-                      inicio = moment(carreras[0].fechaInicio).subtract(1, 'months');
-                    }
+    .then(() => {
+      this.sesionService.getSesion()
+        .then(conductora => {
+          this.conductora = conductora;
+          
+          this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
+            .subscribe(carreras => {
+              if (carreras && carreras.length > 0) {
+                let inicio = moment(carreras[0].fechaInicio);
+                if (inicio.isBefore(moment())) {
+                  inicio = moment(carreras[0].fechaInicio).add(1, 'months');
+                  if (inicio.isAfter(moment())) {
+                    inicio = moment(carreras[0].fechaInicio).subtract(1, 'months');
                   }
-                  this.minInicio = inicio.format('YYYY') + '-' + inicio.format('MM') + '-01';
-
-                  this.carreras = carreras;
-                  this.llenarDatos();
-
-                } else {
-                  this.carreras = undefined;
                 }
-                this.loadingService.dismiss();
-              });
-          });
-      });
+                this.minInicio = inicio.format('YYYY') + '-' + inicio.format('MM') + '-01';
+
+                this.carreras = carreras;
+                this.llenarDatos();
+
+              } else {
+                this.carreras = undefined;
+              }
+              this.loadingService.dismiss();
+            });
+        });
+    });
   }
   filtrar() {
     this.llenarDatos();
@@ -104,6 +113,8 @@ export class DetalleGananciasPage implements OnInit {
       this.contratos.push({
         idContrato: carrera.idContrato,
         idUsuario: carrera.idUsuario,
+        nombreCliente: carrera.nombreCliente,
+        colorCliente: this.clienteService.getColorPorCliente(carrera.idUsuario),
         total: parseInt(aux)
       });
       this.totalContratos = parseInt(aux);
@@ -117,5 +128,33 @@ export class DetalleGananciasPage implements OnInit {
     let aux:any=carrera.costo;
     this.totalRemiseDepositados += parseInt(aux);
   }
-
+  /*irCliente(idUsuario){
+    this.clienteService.getCliente(idUsuario)
+      .subscribe(cliente=>{
+        this.modalController.create({
+          component: ClientePage,
+          componentProps: { 
+            cliente: cliente
+          }
+        }).then(modal=>{
+          modal.present();
+        });
+      });
+  }*/
+  async irCliente(idUsuario){
+    this.clienteService.getCliente(idUsuario)
+      .subscribe(async cliente=>{
+        const modal = await this.modalController.create({
+          component: ClientePage,
+          componentProps: { 
+            cliente: cliente
+          }
+        });
+        modal.onDidDismiss().then(()=>{
+          this.cargarDatos();
+        });
+        return await modal.present();
+      });
+      
+  }
 }

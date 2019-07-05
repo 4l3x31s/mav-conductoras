@@ -8,7 +8,7 @@
   <ion-grid>
     <!-- contratos -->
     <ion-row *ngFor="let contrato of contratos">
-      <ion-col size="9" align-self-center>
+      <ion-col size="9" align-self-center [ngStyle]="{'color': contrato.colorCliente}" (click)="irCliente(contrato.idUsuario)">
         {{ contrato.nombreCliente }}
       </ion-col>
       <ion-col size="3" align-self-center class="ion-text-right">{{contrato.total}}</ion-col>
