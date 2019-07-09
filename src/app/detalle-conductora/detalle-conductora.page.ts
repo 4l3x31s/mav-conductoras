@@ -62,28 +62,28 @@ export class DetalleConductoraPage implements OnInit {
         Validators.minLength(4),
         Validators.maxLength(50),
       ]],
-      vfechanac: ['', [
-        Validators.required
-      ]],
-      vci: ['', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(15),
-      ]],
-      vtipolicencia: ['', [
-        Validators.required
-      ]],
-      vdireccion: ['', [
-        Validators.minLength(4),
-        Validators.maxLength(100),
-      ]],
-      vgenero: ['', [
-        Validators.required
-      ]],
-      vtelefono: ['', [
-        Validators.minLength(7),
-        Validators.maxLength(9),
-      ]],
+      // vfechanac: ['', [
+      //   Validators.required
+      // ]],
+      // vci: ['', [
+      //   Validators.required,
+      //   Validators.minLength(4),
+      //   Validators.maxLength(15),
+      // ]],
+      // vtipolicencia: ['', [
+      //   Validators.required
+      // ]],
+      // vdireccion: ['', [
+      //   Validators.minLength(4),
+      //   Validators.maxLength(100),
+      // ]],
+      // vgenero: ['', [
+      //   Validators.required
+      // ]],
+      // vtelefono: ['', [
+      //   Validators.minLength(7),
+      //   Validators.maxLength(9),
+      // ]],
       vcelular: ['', [
         Validators.required,
         Validators.minLength(8),
@@ -91,10 +91,10 @@ export class DetalleConductoraPage implements OnInit {
       ],[
         this.validarCelularUnico.bind(this)
       ]],
-      vnroresidencia: ['', [
-        Validators.minLength(1),
-        Validators.maxLength(10),
-      ]],
+      // vnroresidencia: ['', [
+      //   Validators.minLength(1),
+      //   Validators.maxLength(10),
+      // ]],
       vemail: ['', [
         Validators.required,
         Validators.minLength(5),
@@ -116,8 +116,8 @@ export class DetalleConductoraPage implements OnInit {
       vCiudad: ['', [
         Validators.required
       ]],
-      vestado: ['', []],
-      vadmin: ['', []],
+      // vestado: ['', []],
+      // vadmin: ['', []],
     }, {
       validator: this.mustMatch('vpass', 'vconfirmPass')
     });
@@ -181,7 +181,7 @@ export class DetalleConductoraPage implements OnInit {
     });
   }
 
-  get f() { return this.form.controls; }
+  get f(): any { return this.form.controls; }
 
   ngOnInit() {
     this.iniciarValidaciones();
@@ -283,10 +283,8 @@ export class DetalleConductoraPage implements OnInit {
           console.log(error);
           this.alertService.present('Error', 'Hubo un error al grabar los datos');
           this.navController.navigateRoot('/home');
-        })
+        });
       }
-
-      
     });
   }
 
@@ -295,12 +293,12 @@ export class DetalleConductoraPage implements OnInit {
     this.navController.navigateForward('/detalle-vehiculo');
   }
 
-  irDetalleImagenes(){
+  irDetalleImagenes() {
     this.navParam.set({conductora: this.conductora})
     this.navController.navigateForward('/detalle-imagenes-conductora');
   }
 
-  async irGetCroquis(){
+  async irGetCroquis() {
     await this.modalController.create({
       component: MapaPage
     }).then( dato => {
@@ -334,6 +332,13 @@ export class DetalleConductoraPage implements OnInit {
         }
       },
       {
+        text: 'Carreras',
+        icon: 'car',
+        handler: () => {
+          this.irDetalleCarreras();
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
@@ -343,6 +348,10 @@ export class DetalleConductoraPage implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+  public irDetalleCarreras() {
+    this.navParam.set({ conductora: this.conductora});
+    this.navController.navigateForward('/detalle-carreras');
   }
   public cerrar() {
     if (this.conductora.id !== null) {

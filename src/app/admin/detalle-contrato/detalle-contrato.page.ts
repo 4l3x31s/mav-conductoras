@@ -90,6 +90,7 @@ export class DetalleContratoPage implements OnInit {
                 null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
         this.contrato.idUsuario = this.cliente.id;
+        this.contrato.fechaInicio = moment().format();
     }
 
     ngOnInit() {
@@ -139,6 +140,7 @@ export class DetalleContratoPage implements OnInit {
                 return;
         }
         this.loading.present();
+        let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
         let fechaIMoment = moment(this.contrato.fechaInicio);
         let fechaFMoment = moment(this.contrato.fechaFin);
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));

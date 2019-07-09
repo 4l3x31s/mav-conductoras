@@ -12,6 +12,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { EventInput } from '@fullcalendar/core';
 import { DetalleCarreraPage } from '../comun/detalle-carrera/detalle-carrera.page';
 import { ClienteService } from '../services/db/cliente.service';
+import { NavParamService } from '../services/nav-param.service';
 
 @Component({
   selector: 'app-detalle-carreras',
@@ -36,8 +37,10 @@ export class DetalleCarrerasPage implements OnInit {
     public alertService: AlertService,
     public navController: NavController,
     public modalController: ModalController,
-    public clienteService: ClienteService
-  ) { }
+    public clienteService: ClienteService,
+    public navParams: NavParamService
+  ) {
+  }
 
   ngOnInit() {
     this.cargarDatos();
@@ -48,11 +51,11 @@ export class DetalleCarrerasPage implements OnInit {
   }
 
   async handleEventClick(event) {
-    let carreraSeleccionada:MdlCarrera = this.carreras.find(x => x.id == event.event.extendedProps.idCarrera);
+    let carreraSeleccionada : MdlCarrera = this.carreras.find(x => x.id === event.event.extendedProps.idCarrera);
 
     const modal = await this.modalController.create({
       component: DetalleCarreraPage,
-      componentProps: { 
+      componentProps: {
         carrera: carreraSeleccionada
       }
     });
@@ -62,13 +65,28 @@ export class DetalleCarrerasPage implements OnInit {
     return await modal.present();
   }
 
-  cargarDatos(){
+  public cargarDatos() {
     this.loadingService.present()
     .then(() => {
-      this.sesionService.getSesion()
+      if (this.navParams.get().conductora) {
+        this.conductora = this.navParams.get().conductora;
+        this.obtenerCarreras();
+      } else {
+        this.sesionService.getSesion()
         .then(conductora => {
           this.conductora = conductora;
-          this.carreraService.getCarrerasPorConductora(this.conductora.id)
+          this.obtenerCarreras();
+        })
+        .catch(e => {
+          console.error(e);
+          this.alertService.present('Error', 'Error al recuperar sesion.');
+          this.navController.navigateRoot('/login');
+        });
+      }
+    });
+  }
+  obtenerCarreras() {
+    this.carreraService.getCarrerasPorConductora(this.conductora.id)
             .subscribe(carreras => {
               this.loadingService.dismiss();
               this.carreras = carreras;
@@ -80,21 +98,15 @@ export class DetalleCarrerasPage implements OnInit {
                     start: element.fechaInicio,
                     idCarrera: element.id,
                     backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
-                  })
+                  });
                 });
+                console.log(this.calendarEvents);
               }
             },
             error => {
               console.error(error);
               this.alertService.present('Error', 'Error al recuperar las carreras.');
               this.navController.navigateRoot('/login');
-            })
-        })
-        .catch(e => {
-          console.error(e);
-          this.alertService.present('Error', 'Error al recuperar sesion.');
-          this.navController.navigateRoot('/login');
-        })
-    });
+            });
   }
 }

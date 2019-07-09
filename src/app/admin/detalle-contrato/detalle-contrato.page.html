@@ -51,13 +51,13 @@
             <print-error [control]="f.vConductora"></print-error>
             <ion-item>
                 <ion-label position="stacked">Fecha/Hora Inicio</ion-label>
-                <ion-datetime formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio"
+                <ion-datetime cancel-text="Cancelar" done-text="Aceptar" formControlName="vFechaInicio" [(ngModel)]="contrato.fechaInicio"
                               display-format="DD/MM/YYYY HH:mm" ></ion-datetime>
             </ion-item>
             <print-error [control]="f.vFechaInicio"></print-error>
             <ion-item>
                 <ion-label position="stacked">Fecha Fin</ion-label>
-                <ion-datetime formControlName="vFechaFin" [(ngModel)]="contrato.fechaFin"
+                <ion-datetime cancel-text="Cancelar" done-text="Aceptar"  formControlName="vFechaFin" [(ngModel)]="contrato.fechaFin"
                               display-format="DD/MM/YYYY"></ion-datetime>
             </ion-item>
             <print-error [control]="f.vFechaFin"></print-error>
@@ -104,7 +104,7 @@
             <print-error [control]="f.vDescLugar"></print-error>
             <ion-item>
                 <ion-label position="stacked">Tipo</ion-label>
-                <ion-select placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
+                <ion-select interface="popover" placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
                             [(ngModel)]="contrato.tipoPago">
                     <ion-select-option value="Deposito en Cuenta">Deposito en Cuenta</ion-select-option>
                     <ion-select-option value="Efectivo en Caja">Efectivo en Caja</ion-select-option>
