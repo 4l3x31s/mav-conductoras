@@ -25,14 +25,16 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { TerminarCarreraPageModule } from './comun/terminar-carrera/terminar-carrera.module';
 import { IonicRatingModule } from 'ionic4-rating';
 import { ClientePageModule } from './comun/cliente/cliente.module';
+import { FCM } from '@ionic-native/fcm/ngx';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
-  authDomain: 'mav-db.firebaseapp.com',
-  databaseURL: 'https://mav-db.firebaseio.com',
-  storageBucket: 'mav-db.appspot.com',
-  messagingSenderId: '69193804419',
-  projectId: 'mav-db'
+    authDomain: 'mav-db.firebaseapp.com',
+    databaseURL: 'https://mav-db.firebaseio.com',
+    projectId: 'mav-db',
+    storageBucket: 'mav-db.appspot.com',
+    messagingSenderId: '69193804419',
+    appId: '1:69193804419:web:6c522a0e26f79eb5'
 };
 
 @NgModule({
@@ -63,6 +65,7 @@ export const firebaseConfig = {
     Geolocation,
     InAppBrowser,
     LocalNotifications,
+    FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -132,10 +132,18 @@
 
 
     </form>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+
+    <ion-fab *ngIf="esNuevo" vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button color="verdec" [disabled]="frmContrato.invalid" (click)="grabar()">
             <ion-icon name="send"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+    
+    <ion-fab *ngIf="!esNuevo" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="verdec" (click)="presentActionSheet()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
 
 </ion-content>

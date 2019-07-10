@@ -1,4 +1,8 @@
 /// <reference types='@types/googlemaps' />
+
+
+import { ActionSheetController } from '@ionic/angular';
+
 import { MapParamService } from './../../services/map-param.service';
 
 import {AlertService} from 'src/app/services/util/alert.service';
@@ -23,7 +27,7 @@ import {Observable} from 'rxjs';
 import * as moment from 'moment';
 import { ContratoService } from './../../services/db/contrato.service';
 import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
-import * as _ from 'lodash'; 
+import * as _ from 'lodash';
 
 
 declare var google: any;
@@ -49,6 +53,8 @@ export class DetalleContratoPage implements OnInit {
     public cliente: MdlCliente;
     public ciudadSeleccionada: string;
     public txtDescripcionLugar: string;
+    public esNuevo: boolean = true;
+    public opcionElegida: number = 0;
 
     public numDias: Array<any> = [];
     public diasArray: Array<any> = [];
@@ -60,7 +66,7 @@ export class DetalleContratoPage implements OnInit {
     // directionsDisplay = new google.maps.DirectionsRenderer;
     distance: any;
     public conductora: MdlConductora = new MdlConductora(null,null,null,null,null,null,null,null,
-        null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+        null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
 
     constructor(public fb: FormBuilder,
                 public navController: NavController,
@@ -77,15 +83,19 @@ export class DetalleContratoPage implements OnInit {
                 public alertController: AlertController,
                 public dataUtilService: DataUtilService,
                 public contratoService: ContratoService,
-                public mapParamService: MapParamService
+                public mapParamService: MapParamService,
+                public actionSheetController: ActionSheetController
                 ) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
+        this.txtDescripcionLugar = "Registrado en la Carrera";
         if (navParams.get().contrato) {
+            this.esNuevo = false;
             this.contrato = this.navParams.get().contrato;
             console.log('******************************');
             console.log(this.contrato);
         } else {
+            this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
                 null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
@@ -132,6 +142,11 @@ export class DetalleContratoPage implements OnInit {
         console.log(this.lstConcudtorasFiltrado);
       }
     grabar() {
+        if(this.esNuevo) {
+            console.log('guardara como nuevo');
+        } else {
+            console.log('Guardara modificado');
+        }
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
         } else {
@@ -183,7 +198,7 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null, null, null, null);
+            null, null, null, null, null, null);
      
             this.filtrarContrato('id', this.contrato.idConductora);
 
@@ -204,7 +219,7 @@ export class DetalleContratoPage implements OnInit {
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null, null, null);
+                        null, null, null, null,null, null);
                     //carrera.id = Date.now();
                     
                     carrera.idConductora = Number(this.contrato.idConductora);
@@ -221,6 +236,8 @@ export class DetalleContratoPage implements OnInit {
                     carrera.estado = 2;
                     carrera.nombreCliente = this.cliente.nombre;
                     carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre + ' ' + this.lstConcudtorasFiltrado[0].paterno;
+                    carrera.pais = this.contrato.pais;
+                    carrera.ciudad = this.contrato.ciudad;
                     this.lstCarreras.push(carrera);
                 }
             }
@@ -360,7 +377,7 @@ export class DetalleContratoPage implements OnInit {
         });
     }
 
-    get f() {
+    get f(): any {
         return this.frmContrato.controls;
     }
 
@@ -580,6 +597,89 @@ export class DetalleContratoPage implements OnInit {
         }
     }
 
+    async presentActionSheet() {
+        const actionSheet = await this.actionSheetController.create({
+          header: 'Albums',
+          buttons: [{
+            text: 'Guardar Como Vuelta',
+            icon: 'share',
+            handler: () => {
+                if (!this.frmContrato.invalid) {
+                    this.contrato.id = null;
+                    let latOr = this.contrato.latOrigen;
+                    let lngOr = this.contrato.longOrigen;
+                    let latDes = this.contrato.latDestino;
+                    let lngDes = this.contrato.longDestino;
+                    this.contrato.latOrigen = latDes;
+                    this.contrato.longOrigen = lngDes;
+                    this.contrato.latDestino = latOr;
+                    this.contrato.longDestino = lngOr;
+                    this.alertService.present('Guardado', 'Esta seguro de guardar los datos')
+                    this.presentAlertConfirm();
+                } else {
+                    return;
+                }
+                
+            }
+          }, {
+            text: 'Guardar Como Nuevo',
+            icon: 'arrow-dropright-circle',
+            handler: () => {
+                if (!this.frmContrato.invalid) {
+                this.contrato.id = null;
+                this.presentAlertConfirm();
+                } else {
+                    return;
+                }
+            }
+          },
+          {
+            text: 'Guardar Modificado',
+            icon: 'save',
+            handler: () => {
+                if (!this.frmContrato.invalid) {
+                    this.presentAlertConfirm();
+                } else {
+                    return;
+                }
+            }
+          },
+           {
+            text: 'Cancelar',
+            icon: 'close',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          }]
+        });
+        await actionSheet.present();
+      }
+
+      async presentAlertConfirm() {
+        const alert = await this.alertController.create({
+          header: 'Confirmación!',
+          message: 'Está seguro de registrar los datos?, Verifique que la hora de la carrera este correcta.',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('Confirm Cancel: blah');
+              }
+            }, {
+              text: 'Aceptar',
+              handler: () => {
+                console.log('Confirm Okay');
+                this.grabar();
+              }
+            }
+          ]
+        });
+    
+        await alert.present();
+      }
     /*
 
     http://uber-tarifas-la-paz-bo.ubertarifa.com/

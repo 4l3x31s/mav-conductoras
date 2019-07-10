@@ -1,3 +1,5 @@
+/// <reference types='@types/googlemaps' />
+import { NavParamService } from './../../services/nav-param.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
@@ -12,6 +14,8 @@ import { SesionService } from 'src/app/services/sesion.service';
 import { MdlConductora } from 'src/app/modelo/mldConductora';
 import { TerminarCarreraPage } from '../terminar-carrera/terminar-carrera.page';
 import { ClientePage } from '../cliente/cliente.page';
+
+declare var google: any;
 
 @Component({
   selector: 'app-detalle-carrera',
@@ -40,6 +44,7 @@ export class DetalleCarreraPage implements OnInit {
     public carreraService:CarreraService,
     public sesionService:SesionService,
     public modalController: ModalController,
+    public navParams: NavParamService
   ) { }
 
   ngOnInit() {
@@ -191,7 +196,7 @@ export class DetalleCarreraPage implements OnInit {
         text: 'Modificar Carrera',
         icon: 'compass',
         handler: () => {
-          this.marcarEmpezarCarrera();
+          this.modificarCarrera();
         }
       });
     }
@@ -318,5 +323,10 @@ export class DetalleCarreraPage implements OnInit {
       }
     });
     return await modal.present();
+  }
+  public modificarCarrera() {
+    this.navParams.set(this.carrera);
+    this.navController.navigateForward('/mod-carrera');
+    this.cerrar();
   }
 }

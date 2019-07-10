@@ -40,6 +40,7 @@ const routes: Routes = [
   { path: 'terminar-carrera', loadChildren: './comun/terminar-carrera/terminar-carrera.module#TerminarCarreraPageModule' },  { path: 'detalle-ganancias', loadChildren: './detalle-ganancias/detalle-ganancias.module#DetalleGananciasPageModule' },
   { path: 'cliente', loadChildren: './comun/cliente/cliente.module#ClientePageModule' },
   { path: 'reporte', loadChildren: './admin/reporte/reporte.module#ReportePageModule' },
+  { path: 'mod-carrera', loadChildren: './admin/mod-carrera/mod-carrera.module#ModCarreraPageModule' },
 
 
 ];

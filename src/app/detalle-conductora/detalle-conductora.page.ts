@@ -12,6 +12,7 @@ import { MapaPage } from '../comun/mapa/mapa.page';
 import { MdlParametrosCarrera } from '../modelo/mdlParametrosCarrera';
 import { ParametrosCarreraService } from '../services/db/parametros-carrera.service';
 import { Observable } from 'rxjs';
+import { TokenNotifService } from '../services/token-notif.service';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -40,7 +41,8 @@ export class DetalleConductoraPage implements OnInit {
     public modalController: ModalController,
     public parametrosService: ParametrosCarreraService,
     public actionSheetController: ActionSheetController,
-    public authService: AuthService
+    public authService: AuthService,
+    public tokenService: TokenNotifService,
   ) {
     this.myclass = 'mostrar';
    }
@@ -116,8 +118,8 @@ export class DetalleConductoraPage implements OnInit {
       vCiudad: ['', [
         Validators.required
       ]],
-      // vestado: ['', []],
-      // vadmin: ['', []],
+       vestado: ['', []],
+       vadmin: ['', []],
     }, {
       validator: this.mustMatch('vpass', 'vconfirmPass')
     });
@@ -195,7 +197,7 @@ export class DetalleConductoraPage implements OnInit {
       this.myclass = 'mostrar';
       this.conductora = new MdlConductora(
         null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, null, false, false
+        null, null, null, null, null, null, null, null, null, null,null, false, false
       );
       this.isRegister = true;
     }
@@ -237,6 +239,7 @@ export class DetalleConductoraPage implements OnInit {
   grabar() {
     this.loadingService.present().then(() => {
       this.conductora.user = this.conductora.email;
+      this.conductora.ui = this.tokenService.get();
       if (this.isSesionAdmin) {
         this.conductora.estado = true;
       }

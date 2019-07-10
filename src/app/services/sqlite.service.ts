@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MdlConductora } from '../modelo/mldConductora';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { TokenNotifService } from './token-notif.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class SqliteService {
   db: SQLiteObject;
 
   constructor(
-    private sqlite: SQLite
+    private sqlite: SQLite,
+    private tokenService: TokenNotifService
   ) { }
 
   getDB(): Promise<SQLiteObject> {
@@ -61,6 +63,7 @@ export class SqliteService {
               conductora.long,
               conductora.pais,
               conductora.ciudad,
+              conductora.ui,
               conductora.foto,
               conductora.admin,
               conductora.estado,
@@ -86,7 +89,7 @@ export class SqliteService {
           .then((data) => {
             let conductora: MdlConductora;
             if (data.rows.length > 0) {
-              conductora=new MdlConductora(
+              conductora = new MdlConductora(
                 data.rows.item(0).id,
                 data.rows.item(0).nombre,
                 data.rows.item(0).paterno,
@@ -107,6 +110,7 @@ export class SqliteService {
                 null,
                 null,
                 null,
+                this.tokenService.get(),
                 null,
                 data.rows.item(0).admin,
                 data.rows.item(0).estado,

@@ -7,16 +7,17 @@
     <!--<ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarCliente" (ionChange)="filtrar()" ></ion-searchbar>-->
     <ion-grid>
       <ion-row class="cabecera-tabla">
-        <ion-col size="4">Fecha Inicio</ion-col>
-        <ion-col size="2">Fecha Fin</ion-col>
+        <ion-col size="4">Código Contrato</ion-col>
+        <ion-col size="2">Fecha Inicio</ion-col>
+        <ion-col size="3">Fecha Fin</ion-col>
         <ion-col size="3">Monto Total</ion-col>
-        <ion-col size="3">Estado</ion-col>
       </ion-row>
       <ion-row *ngFor="let contrato of lstContratoFiltrado"  nowrap >
+        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.codigoContrato}}</ion-col>
         <ion-col size="4" (click)="irActualizarContrato(contrato)">{{contrato.fechaInicio}}</ion-col>
         <ion-col size="2" (click)="irActualizarContrato(contrato)">{{contrato.fechaFin}}</ion-col>
         <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.montoTotal}}</ion-col>
-        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.estado}}</ion-col>
+        
       </ion-row>
     </ion-grid>
 </ion-content>

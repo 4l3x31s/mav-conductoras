@@ -1,3 +1,4 @@
+import { TokenNotifService } from './services/token-notif.service';
 import { AuthService } from './services/firebase/auth.service';
 import { MdlGeoLocalizacion } from './modelo/mdlGeoLocalizacion';
 import { GeolocalizacionService } from './services/db/geolocalizacion.service';
@@ -14,6 +15,9 @@ import { LoadingService } from './services/util/loading.service';
 import { AlertService } from './services/util/alert.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AngularFireStorage } from '@angular/fire/storage';
+
+import { FCM } from '@ionic-native/fcm/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -91,6 +95,9 @@ export class AppComponent {
     public geolocalizacionService: GeolocalizacionService,
     private storage: AngularFireStorage,
     public authService: AuthService,
+    private fcm: FCM,
+    private router: Router,
+    private tokenService: TokenNotifService,
   ) {
     this.initializeApp();
     events.subscribe('user:login', () => {
@@ -131,10 +138,30 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-     
       this.statusBar.styleLightContent();
       this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
+      this.fcm.subscribeToTopic('people');
+      this.fcm.getToken().then(token => {
+        console.log(token);
+        this.tokenService.set(token);
+      });
+      this.fcm.onNotification().subscribe(data => {
+        console.log(data);
+        if (data.wasTapped) {
+          console.log('Received in background');
+          this.router.navigate([data.landing_page, data.price]);
+        } else {
+          console.log('Received in foreground');
+          this.router.navigate([data.landing_page, data.price]);
+        }
+      });
+
+      this.fcm.onTokenRefresh().subscribe(token => {
+        console.log(token);
+      });
+
+
       this.sesionService.getSesion()
         .then(conductora => {
           if (conductora) {
