@@ -1,3 +1,5 @@
+/// <reference types='@types/googlemaps' />
+import { NavParamService } from './../../services/nav-param.service';
 import { Observable } from 'rxjs';
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
@@ -12,6 +14,8 @@ import { SesionService } from 'src/app/services/sesion.service';
 import { MdlConductora } from 'src/app/modelo/mldConductora';
 import { TerminarCarreraPage } from '../terminar-carrera/terminar-carrera.page';
 import { ClientePage } from '../cliente/cliente.page';
+
+declare var google: any;
 
 @Component({
   selector: 'app-detalle-carrera',
@@ -40,6 +44,7 @@ export class DetalleCarreraPage implements OnInit {
     public carreraService:CarreraService,
     public sesionService:SesionService,
     public modalController: ModalController,
+    public navParams: NavParamService
   ) { }
 
   ngOnInit() {
@@ -115,7 +120,6 @@ export class DetalleCarreraPage implements OnInit {
         map: map,
         icon: 'assets/image/pin-flag.png'
       }));
-    
   }
   calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlngIni, myLatlngFin): Observable<any> {
       return Observable.create((observer) => {
@@ -149,33 +153,18 @@ export class DetalleCarreraPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  irWhatsApp(){
+  irWhatsApp() {
     this.iab.create('https://api.whatsapp.com/send?phone=591' + this.cliente.cel + '&text=Hola', '_system', 'location=yes');
   }
-  iniciarCarrera() {
-    this.iab.create('http://www.google.com/maps/dir/'
-                    + this.carrera.latInicio
-                    + ','
-                    + this.carrera.longInicio
-                    + '/'
-                    + this.carrera.latFin
-                    + ','
-                    + this.carrera.longFin
-                    + '/@'
-                    + this.carrera.latInicio
-                    + ','
-                    + this.carrera.longInicio
-                    + ',12z/data=!4m2!4m1!3e0', '_system', 'location=yes');
-  }
 
-  async showOpcionesCarrera(){
-    let opciones:any[]=[];
+  async showOpcionesCarrera() {
+    let opciones:any[] = [];
     opciones.push({
       text: 'Cancelar',
       icon: 'close',
       role: 'cancel',
       handler: () => {
-        
+
       }
     });
     if(this.carrera.estado == 2
@@ -198,7 +187,16 @@ export class DetalleCarreraPage implements OnInit {
         text: 'Empezar Carrera',
         icon: 'compass',
         handler: () => {
-          this.marcarEnCamino();
+          this.marcarEmpezarCarrera();
+        }
+      });
+    }
+    if (this.conductora.admin) {
+      opciones.push({
+        text: 'Modificar Carrera',
+        icon: 'compass',
+        handler: () => {
+          this.modificarCarrera();
         }
       });
     }
@@ -232,7 +230,7 @@ export class DetalleCarreraPage implements OnInit {
     await actionSheet.present();
   }
 
-  tomarCarrera(){
+  tomarCarrera() {
     this.carreraService.tomarCarrera(this.conductora,this.carrera)
       .then(()=>{
         this.alertService.present('Información','Se asignó correctamente.')
@@ -241,27 +239,64 @@ export class DetalleCarreraPage implements OnInit {
             .then(()=>{
               this.cerrar();
             });
-          })
+          });
       });
   }
-  
   dejarCarrera() {
     this.carreraService.dejarCarrera(this.carrera)
-      .then(()=>{
+      .then(() => {
         this.alertService.present('Información','Dejaste la carrera :(.')
-          .then(()=>{
+          .then(() => {
             this.cerrar();
-          })
+          });
       });
   }
   marcarEnCamino() {
     this.carreraService.enCaminoCarrera(this.carrera)
-    .then(()=>{
+    .then(() => {
+
+      navigator.geolocation.getCurrentPosition((resp) => {
+        const myLatlng = { lat: resp.coords.latitude, lng: resp.coords.longitude};
+        let respuesta = 'http://www.google.com/maps/dir/'
+          + myLatlng.lat
+          + ','
+          + myLatlng.lng
+          + '/'
+          + this.carrera.latInicio
+          + ','
+          + this.carrera.longInicio
+          + '/@'
+          + myLatlng.lat
+          + ','
+          + myLatlng.lng
+          + ',12z/data=!4m2!4m1!3e0';
+        this.iab.create(respuesta, '_system', 'location=yes');
+       });
+      
       this.alertService.present('Información','Avisaste que vas en camino. :D')
-        .then(()=>{
+        .then(() => {
           this.cerrar();
-        })
+        });
     });
+  }
+  marcarEmpezarCarrera() {
+    navigator.geolocation.getCurrentPosition((resp) => {
+      const myLatlng = { lat: resp.coords.latitude, lng: resp.coords.longitude};
+      let respuesta = 'http://www.google.com/maps/dir/'
+        + myLatlng.lat
+        + ','
+        + myLatlng.lng
+        + '/'
+        + this.carrera.latFin
+        + ','
+        + this.carrera.longFin
+        + '/@'
+        + myLatlng.lat
+        + ','
+        + myLatlng.lng
+        + ',12z/data=!4m2!4m1!3e0';
+        this.iab.create(respuesta, '_system', 'location=yes');
+     });
   }
 
   async irTerminarCarrera() {
@@ -288,5 +323,10 @@ export class DetalleCarreraPage implements OnInit {
       }
     });
     return await modal.present();
+  }
+  public modificarCarrera() {
+    this.navParams.set(this.carrera);
+    this.navController.navigateForward('/mod-carrera');
+    this.cerrar();
   }
 }

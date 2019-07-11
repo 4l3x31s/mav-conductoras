@@ -33,28 +33,28 @@
 
       <ion-item>
         <ion-label position="stacked">Fecha Nacimiento</ion-label>
-        <ion-datetime display-format="DD/MM/YYYY" formControlName="vfechanac" [(ngModel)]="conductora.fechaNac"></ion-datetime>
+        <ion-datetime [ngModelOptions]="{standalone: true}" display-format="DD/MM/YYYY" [(ngModel)]="conductora.fechaNac"></ion-datetime>
       </ion-item>
-      <print-error [control]="f.vfechanac"></print-error>
+      <!-- <print-error [control]="f.vfechanac"></print-error> -->
 
       <ion-item>
         <ion-label position="stacked">CI</ion-label>
-        <ion-input formControlName="vci" [(ngModel)]="conductora.ci"></ion-input>
+        <ion-input [ngModelOptions]="{standalone: true}" [(ngModel)]="conductora.ci"></ion-input>
       </ion-item>
-      <print-error [control]="f.vci"></print-error>
+      <!-- <print-error [control]="f.vci"></print-error> -->
 
       <ion-item>
         <ion-label position="stacked">Género</ion-label>
-        <ion-select placeholder="Selecionar uno" formControlName="vgenero" [(ngModel)]="conductora.genero">
+        <ion-select [ngModelOptions]="{standalone: true}" placeholder="Selecionar uno" [(ngModel)]="conductora.genero">
           <ion-select-option value="F">Femenino</ion-select-option>
           <ion-select-option value="M">Masculino</ion-select-option>
         </ion-select>
       </ion-item>
-      <print-error [control]="f.vgenero"></print-error>
+      <!-- <print-error [control]="f.vgenero"></print-error> -->
 
       <ion-item>
         <ion-label position="stacked">Tipo Licencia</ion-label>
-        <ion-select placeholder="Selecione un valor" formControlName="vtipolicencia"
+        <ion-select [ngModelOptions]="{standalone: true}" placeholder="Selecione un valor" 
           [(ngModel)]="conductora.tipoLicencia">
           <ion-select-option value="A">A</ion-select-option>
           <ion-select-option value="B">B</ion-select-option>
@@ -62,13 +62,13 @@
           <ion-select-option value="P">P</ion-select-option>
         </ion-select>
       </ion-item>
-      <print-error [control]="f.vtipolicencia"></print-error>
+      <!-- <print-error [control]="f.vtipolicencia"></print-error> -->
       
       <ion-item>
         <ion-label position="stacked">Teléfono Fijo</ion-label>
-        <ion-input type="number" formControlName="vtelefono" [(ngModel)]="conductora.telefono"></ion-input>
+        <ion-input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="conductora.telefono"></ion-input>
       </ion-item>
-      <print-error [control]="f.vtelefono"></print-error>
+      <!-- <print-error [control]="f.vtelefono"></print-error> -->
 
       <ion-item>
         <ion-label position="stacked">Celular</ion-label>
@@ -104,15 +104,15 @@
 
       <ion-item>
         <ion-label position="stacked">Dirección</ion-label>
-        <ion-input formControlName="vdireccion" [(ngModel)]="conductora.direccion"></ion-input>
+        <ion-input [ngModelOptions]="{standalone: true}" [(ngModel)]="conductora.direccion"></ion-input>
       </ion-item>
-      <print-error [control]="f.vdireccion"></print-error>
+      <!-- <print-error [control]="f.vdireccion"></print-error> -->
 
       <ion-item>
         <ion-label position="stacked">Número de Residencia</ion-label>
-        <ion-input type="number" formControlName="vnroresidencia" [(ngModel)]="conductora.nroResidencia"></ion-input>
+        <ion-input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="conductora.nroResidencia"></ion-input>
       </ion-item>
-      <print-error [control]="f.vnroresidencia"></print-error>
+      <!-- <print-error [control]="f.vnroresidencia"></print-error> -->
       
       <ion-item (click)="irGetCroquis()">
         <ion-label>
@@ -171,13 +171,13 @@
       </ion-item>
     </ion-list>
     <div padding>
-      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
+      <ion-button color="verdec" expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
         Grabar
       </ion-button>
     </div>
   </form>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="conductora.id">
-    <ion-fab-button (click)="showOpcionesConductora()">
+    <ion-fab-button color="verdec" (click)="showOpcionesConductora()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

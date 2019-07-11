@@ -14,6 +14,12 @@ export class CarreraService {
   constructor(public afDB: AngularFireDatabase) {
     this.rootRef = this.afDB.database.ref();
   }
+  crearCarrera(mdlCarrera: MdlCarrera): Promise<any> {
+    if(!mdlCarrera.id){
+      mdlCarrera.id = Date.now();
+    }
+   return this.afDB.database.ref('carrera/' + mdlCarrera.id).set(mdlCarrera);
+ }
   insertarCarrera(carrera: MdlCarrera): Promise<any> {
     if (!carrera.id) {
       carrera.id = Date.now();
@@ -70,4 +76,13 @@ export class CarreraService {
   listCarreras() {
     return this.afDB.list<MdlCarrera>('carrera').valueChanges();
   }
+
+  getCarreraSesion(): MdlCarrera {
+    return new MdlCarrera(
+      null, null, null, null, null,
+      null, null, null, null, null,
+      null, null, null, null, null,
+      null, null, null, null, null,
+      null, null, null,null, null, null);
+    }
 }

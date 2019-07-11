@@ -23,7 +23,9 @@ export class MdlCarrera {
         public estado: number, // 1: pendiente, 2: aceptado, 3 terminado
         public nombreCliente: string,
         public nombreConductora: string,
-        public enCamino: boolean
+        public enCamino: boolean,
+        public ciudad: string,
+        public pais: string
     ) {
 
     }
