@@ -42,14 +42,18 @@ export class LoginPage implements OnInit {
         this.sesionService.crearSesionBase()
         .then(() => {
           this.sesionService.getSesion()
-            .then((conductora)=>{
+            .subscribe((conductora)=>{
               if(conductora){
-                this.navController.navigateRoot('/home');
+                if (conductora.admin){
+                  this.navController.navigateRoot('/home-admin');
+                } else {
+                  this.navController.navigateRoot('/home');
+                }
               }
               this.loadingService.dismiss();
-            })
-            .catch(e=>{
-              console.log(e);
+            },
+            error=>{
+              console.log(error);
               this.loadingService.dismiss();
               this.alertService.present('Error', 'Error al obtener la sesion.');
             });

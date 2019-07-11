@@ -66,7 +66,7 @@ export class DetalleCarrerasPage implements OnInit {
     this.loadingService.present()
     .then(() => {
       this.sesionService.getSesion()
-        .then(conductora => {
+        .subscribe(conductora => {
           this.conductora = conductora;
           this.carreraService.getCarrerasPorConductora(this.conductora.id)
             .subscribe(carreras => {
@@ -89,9 +89,9 @@ export class DetalleCarrerasPage implements OnInit {
               this.alertService.present('Error', 'Error al recuperar las carreras.');
               this.navController.navigateRoot('/login');
             })
-        })
-        .catch(e => {
-          console.error(e);
+        },
+        error => {
+          console.error(error);
           this.alertService.present('Error', 'Error al recuperar sesion.');
           this.navController.navigateRoot('/login');
         })

@@ -201,7 +201,7 @@ export class DetalleConductoraPage implements OnInit {
     }
     this.obtenerParametros();
     this.sesionService.getSesion()
-      .then(conductora => {
+      .subscribe(conductora => {
         if (conductora && conductora.admin) {
           this.isSesionAdmin = true;
         }

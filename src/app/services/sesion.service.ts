@@ -52,12 +52,22 @@ export class SesionService {
     });
   }
 
-  getSesion(): Promise<MdlConductora> {
-    if(environment.isSesionPrueba){
-      return Promise.resolve(this.conductoraSesionPrueba);
-    } else {
-      return this.sqlite.getConductoraSesion();
-    }
+  getSesion() : Observable<MdlConductora>{
+    return new Observable<MdlConductora>(observer => {
+      if(environment.isSesionPrueba){
+        observer.next(this.conductoraSesionPrueba);
+        observer.complete();
+      } else {
+        this.sqlite.getConductoraSesion()
+          .then(idConductora=>{
+            this.conductoraService.getConductora(idConductora)
+              .subscribe(conductora => {
+                observer.next(conductora);
+                observer.complete();
+              });
+          });
+      }
+    });
   }
 
   crearSesionBase(): Promise<any> {
@@ -75,10 +85,5 @@ export class SesionService {
     } else {
       return this.sqlite.removeConductoraSesion();
     }
-  }
-  
-  async isAdmin() {
-    let conductora = await this.getSesion();
-    return conductora && conductora.admin;
   }
 }

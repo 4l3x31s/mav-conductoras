@@ -104,7 +104,7 @@ export class AppComponent {
   loggedIn() {
     console.log("logged in");
     this.sesionService.getSesion()
-      .then(conductora=>{
+      .subscribe(conductora=>{
         this.conductoraService.getConductora(conductora.id)
           .subscribe( conductora => {
             this.conductora = conductora;
@@ -136,7 +136,7 @@ export class AppComponent {
       this.statusBar.backgroundColorByHexString('#c2185b');
       this.splashScreen.hide();
       this.sesionService.getSesion()
-        .then(conductora => {
+        .subscribe(conductora => {
           if (conductora) {
             this.conductoraService.getConductora(conductora.id)
             .subscribe( conductora => {

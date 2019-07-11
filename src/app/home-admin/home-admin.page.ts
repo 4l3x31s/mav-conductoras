@@ -20,13 +20,16 @@ export class HomeAdminPage implements OnInit {
     this.sesionService.crearSesionBase()
       .then(() => {
         this.sesionService.getSesion()
-          .then((conductora) => {
+          .subscribe((conductora) => {
             if (conductora) {
               this.conductora = conductora;
             } else {
               this.navController.navigateRoot('/login');
             }
           });
+      })
+      .catch(e=>{
+        alert('error crearSesionBase:'+JSON.stringify(e));
       });
   }
 

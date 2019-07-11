@@ -44,7 +44,7 @@ export class DetalleGananciasPage implements OnInit {
     this.loadingService.present()
     .then(() => {
       this.sesionService.getSesion()
-        .then(conductora => {
+        .subscribe(conductora => {
           this.conductora = conductora;
           
           this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
