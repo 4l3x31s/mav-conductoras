@@ -51,7 +51,7 @@ export class DetalleCarrerasPage implements OnInit {
   }
 
   async handleEventClick(event) {
-    let carreraSeleccionada : MdlCarrera = this.carreras.find(x => x.id === event.event.extendedProps.idCarrera);
+    let carreraSeleccionada: MdlCarrera = this.carreras.find(x => x.id === event.event.extendedProps.idCarrera);
 
     const modal = await this.modalController.create({
       component: DetalleCarreraPage,
@@ -59,7 +59,7 @@ export class DetalleCarrerasPage implements OnInit {
         carrera: carreraSeleccionada
       }
     });
-    modal.onDidDismiss().then(()=>{
+    modal.onDidDismiss().then(() => {
       this.cargarDatos();
     });
     return await modal.present();
@@ -67,46 +67,45 @@ export class DetalleCarrerasPage implements OnInit {
 
   public cargarDatos() {
     this.loadingService.present()
-    .then(() => {
-      if (this.navParams.get().conductora) {
-        this.conductora = this.navParams.get().conductora;
-        this.obtenerCarreras();
-      } else {
-        this.sesionService.getSesion()
-        .then(conductora => {
-          this.conductora = conductora;
+      .then(() => {
+        if (this.navParams.get().conductora) {
+          this.conductora = this.navParams.get().conductora;
           this.obtenerCarreras();
-        })
-        .catch(e => {
-          console.error(e);
-          this.alertService.present('Error', 'Error al recuperar sesion.');
-          this.navController.navigateRoot('/login');
-        });
-      }
-    });
+        } else {
+          this.sesionService.getSesion()
+            .subscribe(conductora => {
+              this.conductora = conductora;
+              this.obtenerCarreras();
+            }, error => {
+              console.error(error);
+              this.alertService.present('Error', 'Error al recuperar sesion.');
+              this.navController.navigateRoot('/login');
+            });
+        }
+      });
   }
   obtenerCarreras() {
     this.carreraService.getCarrerasPorConductora(this.conductora.id)
-            .subscribe(carreras => {
-              this.loadingService.dismiss();
-              this.carreras = carreras;
-              this.calendarEvents = [];
-              if (this.carreras && this.carreras.length > 0) {
-                this.carreras.forEach(element => {
-                  this.calendarEvents = this.calendarEvents.concat({
-                    title: element.nombreCliente,
-                    start: element.fechaInicio,
-                    idCarrera: element.id,
-                    backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
-                  });
-                });
-                console.log(this.calendarEvents);
-              }
-            },
-            error => {
-              console.error(error);
-              this.alertService.present('Error', 'Error al recuperar las carreras.');
-              this.navController.navigateRoot('/login');
+      .subscribe(carreras => {
+        this.loadingService.dismiss();
+        this.carreras = carreras;
+        this.calendarEvents = [];
+        if (this.carreras && this.carreras.length > 0) {
+          this.carreras.forEach(element => {
+            this.calendarEvents = this.calendarEvents.concat({
+              title: element.nombreCliente,
+              start: element.fechaInicio,
+              idCarrera: element.id,
+              backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
             });
+          });
+          console.log(this.calendarEvents);
+        }
+      },
+      error => {
+        console.error(error);
+        this.alertService.present('Error', 'Error al recuperar las carreras.');
+        this.navController.navigateRoot('/login');
+      });
   }
 }

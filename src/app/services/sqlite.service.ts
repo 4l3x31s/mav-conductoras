@@ -42,32 +42,8 @@ export class SqliteService {
             "delete from conductora_sesion"
           ]);
           udpates.push([
-            "insert into conductora_sesion values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            [ conductora.id,
-              conductora.nombre,
-              conductora.materno,
-              conductora.paterno,
-              conductora.fechaNac,
-              conductora.ci,
-              conductora.tipoLicencia,
-              conductora.direccion,
-              conductora.genero,
-              conductora.nroCtaBancaria,
-              conductora.telefono,
-              conductora.celular,
-              conductora.nroResidencia,
-              conductora.user,
-              conductora.email,
-              conductora.pass,
-              conductora.lat,
-              conductora.long,
-              conductora.pais,
-              conductora.ciudad,
-              conductora.ui,
-              conductora.foto,
-              conductora.admin,
-              conductora.estado,
-            ]
+            "insert into conductora_sesion values(?)",
+            [ conductora.id ]
           ]);
           return db.sqlBatch(udpates)
               .then(() => {
@@ -82,41 +58,16 @@ export class SqliteService {
       });
   }
 
-  getConductoraSesion(): Promise<MdlConductora> {
+  getConductoraSesion(): Promise<number> {
     return this.getDB()
       .then((db: SQLiteObject) => {
         return db.executeSql('select * from conductora_sesion', [])
           .then((data) => {
-            let conductora: MdlConductora;
+            let idConductora: number;
             if (data.rows.length > 0) {
-              conductora = new MdlConductora(
-                data.rows.item(0).id,
-                data.rows.item(0).nombre,
-                data.rows.item(0).paterno,
-                data.rows.item(0).materno,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                this.tokenService.get(),
-                null,
-                data.rows.item(0).admin,
-                data.rows.item(0).estado,
-              );
+              idConductora=data.rows.item(0).id;
             }
-            return Promise.resolve(conductora);
+            return Promise.resolve(idConductora);
           })
           .catch(e => {
             return Promise.reject(e);
@@ -129,30 +80,7 @@ export class SqliteService {
       .then((db: SQLiteObject) => {
         let ddl=[];
         ddl.push([
-        `create table IF NOT EXISTS conductora_sesion (
-            id,
-            nombre,
-            paterno,
-            materno,
-            fechaNac,
-            ci,
-            tipoLicencia,
-            direccion,
-            genero,
-            nroCtaBancaria,
-            telefono,
-            celular,
-            nroResidencia,
-            user,
-            email,
-            pass,
-            lat,
-            long,
-            pais,
-            ciudad,
-            foto,
-            admin,
-            estado)`, []
+        `create table IF NOT EXISTS conductora_sesion (id)`, []
         ]);
         return db.sqlBatch(ddl)
           .then(() => {

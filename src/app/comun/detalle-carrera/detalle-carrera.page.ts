@@ -54,7 +54,7 @@ export class DetalleCarreraPage implements OnInit {
           .subscribe(cliente=>{
             this.cliente = cliente;
             this.sesionService.getSesion()
-            .then(conductora=>{
+            .subscribe(conductora=>{
               this.conductora=conductora;
               this.initAutocomplete();
               this.loadingService.dismiss();
