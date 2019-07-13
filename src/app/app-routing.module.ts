@@ -41,6 +41,7 @@ const routes: Routes = [
   { path: 'cliente', loadChildren: './comun/cliente/cliente.module#ClientePageModule' },
   { path: 'reporte', loadChildren: './admin/reporte/reporte.module#ReportePageModule' },
   { path: 'mod-carrera', loadChildren: './admin/mod-carrera/mod-carrera.module#ModCarreraPageModule' },
+  { path: 'calendario-carrera', loadChildren: './comun/calendario-carrera/calendario-carrera.module#CalendarioCarreraPageModule' },
 
 
 ];
