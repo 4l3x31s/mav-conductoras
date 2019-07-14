@@ -156,6 +156,17 @@ export class RegClientesPage implements OnInit {
         }
       },
       {
+        text: 'Carreras Cliente',
+        icon: 'cash',
+        handler: () => {
+          console.log('Share clicked');
+          this.navParams.set({
+            cliente: this.cliente
+          });
+          this.navController.navigateForward('/calendario-carrera');
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',

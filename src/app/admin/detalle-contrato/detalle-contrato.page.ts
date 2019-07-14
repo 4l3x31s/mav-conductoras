@@ -60,6 +60,8 @@ export class DetalleContratoPage implements OnInit {
     public diasArray: Array<any> = [];
 
     public lstCarreras: Array<MdlCarrera> = [];
+
+    private esVuelta: boolean = false;
     filtros = {}
     public lstConcudtorasFiltrado: MdlConductora[] = [];
     // directionsService = new google.maps.DirectionsService;
@@ -140,21 +142,23 @@ export class DetalleContratoPage implements OnInit {
         this.filtros[atributo] = val => val == valor;
         this.lstConcudtorasFiltrado = _.filter(this.lstConductoras, _.conforms(this.filtros) );
         console.log(this.lstConcudtorasFiltrado);
-      }
-    grabar() {
-        if(this.esNuevo) {
-            console.log('guardara como nuevo');
-        } else {
-            console.log('Guardara modificado');
-        }
-        if (this.lstConductoras) {
-            // TODO: Validaciones de guardado acá.
-        } else {
-            this.alertService.present('Alerta',
-                'No existe una conductora seleccionada o no existen conductoras disponibles para la radicatoria.');
-                return;
-        }
-        this.loading.present();
+    }
+    async modificarCarreras() {
+        await this.carreraService.getCarrerasPorContrato(this.contrato.id)
+        .subscribe(lisCarreras => {
+            let filtro = {};
+            filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
+            let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
+            console.log(lstCarrerasFiltrado);
+            for (const item of lstCarrerasFiltrado) {
+                this.carreraService.eliminarCarrera(item.id);
+            }
+        });
+        this.realizarContrato();
+    }
+    async realizarContrato() {
+        this.lstCarreras = [];
+        this.numDias = [];
         let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
         let fechaIMoment = moment(this.contrato.fechaInicio);
         let fechaFMoment = moment(this.contrato.fechaFin);
@@ -166,31 +170,31 @@ export class DetalleContratoPage implements OnInit {
         console.log('****************************************');
         console.log(this.diasArray);
         for (let di of this.diasArray) {
-        switch (di) {
-            case 'LU':
-            this.numDias.push(1);
-            break;
-            case 'MA':
-            this.numDias.push(2);
-            break;
-            case 'MI':
-            this.numDias.push(3);
-            break;
-            case 'JU':
-            this.numDias.push(4);
-            break;
-            case 'VI':
-            this.numDias.push(5);
-            break;
-            case 'SA':
-            this.numDias.push(6);
-            break;
-            case 'DO':
-            this.numDias.push(0);
-            break;
-            default:
-            console.log('Lo lamentamos, por el momento no disponemos de ');
-        }
+            switch (di) {
+                case 'LU':
+                this.numDias.push(1);
+                break;
+                case 'MA':
+                this.numDias.push(2);
+                break;
+                case 'MI':
+                this.numDias.push(3);
+                break;
+                case 'JU':
+                this.numDias.push(4);
+                break;
+                case 'VI':
+                this.numDias.push(5);
+                break;
+                case 'SA':
+                this.numDias.push(6);
+                break;
+                case 'DO':
+                this.numDias.push(0);
+                break;
+                default:
+                console.log('Lo lamentamos, por el momento no disponemos de ');
+            }
         }
         console.log(this.numDias);
         let carrera: MdlCarrera = new MdlCarrera(
@@ -199,8 +203,8 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null, null);
-     
-            this.filtrarContrato('id', this.contrato.idConductora);
+
+        this.filtrarContrato('id', this.contrato.idConductora);
 
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
@@ -211,6 +215,7 @@ export class DetalleContratoPage implements OnInit {
             }
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
+                console.log(numSelecDia);
                 if (numSelecDia === numDi) {
                     console.log('Genera Insert');
                     console.log(fechaModificada.format());
@@ -242,15 +247,134 @@ export class DetalleContratoPage implements OnInit {
                 }
             }
         }
+        console.log(this.lstCarreras);
+
+        for (let carrera of this.lstCarreras) {
+            carrera.idContrato = this.contrato.id;
+            await this.carreraService.crearCarreraAsync(carrera)
+            .then( carreraInsertada => {
+                console.log('inserto carrera');
+                console.log(carreraInsertada);
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }
+    async grabar() {
+        this.lstCarreras = [];
+        this.numDias = [];
+        if(this.esNuevo) {
+            console.log('guardara como nuevo');
+        } else {
+            console.log('Guardara modificado');
+        }
+        if (this.lstConductoras) {
+            // TODO: Validaciones de guardado acá.
+        } else {
+            this.alertService.present('Alerta',
+                'No existe una conductora seleccionada o no existen conductoras disponibles para la radicatoria.');
+                return;
+        }
+        this.loading.present();
+        let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
+        let fechaIMoment = moment(this.contrato.fechaInicio);
+        let fechaFMoment = moment(this.contrato.fechaFin);
+        let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
+        let dias = duracion.asDays();
+        let finalDias = dias * -1;
+        console.log(dias);
+        this.diasArray = this.contrato.dias.split(',');
+        console.log('****************************************');
+        console.log(this.diasArray);
+        for (let di of this.diasArray) {
+            switch (di) {
+                case 'LU':
+                this.numDias.push(1);
+                break;
+                case 'MA':
+                this.numDias.push(2);
+                break;
+                case 'MI':
+                this.numDias.push(3);
+                break;
+                case 'JU':
+                this.numDias.push(4);
+                break;
+                case 'VI':
+                this.numDias.push(5);
+                break;
+                case 'SA':
+                this.numDias.push(6);
+                break;
+                case 'DO':
+                this.numDias.push(0);
+                break;
+                default:
+                console.log('Lo lamentamos, por el momento no disponemos de ');
+            }
+        }
+        console.log(this.numDias);
+        let carrera: MdlCarrera = new MdlCarrera(
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null, null);
+
+            this.filtrarContrato('id', this.contrato.idConductora);
+
+        for (let i = 0; i <= finalDias; i++) {
+            let fechaModificada: any;
+            if (i === 0) {
+                fechaModificada = fechaIMoment.add(0, 'd');
+            } else {
+                fechaModificada = fechaIMoment.add(1, 'd');
+            }
+            for (let numDi of this.numDias) {
+                let numSelecDia = fechaModificada.day();
+                console.log(numSelecDia);
+                console.log('NumSecDia: ' + numSelecDia + ' NumDia: ' + numDi);
+                if (numSelecDia === numDi) {
+                    console.log('Genera Insert');
+                    console.log(fechaModificada.format());
+                    carrera = new MdlCarrera(
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        null, null, null, null, null,
+                        null, null, null, null,null, null);
+                    //carrera.id = Date.now();
+                    
+                    carrera.idConductora = Number(this.contrato.idConductora);
+                    carrera.idUsuario = this.contrato.idUsuario;
+                    carrera.latInicio = this.contrato.latOrigen;
+                    carrera.longInicio = this.contrato.longOrigen;
+                    carrera.latFin = this.contrato.latDestino;
+                    carrera.longFin = this.contrato.longDestino;
+                    carrera.costo = this.contrato.montoTotal;
+                    carrera.moneda = 'BS';
+                    carrera.descLugar = this.txtDescripcionLugar;
+                    carrera.fechaInicio = fechaModificada.format();
+                    carrera.tipoPago = this.contrato.tipoPago;
+                    carrera.estado = 2;
+                    carrera.nombreCliente = this.cliente.nombre;
+                    carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre + ' ' + this.lstConcudtorasFiltrado[0].paterno;
+                    carrera.pais = this.contrato.pais;
+                    carrera.ciudad = this.contrato.ciudad;
+                    this.lstCarreras.push(carrera);
+                }
+            }
+        }
+        this.contrato.idConductora = Number(this.contrato.idConductora);
         if (!this.contrato.id) {
             this.contrato.id = Date.now();
         }
-        this.contratoService.insertarContrato(this.contrato)
+        await this.contratoService.insertarContrato(this.contrato)
         .then( async data => {
             console.log(this.lstCarreras);
             for (let carrera of this.lstCarreras) {
                 carrera.idContrato = this.contrato.id;
-                this.carreraService.insertarCarrera(carrera)
+                await this.carreraService.crearCarreraAsync(carrera)
                 .then( carreraInsertada => {
                     console.log('inserto carrera');
                     console.log(carreraInsertada);
@@ -605,6 +729,7 @@ export class DetalleContratoPage implements OnInit {
             icon: 'share',
             handler: () => {
                 if (!this.frmContrato.invalid) {
+                    this.esVuelta = true;
                     this.contrato.id = null;
                     let latOr = this.contrato.latOrigen;
                     let lngOr = this.contrato.longOrigen;
@@ -627,10 +752,17 @@ export class DetalleContratoPage implements OnInit {
             handler: () => {
                 if (!this.frmContrato.invalid) {
                 this.contrato.id = null;
+                this.esVuelta = false;
                 this.presentAlertConfirm();
                 } else {
                     return;
                 }
+            }
+          }, {
+            text: 'Actualizar Carreras',
+            icon: 'arrow-dropright-circle',
+            handler: () => {
+                this.modificarCarreras();
             }
           },
           {
@@ -638,6 +770,7 @@ export class DetalleContratoPage implements OnInit {
             icon: 'save',
             handler: () => {
                 if (!this.frmContrato.invalid) {
+                    this.esVuelta = false;
                     this.presentAlertConfirm();
                 } else {
                     return;

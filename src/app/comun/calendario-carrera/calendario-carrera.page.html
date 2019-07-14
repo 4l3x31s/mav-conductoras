@@ -1,9 +1,26 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>calendario-carrera</ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<cabecera-back titulo="Carreras"></cabecera-back>
 <ion-content>
-
+  <full-calendar 
+    #calendar 
+    defaultView="dayGridMonth"
+    [plugins]="calendarPlugins"
+    [events]="calendarEvents"
+    (dateClick)="handleDateClick($event)"
+    (eventClick)="handleEventClick($event)"
+    [contentHeight]="'auto'"
+    [header]="{
+      left: 'title prev,today,next dayGridMonth,dayGridWeek,dayGridDay',
+      center: '',
+      right: ''
+    }"
+    [buttonText]="{
+      today:    'hoy',
+      month:    'mes',
+      week:     'semana',
+      day:      'día',
+      list:     'lista'
+    }"
+    [firstDay]="1"
+    [locale]="'es'">
+  </full-calendar>
 </ion-content>

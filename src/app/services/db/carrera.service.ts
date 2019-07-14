@@ -19,8 +19,15 @@ export class CarreraService {
       mdlCarrera.id = Date.now();
     }
    return this.afDB.database.ref('carrera/' + mdlCarrera.id).set(mdlCarrera);
- }
-  insertarCarrera(carrera: MdlCarrera): Promise<any> {
+  }
+  async crearCarreraAsync(mdlCarrera: MdlCarrera): Promise<any> {
+    if (!mdlCarrera.id) {
+      mdlCarrera.id = Date.now();
+    }
+   return await this.afDB.database.ref('carrera/' + mdlCarrera.id).set(mdlCarrera);
+  }
+
+ insertarCarrera(carrera: MdlCarrera): Promise<any> {
     if (!carrera.id) {
       carrera.id = Date.now();
     }
@@ -31,8 +38,16 @@ export class CarreraService {
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }*/
 
+  getCarrerasPorCliente(idUsuario: number): Observable<MdlCarrera[]> {
+    return this.afDB.list<MdlCarrera>('carrera',
+      ref => ref.orderByChild('idUsuario').equalTo(idUsuario)).valueChanges();
+  }
+  getCarrerasPorContrato(idContrato: number): Observable<MdlCarrera[]> {
+    return this.afDB.list<MdlCarrera>('carrera',
+      ref => ref.orderByChild('idContrato').equalTo(idContrato)).valueChanges();
+  }
   getCarrerasPorConductora(idConductora: number): Observable<MdlCarrera[]> {
-    return this.afDB.list<MdlCarrera>('carrera', 
+    return this.afDB.list<MdlCarrera>('carrera',
       ref => ref.orderByChild('idConductora').equalTo(idConductora)).valueChanges();
   }
 
@@ -67,6 +82,9 @@ export class CarreraService {
     carrera.idConductora = null;
     carrera.nombreConductora = null;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
+  eliminarCarrera(idCarrera: number) {
+    this.afDB.database.ref('carrera/' + idCarrera).remove();
   }
 
   getCarrerasPorConductoraLimite(idConductora: number, limite: number): Observable<MdlCarrera[]> {
