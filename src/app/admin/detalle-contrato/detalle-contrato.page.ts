@@ -145,7 +145,7 @@ export class DetalleContratoPage implements OnInit {
     }
     async modificarCarreras() {
         await this.carreraService.getCarrerasPorContrato(this.contrato.id)
-        .subscribe(lisCarreras => {
+        .subscribe(async lisCarreras => {
             let filtro = {};
             filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
             let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
@@ -153,8 +153,9 @@ export class DetalleContratoPage implements OnInit {
             for (const item of lstCarrerasFiltrado) {
                 this.carreraService.eliminarCarrera(item.id);
             }
-        });
-        this.realizarContrato();
+            
+        }).unsubscribe();
+        await this.realizarContrato();
     }
     async realizarContrato() {
         this.lstCarreras = [];
@@ -252,9 +253,9 @@ export class DetalleContratoPage implements OnInit {
         for (let carrera of this.lstCarreras) {
             carrera.idContrato = this.contrato.id;
             await this.carreraService.crearCarreraAsync(carrera)
-            .then( carreraInsertada => {
+            .then( async () => {
                 console.log('inserto carrera');
-                console.log(carreraInsertada);
+                return await '';
             }).catch(err => {
                 console.log(err);
             });
