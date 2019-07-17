@@ -144,8 +144,8 @@ export class DetalleContratoPage implements OnInit {
         console.log(this.lstConcudtorasFiltrado);
     }
     async modificarCarreras() {
-        await this.carreraService.getCarrerasPorContrato(this.contrato.id)
-        .subscribe(async lisCarreras => {
+        /*await this.carreraService.getCarrerasPorContrato(this.contrato.id)
+        .subscribe(lisCarreras => {
             let filtro = {};
             filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
             let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
@@ -153,9 +153,18 @@ export class DetalleContratoPage implements OnInit {
             for (const item of lstCarrerasFiltrado) {
                 this.carreraService.eliminarCarrera(item.id);
             }
-            
-        }).unsubscribe();
-        await this.realizarContrato();
+        });*/
+        await this.carreraService.getCarrerasPorContrato(this.contrato.id)
+        .then(lisCarreras => {
+            let filtro = {};
+            filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
+            let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
+            console.log(lstCarrerasFiltrado);
+            for (const item of lstCarrerasFiltrado) {
+                this.carreraService.eliminarCarrera(item.id);
+            }
+        });
+        this.realizarContrato();
     }
     async realizarContrato() {
         this.lstCarreras = [];
@@ -205,7 +214,7 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null, null);
 
-        this.filtrarContrato('id', this.contrato.idConductora);
+            this.filtrarContrato('id', this.contrato.idConductora);
 
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
@@ -217,6 +226,7 @@ export class DetalleContratoPage implements OnInit {
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
                 console.log(numSelecDia);
+                console.log('NumSecDia: ' + numSelecDia + ' NumDia: ' + numDi);
                 if (numSelecDia === numDi) {
                     console.log('Genera Insert');
                     console.log(fechaModificada.format());
@@ -248,18 +258,26 @@ export class DetalleContratoPage implements OnInit {
                 }
             }
         }
-        console.log(this.lstCarreras);
-
-        for (let carrera of this.lstCarreras) {
-            carrera.idContrato = this.contrato.id;
-            await this.carreraService.crearCarreraAsync(carrera)
-            .then( async () => {
-                console.log('inserto carrera');
-                return await '';
-            }).catch(err => {
-                console.log(err);
+        this.contrato.idConductora = Number(this.contrato.idConductora);
+       
+        await this.contratoService.insertarContrato(this.contrato)
+        .then( async data => {
+            console.log(this.lstCarreras);
+            for (let carrera of this.lstCarreras) {
+                carrera.idContrato = this.contrato.id;
+                await this.carreraService.crearCarreraAsync(carrera)
+                .then( carreraInsertada => {
+                    console.log('inserto carrera');
+                    console.log(carreraInsertada);
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+            this.loading.dismiss();
+            await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
+                await this.navController.navigateForward('/lista-clientes');
             });
-        }
+        });
     }
     async grabar() {
         this.lstCarreras = [];
