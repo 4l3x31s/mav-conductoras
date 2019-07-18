@@ -190,22 +190,22 @@ export class ModCarreraPage implements OnInit {
       this.carreraService.crearCarrera(this.carrera)
       .then(() => {
         this.loadingServices.dismiss();
-        this.alertService.present('Información','Datos guardados correctamente.');
+        this.alertService.present('Información', 'Datos guardados correctamente.');
         this.carrera = this.carreraService.getCarreraSesion();
       })
       .catch( error => {
         this.loadingServices.dismiss();
         console.log(error);
-        this.alertService.present('Error','Hubo un error al grabar los datos');
-      })
+        this.alertService.present('Error', 'Hubo un error al grabar los datos');
+      });
 
-      this.navController.navigateRoot('/calendario-carrera');
+      this.navController.navigateRoot('/home-admin');
 
   }
 
   async irMapaOrigen() {
-    
-    let ubicacion: any = { lat: this.carrera.latInicio, lng: this.carrera.longInicio};    
+
+    let ubicacion: any = { lat: this.carrera.latInicio, lng: this.carrera.longInicio};
     this.mapParamService.set(ubicacion);
     const modal = await this.modalController.create({
       component: MapaPage

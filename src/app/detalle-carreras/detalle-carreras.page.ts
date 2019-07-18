@@ -92,8 +92,12 @@ export class DetalleCarrerasPage implements OnInit {
         this.calendarEvents = [];
         if (this.carreras && this.carreras.length > 0) {
           this.carreras.forEach(element => {
+            let cadena = '';
+            if (element.estado !== 3) {
+              cadena = '*';
+            }
             this.calendarEvents = this.calendarEvents.concat({
-              title: element.nombreCliente,
+              title: cadena + element.nombreCliente,
               start: element.fechaInicio,
               idCarrera: element.id,
               backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
