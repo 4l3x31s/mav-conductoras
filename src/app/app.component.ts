@@ -150,10 +150,10 @@ export class AppComponent {
         console.log(data);
         if (data.wasTapped) {
           console.log('Received in background');
-          this.router.navigate([data.landing_page, data.price]);
+          this.router.navigate([data.landing_page]);
         } else {
           console.log('Received in foreground');
-          this.router.navigate([data.landing_page, data.price]);
+          this.router.navigate([data.landing_page]);
         }
       });
 

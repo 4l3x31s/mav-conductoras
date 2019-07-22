@@ -1,0 +1,83 @@
+
+  <ion-item>
+    <ion-label>Mes</ion-label>
+    <ion-datetime (ionChange)="filtrar()" display-format="MMM/YYYY" min="{{ minInicio }}"></ion-datetime>
+  </ion-item>
+  <ion-grid>
+    <!-- contratos -->
+    <ion-row *ngFor="let contrato of contratos">
+      <ion-col size="9" align-self-center [ngStyle]="{'color': contrato.colorCliente}" (click)="irCliente(contrato.idUsuario)">
+        {{ contrato.nombreCliente }}
+      </ion-col>
+      <ion-col size="3" align-self-center class="ion-text-right">{{contrato.total}}</ion-col>
+    </ion-row>
+    <!-- remise cobradas -->
+    <ion-row>
+      <ion-col size="8">Carreras Remise Cobradas</ion-col>
+      <ion-col size="4" class="ion-text-right">{{ totalRemiseCobrado }}</ion-col>
+    </ion-row>
+    <!-- remise depositadas -->
+    <ion-row>
+      <ion-col size="8">Carreras Remise Depositadas</ion-col>
+      <ion-col size="4" class="ion-text-right">{{totalRemiseDepositados}}</ion-col>
+    </ion-row>
+    <!-- remplazos a cobrar -->
+    <!-- 
+    <ion-row>
+      <ion-col size="8">Remplazo que debo cobrar a Carla Morales</ion-col>
+      <ion-col size="4">10</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">Remplazo que debo cobrar a Carla Morales</ion-col>
+      <ion-col size="4">30</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">Remplazo que debo cobrar a Lizet Loca</ion-col>
+      <ion-col size="4">25</ion-col>
+    </ion-row> -->
+    <!-- subtotal -->
+    <ion-row>
+      <ion-col size="8"></ion-col>
+      <ion-col size="4" class="ion-text-right" style="border-top: 1px solid black"><b>{{ totalContratos + totalRemiseCobrado + totalRemiseDepositados }}</b></ion-col>
+    </ion-row>
+    <!-- remplazos a pagar -->
+    <!-- <ion-row>
+      <ion-col size="8" style="color: red">Pago de remplazo Carla Morales</ion-col>
+      <ion-col size="4">-10</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8" style="color: red">Pago de remplazo Pamela Chu</ion-col>
+      <ion-col size="4">-30</ion-col>
+    </ion-row> -->
+    <!-- total -->
+    <!--<ion-row>
+      <ion-col size="8"></ion-col>
+      <ion-col size="4" style="border-top: 1px solid black"><b>535</b></ion-col>
+    </ion-row>-->
+  </ion-grid>
+  
+  <br/><br/>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col size="8">TOTAL</ion-col>
+      <ion-col size="4" class="ion-text-right">{{totalContratos + totalRemiseCobrado + totalRemiseDepositados}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">Carreras cobradas en efectivo</ion-col>
+      <ion-col size="4" class="ion-text-right">-{{totalRemiseCobrado}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">MAV (20%)</ion-col>
+      <ion-col size="4" class="ion-text-right">-{{ (totalContratos + totalRemiseCobrado + totalRemiseDepositados)*0.2 }}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="8">Transferencia</ion-col>
+      <ion-col size="4" class="ion-text-right" style="border-top: 1px solid black">
+          {{
+            (totalContratos + totalRemiseDepositados)-(totalContratos + totalRemiseCobrado + totalRemiseDepositados)*0.2
+          }}
+          
+      </ion-col>
+    </ion-row>
+  </ion-grid>

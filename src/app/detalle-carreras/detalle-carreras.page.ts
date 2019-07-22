@@ -31,14 +31,14 @@ export class DetalleCarrerasPage implements OnInit {
   calendarEvents: EventInput[] = [];
 
   constructor(
-    public carreraService: CarreraService,
-    public sesionService: SesionService,
-    public loadingService: LoadingService,
-    public alertService: AlertService,
-    public navController: NavController,
+    public carreraService:  CarreraService,
+    public sesionService:   SesionService,
+    public loadingService:  LoadingService,
+    public alertService:    AlertService,
+    public navController:   NavController,
     public modalController: ModalController,
-    public clienteService: ClienteService,
-    public navParams: NavParamService
+    public clienteService:  ClienteService,
+    public navParams:       NavParamService
   ) {
   }
 

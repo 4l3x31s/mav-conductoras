@@ -26,6 +26,7 @@ import { TerminarCarreraPageModule } from './comun/terminar-carrera/terminar-car
 import { IonicRatingModule } from 'ionic4-rating';
 import { ClientePageModule } from './comun/cliente/cliente.module';
 import { FCM } from '@ionic-native/fcm/ngx';
+import { HttpClientModule } from '@angular/common/http';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
@@ -43,6 +44,7 @@ export const firebaseConfig = {
   imports: [
     BrowserModule,
     IonicRatingModule,
+    HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),

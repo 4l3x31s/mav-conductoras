@@ -1,3 +1,5 @@
+import { GananciasClienteComponent } from './ganancias-cliente/ganancias-cliente.component';
+import { GananciasComponent } from './ganancias/ganancias.component';
 import { CabeceraBackComponent } from './cabecera-back/cabecera-back.component';
 
 import { NgModule } from '@angular/core';
@@ -10,6 +12,8 @@ import { CabeceraComponent } from './cabecera/cabecera.component';
   declarations: [
     PrintErrorComponent,
     CabeceraComponent,
+    GananciasComponent,
+    GananciasClienteComponent,
     CabeceraBackComponent
   ],
   imports: [
@@ -18,6 +22,8 @@ import { CabeceraComponent } from './cabecera/cabecera.component';
   exports: [
     PrintErrorComponent,
     CabeceraComponent,
+    GananciasComponent,
+    GananciasClienteComponent,
     CabeceraBackComponent
   ]
 })
