@@ -39,4 +39,8 @@ export class ContratoService {
     return this.afDB.list('contrato').valueChanges();
   }
 
+  eliminarContrato(idContrato: number) {
+    this.afDB.database.ref('contrato/' + idContrato).remove();
+  }
+
 }

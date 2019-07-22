@@ -97,7 +97,7 @@ export class DetalleCarrerasPage implements OnInit {
               cadena = '*';
             }
             this.calendarEvents = this.calendarEvents.concat({
-              title: cadena + element.nombreCliente,
+              title: cadena + ' ' + element.costo + 'Bs. ' + element.nombreCliente,
               start: element.fechaInicio,
               idCarrera: element.id,
               backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)

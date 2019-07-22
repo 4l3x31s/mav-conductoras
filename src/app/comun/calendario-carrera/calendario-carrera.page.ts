@@ -65,12 +65,13 @@ export class CalendarioCarreraPage implements OnInit {
           this.calendarEvents = [];
           if (this.carreras && this.carreras.length > 0) {
             this.carreras.forEach(element => {
+              console.log(element);
               this.calendarEvents = this.calendarEvents.concat({
-                title: 'Carrera',
+                title: element.costo + 'Bs. ' + element.nombreConductora,
                 start: element.fechaInicio,
                 idCarrera: element.id,
                 backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
-              })
+              });
             });
           }
         },

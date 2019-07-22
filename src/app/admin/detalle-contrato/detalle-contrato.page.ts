@@ -106,6 +106,7 @@ export class DetalleContratoPage implements OnInit {
     }
 
     ngOnInit() {
+        this.contrato.codigoContrato = 'MAV-LPZ-';
         this.initValidaciones();
         // this.obtenerClientes();
         this.obtenerParametros();
@@ -154,6 +155,10 @@ export class DetalleContratoPage implements OnInit {
                 this.carreraService.eliminarCarrera(item.id);
             }
         });*/
+        await this.eliminarCarrerasContrato();
+        this.realizarContrato();
+    }
+    async eliminarCarrerasContrato() {
         await this.carreraService.getCarrerasPorContrato(this.contrato.id)
         .then(lisCarreras => {
             let filtro = {};
@@ -164,7 +169,6 @@ export class DetalleContratoPage implements OnInit {
                 this.carreraService.eliminarCarrera(item.id);
             }
         });
-        this.realizarContrato();
     }
     async realizarContrato() {
         this.lstCarreras = [];
@@ -770,9 +774,9 @@ export class DetalleContratoPage implements OnInit {
             icon: 'arrow-dropright-circle',
             handler: () => {
                 if (!this.frmContrato.invalid) {
-                this.contrato.id = null;
-                this.esVuelta = false;
-                this.presentAlertConfirm();
+                    this.contrato.id = null;
+                    this.esVuelta = false;
+                    this.presentAlertConfirm();
                 } else {
                     return;
                 }
@@ -786,6 +790,18 @@ export class DetalleContratoPage implements OnInit {
           },
           {
             text: 'Guardar Modificado',
+            icon: 'save',
+            handler: () => {
+                if (!this.frmContrato.invalid) {
+                    this.esVuelta = false;
+                    this.presentAlertConfirm();
+                } else {
+                    return;
+                }
+            }
+          },
+          {
+            text: 'Eliminar Contrato',
             icon: 'save',
             handler: () => {
                 if (!this.frmContrato.invalid) {
@@ -822,8 +838,11 @@ export class DetalleContratoPage implements OnInit {
               }
             }, {
               text: 'Aceptar',
-              handler: () => {
+              handler: async () => {
                 console.log('Confirm Okay');
+                if (this.contrato.id) {
+                    await this.eliminarCarrerasContrato();
+                }
                 this.grabar();
               }
             }
@@ -831,6 +850,37 @@ export class DetalleContratoPage implements OnInit {
         });
     
         await alert.present();
+      }
+      async eliminarContratoAlert() {
+        const alert = await this.alertController.create({
+          header: 'Confirmación!',
+          message: 'Desea eliminar el contrato seleccionado?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('Confirm Cancel: blah');
+              }
+            }, {
+              text: 'Aceptar',
+              handler: async () => {
+                console.log('Confirm Okay');
+                if (this.contrato.id) {
+                    await this.eliminarCarrerasContrato();
+                }
+                this.eliminarContrato();
+              }
+            }
+          ]
+        });
+    
+        await alert.present();
+      }
+      async eliminarContrato() {
+          await this.eliminarCarrerasContrato();
+          this.contratoService.eliminarContrato(this.contrato.id);
       }
     /*
 
