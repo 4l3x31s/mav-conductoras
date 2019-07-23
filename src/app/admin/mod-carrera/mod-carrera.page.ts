@@ -142,9 +142,9 @@ export class ModCarreraPage implements OnInit {
 
   async confirmarFecha() {
     let fechaCarrera =  moment(this.carrera.fechaInicio).toObject();
-    let fechaCarreraMoment = moment(fechaCarrera);  
+    let fechaCarreraMoment = moment(fechaCarrera);
     let fechaActual = moment().format();
-    let mensaje = null;    
+    let mensaje = null;
     
     //if(fechaCarreraMoment.diff(fechaActual, 'seconds') < -120 ) {
       //this.validarHoraPeticionCarrera();
