@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { DetalleCarrerasPage } from './detalle-carreras.page';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ComponentesComunesModule } from '../componentes-comunes/componentes-comunes.module';
+import { DetalleGananciasPageModule } from '../detalle-ganancias/detalle-ganancias.module';
 
 const routes: Routes = [
   {

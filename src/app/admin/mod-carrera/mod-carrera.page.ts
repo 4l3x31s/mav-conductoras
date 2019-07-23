@@ -146,9 +146,9 @@ export class ModCarreraPage implements OnInit {
     let fechaActual = moment().format();
     let mensaje = null;    
     
-    if(fechaCarreraMoment.diff(fechaActual, 'seconds') < -120 ) {
-      this.validarHoraPeticionCarrera();
-    }else{     
+    //if(fechaCarreraMoment.diff(fechaActual, 'seconds') < -120 ) {
+      //this.validarHoraPeticionCarrera();
+    //}else{     
       const alert = await this.alertController.create({
         header: 'Confirmar',
         message: 'Desea crear la carrera en:  <br>' + 
@@ -172,7 +172,7 @@ export class ModCarreraPage implements OnInit {
       });
 
       await alert.present();
-    }
+    //}
   }
 
   public grabar(){

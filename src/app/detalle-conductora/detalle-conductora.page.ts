@@ -342,6 +342,14 @@ export class DetalleConductoraPage implements OnInit {
         }
       },
       {
+        text: 'Ganancias Conductora',
+        icon: 'car',
+        handler: () => {
+          this.navParam.set(this.conductora);
+          this.navController.navigateForward('detalle-ganancias');
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',

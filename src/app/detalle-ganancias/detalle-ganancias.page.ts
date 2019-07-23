@@ -1,3 +1,4 @@
+import { NavParamService } from './../services/nav-param.service';
 import { Component, OnInit } from '@angular/core';
 import { LoadingService } from '../services/util/loading.service';
 import { SesionService } from '../services/sesion.service';
@@ -34,20 +35,33 @@ export class DetalleGananciasPage implements OnInit {
     public carreraService: CarreraService,
     public clienteService: ClienteService,
     public modalController: ModalController,
+    public navParamService: NavParamService
   ) { }
 
   ngOnInit() {
+    if (this.navParamService.get()) {
+      this.conductora = this.navParamService.get();
+    }
     this.mes = moment().format();
     this.cargarDatos();
   }
   cargarDatos(){
     this.loadingService.present()
     .then(() => {
-      this.sesionService.getSesion()
+
+      if(this.conductora) {
+        this.obtieneGananciasCarrera();
+      } else {
+        this.sesionService.getSesion()
         .subscribe(conductora => {
           this.conductora = conductora;
-          
-          this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
+          this.obtieneGananciasCarrera();
+        });
+      }
+    });
+  }
+  obtieneGananciasCarrera() {
+    this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
             .subscribe(carreras => {
               if (carreras && carreras.length > 0) {
                 let inicio = moment(carreras[0].fechaInicio);
@@ -67,8 +81,6 @@ export class DetalleGananciasPage implements OnInit {
               }
               this.loadingService.dismiss();
             });
-        });
-    });
   }
   filtrar() {
     this.llenarDatos();

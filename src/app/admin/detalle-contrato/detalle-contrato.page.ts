@@ -804,12 +804,8 @@ export class DetalleContratoPage implements OnInit {
             text: 'Eliminar Contrato',
             icon: 'save',
             handler: () => {
-                if (!this.frmContrato.invalid) {
-                    this.esVuelta = false;
-                    this.presentAlertConfirm();
-                } else {
-                    return;
-                }
+               this.eliminarContratoAlert();
+                
             }
           },
            {

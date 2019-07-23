@@ -20,6 +20,7 @@ import { NavParamService } from '../services/nav-param.service';
   styleUrls: ['./detalle-carreras.page.scss'],
 })
 export class DetalleCarrerasPage implements OnInit {
+  
   // important!
   calendarPlugins = [dayGridPlugin, interactionPlugin];
 
