@@ -198,8 +198,8 @@ export class ModCarreraPage implements OnInit {
         console.log(error);
         this.alertService.present('Error', 'Hubo un error al grabar los datos');
       });
-
-      this.navController.navigateRoot('/home-admin');
+      this.navController.back();
+      //this.navController.navigateRoot('/home-admin');
 
   }
 
