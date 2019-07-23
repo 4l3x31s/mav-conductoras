@@ -248,7 +248,7 @@ export class ModCarreraPage implements OnInit {
   }
 
   async irMapaDestino() {
-    let ubicacion: any = { lat: this.carrera.latFin, lng: this.carrera.longFin};    
+    let ubicacion: any = { lat: this.carrera.latFin, lng: this.carrera.longFin};
     this.mapParamService.set(ubicacion);
     const modal = await this.modalController.create({
         component: MapaPage
