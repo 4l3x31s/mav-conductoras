@@ -2,14 +2,20 @@
 <ion-content>
     
   <ion-item>
-    <ion-label>Mes</ion-label>
-    <ion-datetime (ionChange)="filtrar()" display-format="MMM/YYYY" [(ngModel)]="mes" min="{{ minInicio }}"></ion-datetime>
+    <ion-label>Fecha Inicio</ion-label>
+    <ion-datetime (ionChange)="filtrar()" [(ngModel)]="fechaInicio"></ion-datetime>
   </ion-item>
+  <ion-item>
+    <ion-label>Fecha Fin</ion-label>
+    <ion-datetime (ionChange)="filtrar()" [(ngModel)]="fechaFin"></ion-datetime>
+  </ion-item>
+
   <ion-grid>
     <!-- contratos -->
     <ion-row *ngFor="let contrato of contratos">
       <ion-col size="9" align-self-center [ngStyle]="{'color': contrato.colorCliente}" (click)="irCliente(contrato.idUsuario)">
         {{ contrato.nombreCliente }}
+        <small style="color: gray"><i>(Contrato)</i></small>
       </ion-col>
       <ion-col size="3" align-self-center class="ion-text-right">{{contrato.total}}</ion-col>
     </ion-row>

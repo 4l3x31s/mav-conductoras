@@ -10,7 +10,6 @@ import { MdlCarrera } from '../modelo/mdlCarrera';
 import { ClienteService } from '../services/db/cliente.service';
 import { ModalController } from '@ionic/angular';
 import { ClientePage } from '../comun/cliente/cliente.page';
-import { MdlCliente } from '../modelo/mdlCliente';
 
 @Component({
   selector: 'app-detalle-ganancias',
@@ -20,13 +19,13 @@ import { MdlCliente } from '../modelo/mdlCliente';
 export class DetalleGananciasPage implements OnInit {
 
   conductora: MdlConductora;
-  mes: string;
   contratos: any[];
   totalRemiseCobrado: number = 0;
   totalRemiseDepositados: number = 0;
   totalContratos: number = 0;
-  minInicio: string;
   carreras: MdlCarrera[];
+  fechaInicio: string;
+  fechaFin: string;
 
   constructor(
     public loadingService: LoadingService,
@@ -40,42 +39,21 @@ export class DetalleGananciasPage implements OnInit {
 
   ngOnInit() {
     if (this.navParamService.get()) {
-      this.conductora = this.navParamService.get();
+      this.conductora = this.navParamService.get().conductora;
     }
-    this.mes = moment().format();
     this.cargarDatos();
   }
   cargarDatos(){
     this.loadingService.present()
     .then(() => {
-
-      if(this.conductora) {
-        this.obtieneGananciasCarrera();
-      } else {
-        this.sesionService.getSesion()
-        .subscribe(conductora => {
-          this.conductora = conductora;
-          this.obtieneGananciasCarrera();
-        });
-      }
+      this.obtieneGananciasCarrera();
     });
   }
   obtieneGananciasCarrera() {
-    this.carreraService.getCarrerasPorConductoraLimite(this.conductora.id, 200)
+    this.carreraService.getCarrerasPorConductora(this.conductora.id)
             .subscribe(carreras => {
               if (carreras && carreras.length > 0) {
-                let inicio = moment(carreras[0].fechaInicio);
-                if (inicio.isBefore(moment())) {
-                  inicio = moment(carreras[0].fechaInicio).add(1, 'months');
-                  if (inicio.isAfter(moment())) {
-                    inicio = moment(carreras[0].fechaInicio).subtract(1, 'months');
-                  }
-                }
-                this.minInicio = inicio.format('YYYY') + '-' + inicio.format('MM') + '-01';
-
                 this.carreras = carreras;
-                this.llenarDatos();
-
               } else {
                 this.carreras = undefined;
               }
@@ -83,7 +61,9 @@ export class DetalleGananciasPage implements OnInit {
             });
   }
   filtrar() {
-    this.llenarDatos();
+    if(this.fechaInicio && this.fechaFin){
+      this.llenarDatos();
+    }
   }
   llenarDatos() {
     this.contratos = undefined;
@@ -92,10 +72,18 @@ export class DetalleGananciasPage implements OnInit {
     this.totalContratos = 0;
     if (this.carreras) {
       this.carreras.forEach(carrera => {
+        if(carrera.estado==3){
+          console.log('carrera.fechaInicio',carrera.fechaInicio);
+          console.log('carrera.fechaFin',carrera.fechaFin);
+          
+          console.log('this.fechaInicio',this.fechaInicio);
+          console.log('this.fechaFin',this.fechaFin);
+        }
         if (carrera.estado == 3
-          && carrera.idConductora == this.conductora.id
-          && moment(carrera.fechaInicio).format('M') == moment(this.mes).format('M')) {
-          if (carrera.idContrato) {
+          && moment(carrera.fechaInicio).isAfter(this.fechaInicio)
+          && moment(carrera.fechaInicio).isSameOrBefore(this.fechaFin)) {
+            
+            if (carrera.idContrato) {
             this.adicionarContrato(carrera);
           } else {
             if (carrera.tipoPago == 'Efectivo') {
@@ -129,7 +117,7 @@ export class DetalleGananciasPage implements OnInit {
         colorCliente: this.clienteService.getColorPorCliente(carrera.idUsuario),
         total: parseInt(aux)
       });
-      this.totalContratos = parseInt(aux);
+      this.totalContratos += parseInt(aux);
     }
   }
   adicionarRemiseCobrado(carrera: MdlCarrera) {
@@ -140,19 +128,6 @@ export class DetalleGananciasPage implements OnInit {
     let aux:any=carrera.costo;
     this.totalRemiseDepositados += parseInt(aux);
   }
-  /*irCliente(idUsuario){
-    this.clienteService.getCliente(idUsuario)
-      .subscribe(cliente=>{
-        this.modalController.create({
-          component: ClientePage,
-          componentProps: { 
-            cliente: cliente
-          }
-        }).then(modal=>{
-          modal.present();
-        });
-      });
-  }*/
   async irCliente(idUsuario){
     this.clienteService.getCliente(idUsuario)
       .subscribe(async cliente=>{
@@ -163,7 +138,7 @@ export class DetalleGananciasPage implements OnInit {
           }
         });
         modal.onDidDismiss().then(()=>{
-          this.cargarDatos();
+          this.llenarDatos();
         });
         return await modal.present();
       });
