@@ -1,5 +1,5 @@
 import { AuthService } from './../services/firebase/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
 import { MdlConductora } from '../modelo/mldConductora';
 import { ConductoraService } from '../services/db/conductora.service';
@@ -19,7 +19,8 @@ import { TokenNotifService } from '../services/token-notif.service';
   templateUrl: './detalle-conductora.page.html',
   styleUrls: ['./detalle-conductora.page.scss'],
 })
-export class DetalleConductoraPage implements OnInit {
+export class DetalleConductoraPage implements OnInit, OnDestroy {
+  
 
   form: FormGroup;
   myclass: any;
@@ -186,6 +187,12 @@ export class DetalleConductoraPage implements OnInit {
   get f(): any { return this.form.controls; }
 
   ngOnInit() {
+    this.conductora = new MdlConductora(null,null,null,null,null,null
+      ,null,null,null,null
+      ,null,null,null,null
+      ,null,null,null,null
+      ,null,null,null,null
+      ,null,null);
     this.iniciarValidaciones();
     if (this.navParam.get() && this.navParam.get().conductora) {
       this.conductora = this.navParam.get().conductora;
@@ -370,5 +377,13 @@ export class DetalleConductoraPage implements OnInit {
     }else {
       this.navController.navigateRoot('/login');
     }
+  }
+  ngOnDestroy(): void {
+    this.conductora = new MdlConductora(null,null,null,null,null,null
+      ,null,null,null,null
+      ,null,null,null,null
+      ,null,null,null,null
+      ,null,null,null,null
+      ,null,null);
   }
 }

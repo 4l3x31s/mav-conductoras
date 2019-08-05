@@ -82,7 +82,7 @@ export class ModCarreraPage implements OnInit {
 
   }
   validarLugar() {
-    let mylocation = new google.maps.LatLng(parseFloat(this.carrera.latInicio), parseFloat(this.carrera.longInicio));
+    let mylocation = new google.maps.LatLng(this.carrera.latInicio, this.carrera.longInicio);
     let geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': mylocation}, (results, status) => {
       if (status === 'OK') {
