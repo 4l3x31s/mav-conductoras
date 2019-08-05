@@ -6,6 +6,7 @@ import { LoadingService } from '../services/util/loading.service';
 import { NavController, Events, AlertController, ToastController } from '@ionic/angular';
 import { AlertService } from '../services/util/alert.service';
 import { environment } from '../../environments/environment';
+import { NavParamService } from '../services/nav-param.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginPage implements OnInit {
     public events: Events,
     public authService: AuthService,
     public alertController: AlertController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public navParam: NavParamService
   ) { }
 
   ngOnInit() {
@@ -113,6 +115,8 @@ export class LoginPage implements OnInit {
 
   }
   registrar() {
+    // posiblemente se seteo 
+    this.navParam.set({conductora:undefined});
     this.navController.navigateForward('/detalle-conductora');
   }
   async presentToast(mensaje: string) {

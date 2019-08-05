@@ -214,13 +214,14 @@ export class AppComponent {
               .then(() => {
                 this.sesionService.cerrarSesion()
                   .then(()=>{
+                    this.conductora = undefined;
                     this.events.publish('user:logout');
                     this.loadingService.dismiss();
                     this.navController.navigateRoot('/login');
                   })
                   .catch(e=>{
                     console.log(e);
-                    this.alertService.present('Error','Error al cerrar la sesion');
+                    this.alertService.present('Error','Error al cerrar la sesion:'+JSON.stringify(e));
                     this.loadingService.dismiss();
                   })
               });
