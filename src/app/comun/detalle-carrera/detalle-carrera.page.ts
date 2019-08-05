@@ -1,3 +1,4 @@
+import { PushNotifService } from 'src/app/services/push-notif.service';
 /// <reference types='@types/googlemaps' />
 import { NavParamService } from './../../services/nav-param.service';
 import { Observable } from 'rxjs';
@@ -44,7 +45,8 @@ export class DetalleCarreraPage implements OnInit {
     public carreraService:CarreraService,
     public sesionService:SesionService,
     public modalController: ModalController,
-    public navParams: NavParamService
+    public navParams: NavParamService,
+    public pushNotifService: PushNotifService,
   ) { }
 
   ngOnInit() {
@@ -241,6 +243,31 @@ export class DetalleCarreraPage implements OnInit {
           .then(()=>{
             this.navController.navigateForward('/detalle-carreras')
             .then(()=>{
+              this.clienteService.getCliente(this.carrera.idUsuario)
+              .subscribe( data => {
+                let cliente: MdlCliente = data;
+                if (cliente.ui) {
+                  let notificaciones = {
+                    notification:{
+                      title: 'Mujeres al Volante',
+                      body: 'La carrera que solicitaste fue aceptada!!!!',
+                      sound: 'default',
+                      click_action: 'FCM_PLUGIN_ACTIVITY',
+                      icon: 'fcm_push_icon'
+                    },
+                    data: {
+                      landing_page: 'home',
+                    },
+                    to: cliente.ui,
+                    priority: 'high',
+                    restricted_package_name: ''
+                  };
+                  this.pushNotifService.postGlobal(notificaciones, '')
+                  .subscribe(response => {
+                    console.log(response);
+                  });
+                }
+              });
               this.cerrar();
             });
           });
@@ -258,7 +285,31 @@ export class DetalleCarreraPage implements OnInit {
   marcarEnCamino() {
     this.carreraService.enCaminoCarrera(this.carrera)
     .then(() => {
-
+      this.clienteService.getCliente(this.carrera.idUsuario)
+              .subscribe( data => {
+                let cliente: MdlCliente = data;
+                if (cliente.ui) {
+                  let notificaciones = {
+                    notification:{
+                      title: 'Mujeres al Volante',
+                      body: 'La coductora llegará en unos minutos!!!!',
+                      sound: 'default',
+                      click_action: 'FCM_PLUGIN_ACTIVITY',
+                      icon: 'fcm_push_icon'
+                    },
+                    data: {
+                      landing_page: 'home',
+                    },
+                    to: cliente.ui,
+                    priority: 'high',
+                    restricted_package_name: ''
+                  };
+                  this.pushNotifService.postGlobal(notificaciones, '')
+                  .subscribe(response => {
+                    console.log(response);
+                  });
+                }
+              });
       navigator.geolocation.getCurrentPosition((resp) => {
         const myLatlng = { lat: resp.coords.latitude, lng: resp.coords.longitude};
         let respuesta = 'http://www.google.com/maps/dir/'
@@ -285,6 +336,31 @@ export class DetalleCarreraPage implements OnInit {
   }
   marcarEmpezarCarrera() {
     navigator.geolocation.getCurrentPosition((resp) => {
+      this.clienteService.getCliente(this.carrera.idUsuario)
+      .subscribe( data => {
+        let cliente: MdlCliente = data;
+        if (cliente.ui) {
+          let notificaciones = {
+            notification:{
+              title: 'Mujeres al Volante',
+              body: 'La conductora marcó el inicio de la carrera!!!!',
+              sound: 'default',
+              click_action: 'FCM_PLUGIN_ACTIVITY',
+              icon: 'fcm_push_icon'
+            },
+            data: {
+              landing_page: 'home',
+            },
+            to: cliente.ui,
+            priority: 'high',
+            restricted_package_name: ''
+          };
+          this.pushNotifService.postGlobal(notificaciones, '')
+          .subscribe(response => {
+            console.log(response);
+          });
+        }
+      });
       const myLatlng = { lat: resp.coords.latitude, lng: resp.coords.longitude};
       let respuesta = 'http://www.google.com/maps/dir/'
         + myLatlng.lat
