@@ -1,9 +1,13 @@
+import { MdlCliente } from 'src/app/modelo/mdlCliente';
+import { ClienteService } from './../../services/db/cliente.service';
+import { ConductoraService } from './../../services/db/conductora.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { CarreraService } from 'src/app/services/db/carrera.service';
 import { AlertService } from 'src/app/services/util/alert.service';
+import { PushNotifService } from 'src/app/services/push-notif.service';
 
 @Component({
   selector: 'app-terminar-carrera',
@@ -22,7 +26,9 @@ export class TerminarCarreraPage implements OnInit {
     public fb: FormBuilder,
     public alertController: AlertController,
     public carreraService: CarreraService,
-    public alertService: AlertService
+    public alertService: AlertService,
+    public clienteService: ClienteService,
+    public pushNotifService: PushNotifService,
   ) { }
 
   ngOnInit() {
@@ -41,7 +47,7 @@ export class TerminarCarreraPage implements OnInit {
     });
   }
 
-  get f() { return this.form.controls; }
+  get f(): any { return this.form.controls; }
 
   cerrar() {
     this.modalCtrl.dismiss();
@@ -70,7 +76,32 @@ export class TerminarCarreraPage implements OnInit {
 
     await alert.present();
   }
-  terminar(){
+  terminar() {
+    this.clienteService.getCliente(this.carrera.idConductora)
+    .subscribe( data => {
+      let cliente: MdlCliente = data;
+      if (cliente.ui) {
+        let notificaciones = {
+          notification:{
+            title: 'Mujeres al Volante',
+            body: 'La carrera que tenias terminó!!!!',
+            sound: 'default',
+            click_action: 'FCM_PLUGIN_ACTIVITY',
+            icon: 'fcm_push_icon'
+          },
+          data: {
+            landing_page: 'home',
+          },
+          to: cliente.ui,
+          priority: 'high',
+          restricted_package_name: ''
+        };
+        this.pushNotifService.postGlobal(notificaciones, '')
+        .subscribe(response => {
+          console.log(response);
+        });
+      }
+    });
     this.carreraService.terminarCarrera(this.carrera)
       .then(()=>{
         this.alertService.present('Información','Carrera Terminada');

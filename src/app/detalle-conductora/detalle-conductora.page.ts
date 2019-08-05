@@ -343,14 +343,14 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       },
       {
         text: 'Carreras',
-        icon: 'car',
+        icon: 'wifi',
         handler: () => {
           this.irDetalleCarreras();
         }
       },
       {
         text: 'Ganancias Conductora',
-        icon: 'car',
+        icon: 'logo-usd',
         handler: () => {
           this.navParam.set(this.conductora);
           this.navController.navigateForward('detalle-ganancias');

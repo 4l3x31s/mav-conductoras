@@ -135,7 +135,7 @@ export class RegClientesPage implements OnInit {
       },
       {
         text: 'Registrar Contrato',
-        icon: 'cash',
+        icon: 'copy',
         handler: () => {
           console.log('Share clicked');
           this.navParams.set({
@@ -146,7 +146,7 @@ export class RegClientesPage implements OnInit {
       },
       {
         text: 'Lista Contratos Cliente',
-        icon: 'cash',
+        icon: 'list-box',
         handler: () => {
           console.log('Share clicked');
           this.navParams.set({
@@ -157,7 +157,7 @@ export class RegClientesPage implements OnInit {
       },
       {
         text: 'Carreras Cliente',
-        icon: 'cash',
+        icon: 'car',
         handler: () => {
           console.log('Share clicked');
           this.navParams.set({
