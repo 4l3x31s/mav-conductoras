@@ -87,7 +87,7 @@ export class HomePage implements OnInit {
                   })
                   .catch(e=>{
                     console.log(e);
-                    this.alertService.present('Error','Error al cerrar la sesion');
+                    this.alertService.present('Error','Error al cerrar la sesion 2:'+JSON.stringify(e));
                     this.loadingService.dismiss();
                   })
               });

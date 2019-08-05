@@ -95,7 +95,7 @@ export class SqliteService {
   removeConductoraSesion(): Promise<any> {
     return this.getDB()
       .then((db: SQLiteObject)=>{
-        return db.executeSql('delete from conductora_sesion');
+        return db.sqlBatch(['delete from conductora_sesion']);
       })
       .catch(e=>{
         return Promise.reject(e);
