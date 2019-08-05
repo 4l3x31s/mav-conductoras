@@ -1,3 +1,4 @@
+import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
 import { UtilService } from './../util/util.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -37,10 +38,22 @@ export class ClienteService {
     return this.afDB.object<MdlCliente>('cliente/' + id).valueChanges();
   }
 
-  getColorPorCliente(idCliente: number): string {
-    let color = localStorage.getItem('colorCliente-'+idCliente);
+  getColorPorCliente(carrera: MdlCarrera): string {
+    let color = localStorage.getItem('colorCliente-' + carrera.idUsuario);
     if(!color){
-      color = "black";
+      color = 'black';
+    }
+    if(carrera.idContrato) {
+      color = 'blue';
+    }else{
+      color = 'green';
+    }
+    return color;
+  }
+  getColorPorClienteGeneral(idCliente: number): string {
+    let color = localStorage.getItem('colorCliente-' + idCliente);
+    if(!color){
+      color = 'black';
     }
     return color;
   }

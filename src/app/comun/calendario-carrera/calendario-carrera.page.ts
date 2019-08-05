@@ -74,7 +74,7 @@ export class CalendarioCarreraPage implements OnInit {
                 title: element.costo + 'Bs. ' + nomConductora,
                 start: element.fechaInicio,
                 idCarrera: element.id,
-                backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
+                backgroundColor: this.clienteService.getColorPorCliente(element)
               });
             });
           }

@@ -43,7 +43,7 @@ export class ClientePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.codigoColorCliente = this.colores.find(x => x.codigo == this.clienteService.getColorPorCliente(this.cliente.id)).codigo;
+    this.codigoColorCliente = this.colores.find(x => x.codigo == this.clienteService.getColorPorClienteGeneral(this.cliente.id)).codigo;
   }
 
   cerrar() {

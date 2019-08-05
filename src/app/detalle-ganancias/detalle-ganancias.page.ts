@@ -114,7 +114,7 @@ export class DetalleGananciasPage implements OnInit {
         idContrato: carrera.idContrato,
         idUsuario: carrera.idUsuario,
         nombreCliente: carrera.nombreCliente,
-        colorCliente: this.clienteService.getColorPorCliente(carrera.idUsuario),
+        colorCliente: this.clienteService.getColorPorCliente(carrera),
         total: parseInt(aux)
       });
       this.totalContratos += parseInt(aux);

@@ -101,7 +101,7 @@ export class DetalleCarrerasPage implements OnInit {
               title: cadena + ' ' + element.costo + 'Bs. ' + element.nombreCliente,
               start: element.fechaInicio,
               idCarrera: element.id,
-              backgroundColor: this.clienteService.getColorPorCliente(element.idUsuario)
+              backgroundColor: this.clienteService.getColorPorCliente(element)
             });
           });
           console.log(this.calendarEvents);
