@@ -54,7 +54,12 @@
             <ion-label position="stacked">Correo</ion-label>
             <ion-input formControlName="vemail" name="vemail"  [(ngModel)]="cliente.email"></ion-input>
           </ion-item>
-          <print-error [control]="f.vemail"></print-error>    
+          <print-error [control]="f.vemail"></print-error>
+          <ion-item>
+            <ion-label >Estado Usuario</ion-label>
+            <ion-checkbox formControlName="vestado" name="vestado" color="verdec" slot="end" [(ngModel)]="cliente.estado"></ion-checkbox>
+          </ion-item>
+          <print-error [control]="f.vestado"></print-error>
         </ion-list>
         <ion-button expand="block" [disabled]="frmCliente.invalid" (click)="grabar()" color="verdec">Registrar</ion-button>
       </form>

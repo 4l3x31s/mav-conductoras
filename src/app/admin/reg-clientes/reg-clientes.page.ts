@@ -39,7 +39,7 @@ export class RegClientesPage implements OnInit {
     this.iniciarValidaciones();
     this.listarDepositos();
   }
-  get f() { return this.frmCliente.controls; }
+  get f(): any { return this.frmCliente.controls; }
   listarDepositos() {
     this.loadingServices.present();
     this.depositosService.listaDepositosPorCliente(this.cliente.id).subscribe( data => {
@@ -98,6 +98,9 @@ export class RegClientesPage implements OnInit {
         Validators.minLength(10),
         Validators.maxLength(30),
         Validators.email,
+      ]],
+      vestado: ['', [
+        Validators.required,
       ]],
     })
   }
