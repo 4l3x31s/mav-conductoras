@@ -59,6 +59,7 @@ export class DetalleContratoPage implements OnInit {
     public numDias: Array<any> = [];
     public diasArray: Array<any> = [];
 
+    public costoTotal: number = 0;
     public lstCarreras: Array<MdlCarrera> = [];
 
     private esVuelta: boolean = false;
@@ -170,6 +171,74 @@ export class DetalleContratoPage implements OnInit {
             }
         });
     }
+    obtenerCostoCarreras() {
+        this.lstCarreras = [];
+        this.numDias = [];
+        let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
+        let fechaIMoment = moment(this.contrato.fechaInicio);
+        let fechaFMoment = moment(this.contrato.fechaFin);
+        let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
+        let dias = duracion.asDays();
+        let finalDias = dias * -1;
+        console.log(dias);
+        this.diasArray = this.contrato.dias.split(',');
+        console.log('****************************************');
+        console.log(this.diasArray);
+        for (let di of this.diasArray) {
+            switch (di) {
+                case 'LU':
+                this.numDias.push(1);
+                break;
+                case 'MA':
+                this.numDias.push(2);
+                break;
+                case 'MI':
+                this.numDias.push(3);
+                break;
+                case 'JU':
+                this.numDias.push(4);
+                break;
+                case 'VI':
+                this.numDias.push(5);
+                break;
+                case 'SA':
+                this.numDias.push(6);
+                break;
+                case 'DO':
+                this.numDias.push(0);
+                break;
+                default:
+                console.log('Lo lamentamos, por el momento no disponemos de ');
+            }
+        }
+        console.log(this.numDias);
+        let enteroDias = Math.floor(finalDias);
+        let decimalDias = finalDias - enteroDias;
+        if (decimalDias < 0.5) {
+            enteroDias = enteroDias + 1;
+            finalDias = enteroDias;
+        }
+        let costoFinal = 0;
+        for (let i = 0; i <= finalDias; i++) {
+            let fechaModificada: any;
+            if (i === 0) {
+                fechaModificada = fechaIMoment.add(0, 'd');
+            } else {
+                fechaModificada = fechaIMoment.add(1, 'd');
+            }
+            for (let numDi of this.numDias) {
+                let numSelecDia = fechaModificada.day();
+                console.log(numSelecDia);
+                console.log('NumSecDia: ' + numSelecDia + ' NumDia: ' + numDi);
+                if (numSelecDia === numDi) {
+                    console.log('Genera Insert');
+                    console.log(fechaModificada.format());
+                    costoFinal = costoFinal + this.contrato.montoTotal;
+                }
+            }
+        }
+        this.costoTotal = costoFinal;
+    }
     async realizarContrato() {
         this.lstCarreras = [];
         this.numDias = [];
@@ -211,6 +280,7 @@ export class DetalleContratoPage implements OnInit {
             }
         }
         console.log(this.numDias);
+        
         let carrera: MdlCarrera = new MdlCarrera(
             null, null, null, null, null,
             null, null, null, null, null,
@@ -218,8 +288,13 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null, null);
 
-            this.filtrarContrato('id', this.contrato.idConductora);
-
+        this.filtrarContrato('id', this.contrato.idConductora);
+        let enteroDias = Math.floor(finalDias);
+        let decimalDias = finalDias - enteroDias;
+        if (decimalDias < 0.5) {
+            enteroDias = enteroDias + 1;
+            finalDias = enteroDias;
+        }
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
             if (i === 0) {
@@ -519,8 +594,7 @@ export class DetalleContratoPage implements OnInit {
             ]],
             vCodigoContrato: ['', [
                 Validators.required
-            ]]
-
+            ]],
         });
     }
 
@@ -631,6 +705,7 @@ export class DetalleContratoPage implements OnInit {
                 }, {
                     text: 'Ok',
                     handler: (data) => {
+                        
                         console.log('Confirm Ok');
                         console.log(data);
                         this.contrato.dias = null;
@@ -641,6 +716,7 @@ export class DetalleContratoPage implements OnInit {
                                 this.contrato.dias = data[i];
                             }
                         }
+                        this.obtenerCostoCarreras();
                     }
                 }
             ]

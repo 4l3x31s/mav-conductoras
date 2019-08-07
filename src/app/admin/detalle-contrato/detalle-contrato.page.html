@@ -90,6 +90,7 @@
                 <ion-label position="stacked">Monto Total</ion-label>
                 <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
             </ion-item>
+            
             <print-error [control]="f.vMontoTotal"></print-error>
             <ion-item>
                 <ion-label position="stacked">Dias</ion-label>
@@ -97,6 +98,11 @@
                            (click)="presentAlertCheckbox()" readonly></ion-input>
             </ion-item>
             <print-error [control]="f.vDias"></print-error>
+            <ion-item>
+                <ion-label position="stacked">Costo Total</ion-label>
+                <ion-input type="number" [ngModelOptions]="{standalone: true}"
+                           [(ngModel)]="costoTotal" readonly></ion-input>
+            </ion-item>
             <ion-item>
                 <ion-label position="stacked">Descripcion Lugar</ion-label>
                 <ion-textarea formControlName="vDescLugar" [(ngModel)]="txtDescripcionLugar" ></ion-textarea>
