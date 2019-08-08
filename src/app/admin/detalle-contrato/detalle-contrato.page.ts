@@ -71,6 +71,9 @@ export class DetalleContratoPage implements OnInit {
     public conductora: MdlConductora = new MdlConductora(null,null,null,null,null,null,null,null,
         null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
 
+    direccionIni: any = 'Donde te encontramos?';
+    direccionFin: any = 'A donde quieres ir?';
+
     constructor(public fb: FormBuilder,
                 public navController: NavController,
                 public navParamService: NavParamService,
@@ -617,6 +620,14 @@ export class DetalleContratoPage implements OnInit {
                 console.log(resultado.data);
                 this.contrato.latOrigen = resultado.data.lat;
                 this.contrato.longOrigen = resultado.data.lng;
+                var geocoder = new google.maps.Geocoder();
+                let mylocation = new google.maps.LatLng(this.contrato.latOrigen, this.contrato.longOrigen);
+                geocoder.geocode({'location': mylocation}, (results, status: any) => {
+                if (status === 'OK') {
+                    console.log('entra a status ok');
+                    this.processLocation(results, true);
+                }
+                });
             });
         });
     }
@@ -636,6 +647,14 @@ export class DetalleContratoPage implements OnInit {
                 console.log(resultado.data);
                 this.contrato.latDestino = resultado.data.lat;
                 this.contrato.longDestino = resultado.data.lng;
+                var geocoder = new google.maps.Geocoder();
+                let mylocation = new google.maps.LatLng(this.contrato.latDestino, this.contrato.longDestino);
+                geocoder.geocode({'location': mylocation}, (results, status: any) => {
+                    if (status === 'OK') {
+                    console.log('entra a status ok');
+                    this.processLocation(results, false);
+                    }
+                });
                 this.determinarDistanciaTiempo();
             });
         });
@@ -976,4 +995,21 @@ export class DetalleContratoPage implements OnInit {
 
 
     */
+   processLocation(location, tipo: boolean) {
+    if (location[1]) {
+      for (var i = 0; i < location.length; i++) {
+        console.log('*************************************************');
+        for (let j = 0; j < location[i].types.length; j++) {
+          if (location[i].types[j] === 'route') {
+            console.log(location[i].formatted_address);
+            if (tipo) {
+              this.direccionIni = location[i].formatted_address;
+            } else {
+              this.direccionFin = location[i].formatted_address;
+            }
+          }
+        }
+      }
+    }
+  }
 }

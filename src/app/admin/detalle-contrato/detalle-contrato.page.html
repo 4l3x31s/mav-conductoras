@@ -62,13 +62,12 @@
             </ion-item>
             <print-error [control]="f.vFechaFin"></print-error>
             <ion-item (click)="irMapaOrigen()">
-                <ion-label position="stacked">Latitud Origen</ion-label>
-                <ion-input formControlName="vLatOrigen" [(ngModel)]="contrato.latOrigen" readonly></ion-input>
-            </ion-item>
-            <print-error [control]="f.vLatOrigen"></print-error>
-            <ion-item>
-                <ion-label position="stacked">Longitud Origen</ion-label>
-                <ion-input formControlName="vLongOrigen" [(ngModel)]="contrato.longOrigen" readonly></ion-input>
+                <ion-label>
+                    <h2>Dirección Origen</h2>
+                    <p >{{ direccionIni }}</p>
+                    <!--<p >Long: {{ carrera.longInicio }}</p>-->
+                  </ion-label>
+                  <ion-icon name="locate" slot="end"></ion-icon>
             </ion-item>
             <print-error [control]="f.vLongOrigen"></print-error>
             <ion-item>
@@ -77,8 +76,12 @@
             </ion-item>
             <print-error [control]="f.vCantidadPasajeros"></print-error>
             <ion-item (click)="irMapaDestino()">
-                <ion-label position="stacked">Latitud Destino</ion-label>
-                <ion-input formControlName="vLatDestino" [(ngModel)]="contrato.latDestino" readonly></ion-input>
+                <ion-label>
+                    <h2>Dirección Destino</h2>
+                    <p >{{ direccionFin }}</p>
+                    <!--<p >Long: {{ carrera.longFin }}</p>-->
+                  </ion-label>
+                  <ion-icon name="locate" slot="end"></ion-icon>
             </ion-item>
             <print-error [control]="f.vLatDestino"></print-error>
             <ion-item>
