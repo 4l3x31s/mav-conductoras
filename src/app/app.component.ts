@@ -40,6 +40,11 @@ export class AppComponent {
       title: 'Ganancias',
       url: '/detalle-ganancias',
       icon: 'cash'
+    },
+    {
+      title: 'Deuda',
+      url: '/detalle-deuda',
+      icon: 'cash'
     }
   ];
 
