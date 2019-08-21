@@ -221,7 +221,7 @@ export class AppComponent {
                   })
                   .catch(e=>{
                     console.log(e);
-                    this.alertService.present('Error','Error al cerrar la sesion:'+JSON.stringify(e));
+                    this.alertService.present('Error', 'Error al cerrar la sesion:'+JSON.stringify(e));
                     this.loadingService.dismiss();
                   })
               });
