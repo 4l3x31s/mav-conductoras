@@ -1,0 +1,52 @@
+<cabecera titulo="Deuda"></cabecera>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Cliente</ion-label>
+      <ion-input value="{{ cliente.nombre }}" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fecha Inicio</ion-label>
+      <ion-datetime (ionChange)="filtrar()" [(ngModel)]="fechaInicio"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fecha Fin</ion-label>
+      <ion-datetime (ionChange)="filtrar()" [(ngModel)]="fechaFin"></ion-datetime>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid>
+    <!-- contratos -->
+    <ion-row *ngFor="let contrato of contratos">
+      <ion-col size="9" align-self-center>
+        {{ contrato.idContrato }}
+        <small style="color: gray"><i>(Contrato)</i></small>
+      </ion-col>
+      <ion-col size="3" align-self-center class="ion-text-right">{{contrato.total}}</ion-col>
+    </ion-row>
+    <!-- remise -->
+    <ion-row>
+      <ion-col size="8">Total Carreras Remise</ion-col>
+      <ion-col size="4" class="ion-text-right">{{ totalRemises }}</ion-col>
+    </ion-row>
+    <!-- remise pagadas efectivo -->
+    <ion-row>
+      <ion-col size="8">Total Carreras Remise Pagadas</ion-col>
+      <ion-col size="4" class="ion-text-right">{{totalRemisesPagados}}</ion-col>
+    </ion-row>
+    <!-- depositos -->
+    <ion-row>
+      <ion-col size="8">Total Depositos</ion-col>
+      <ion-col size="4" class="ion-text-right">{{totalDepositos}}</ion-col>
+    </ion-row>
+    <!-- TOTAL FINAL -->
+    <ion-row>
+      <ion-col size="8">TOTAL DEUDA</ion-col>
+      <ion-col size="4" class="ion-text-right" style="border-top: 1px solid black">
+        <b>{{
+          (totalContratos + totalRemises)-(totalRemisesPagados + totalDepositos)
+        }}</b>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

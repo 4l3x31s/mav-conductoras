@@ -72,13 +72,6 @@ export class DetalleGananciasPage implements OnInit {
     this.totalContratos = 0;
     if (this.carreras) {
       this.carreras.forEach(carrera => {
-        if(carrera.estado==3){
-          console.log('carrera.fechaInicio',carrera.fechaInicio);
-          console.log('carrera.fechaFin',carrera.fechaFin);
-          
-          console.log('this.fechaInicio',this.fechaInicio);
-          console.log('this.fechaFin',this.fechaFin);
-        }
         if (carrera.estado == 3
           && moment(carrera.fechaInicio).isAfter(this.fechaInicio)
           && moment(carrera.fechaInicio).isSameOrBefore(this.fechaFin)) {
