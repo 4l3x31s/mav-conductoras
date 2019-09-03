@@ -65,7 +65,6 @@ export class CalendarioCarreraPage implements OnInit {
           this.calendarEvents = [];
           if (this.carreras && this.carreras.length > 0) {
             this.carreras.forEach(element => {
-              console.log(element);
               let nomConductora = '';
               if(element.nombreConductora) {
                 nomConductora = element.nombreConductora;
@@ -87,7 +86,6 @@ export class CalendarioCarreraPage implements OnInit {
   }
 
   handleDateClick(event) {
-    console.log(event);
   }
 
   async handleEventClick(event) {

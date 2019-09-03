@@ -69,7 +69,7 @@
                   </ion-label>
                   <ion-icon name="locate" slot="end"></ion-icon>
             </ion-item>
-            <print-error [control]="f.vLongOrigen"></print-error>
+            
             <ion-item>
                 <ion-label position="stacked">Cantidad de Pasajeros</ion-label>
                 <ion-input formControlName="vCantidadPasajeros" [(ngModel)]="contrato.cantidadPasajeros"></ion-input>
@@ -83,12 +83,8 @@
                   </ion-label>
                   <ion-icon name="locate" slot="end"></ion-icon>
             </ion-item>
-            <print-error [control]="f.vLatDestino"></print-error>
-            <ion-item>
-                <ion-label position="stacked">Longitud Destino</ion-label>
-                <ion-input formControlName="vLongDestino" [(ngModel)]="contrato.longDestino" readonly></ion-input>
-            </ion-item>
-            <print-error [control]="f.vLongDestino"></print-error>
+           
+           
             <ion-item>
                 <ion-label position="stacked">Monto Total</ion-label>
                 <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>

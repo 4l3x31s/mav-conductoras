@@ -26,7 +26,6 @@ export class ReportePage implements OnInit {
     this.carreraService.listCarreras().subscribe(data => {
       this.lstCarreras = data;
       this.lstCarrerasFiltrado = this.filtrarContrato('estado', 3);
-      console.log(this.lstCarrerasFiltrado);
     });
   }
   public filtrarContrato(atributo: string, valor: any): any {

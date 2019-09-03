@@ -98,8 +98,7 @@ export class DetalleContratoPage implements OnInit {
         if (navParams.get().contrato) {
             this.esNuevo = false;
             this.contrato = this.navParams.get().contrato;
-            console.log('******************************');
-            console.log(this.contrato);
+            
         } else {
             this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
@@ -120,7 +119,7 @@ export class DetalleContratoPage implements OnInit {
     }
 
     filtrarCiudades(event) {
-        console.log(event);
+        
         this.lstCiudadesFiltrado = this.lstParametros.filter(
             parametros => parametros.pais.indexOf(event) > -1
         );
@@ -137,8 +136,7 @@ export class DetalleContratoPage implements OnInit {
                     this.lstConductoras = conductora;
                     this.dataUtilService.set(this.lstConductoras);
                 }
-                console.log('datos conductoras');
-                console.log(this.lstConductoras);
+                
             }, error => {
                 this.lstConductoras = undefined;
             });
@@ -146,19 +144,10 @@ export class DetalleContratoPage implements OnInit {
     public filtrarContrato(atributo: string, valor: any) {
         this.filtros[atributo] = val => val == valor;
         this.lstConcudtorasFiltrado = _.filter(this.lstConductoras, _.conforms(this.filtros) );
-        console.log(this.lstConcudtorasFiltrado);
+        
     }
     async modificarCarreras() {
-        /*await this.carreraService.getCarrerasPorContrato(this.contrato.id)
-        .subscribe(lisCarreras => {
-            let filtro = {};
-            filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
-            let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
-            console.log(lstCarrerasFiltrado);
-            for (const item of lstCarrerasFiltrado) {
-                this.carreraService.eliminarCarrera(item.id);
-            }
-        });*/
+        
         await this.eliminarCarrerasContrato();
         this.realizarContrato();
     }
@@ -168,7 +157,6 @@ export class DetalleContratoPage implements OnInit {
             let filtro = {};
             filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
             let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
-            console.log(lstCarrerasFiltrado);
             for (const item of lstCarrerasFiltrado) {
                 this.carreraService.eliminarCarrera(item.id);
             }
@@ -183,10 +171,9 @@ export class DetalleContratoPage implements OnInit {
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
         let dias = duracion.asDays();
         let finalDias = dias * -1;
-        console.log(dias);
+        
         this.diasArray = this.contrato.dias.split(',');
-        console.log('****************************************');
-        console.log(this.diasArray);
+        
         for (let di of this.diasArray) {
             switch (di) {
                 case 'LU':
@@ -211,10 +198,10 @@ export class DetalleContratoPage implements OnInit {
                 this.numDias.push(0);
                 break;
                 default:
-                console.log('Lo lamentamos, por el momento no disponemos de ');
+                break;
             }
         }
-        console.log(this.numDias);
+        
         let enteroDias = Math.floor(finalDias);
         let decimalDias = finalDias - enteroDias;
         if (decimalDias < 0.5) {
@@ -231,11 +218,8 @@ export class DetalleContratoPage implements OnInit {
             }
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
-                console.log(numSelecDia);
-                console.log('NumSecDia: ' + numSelecDia + ' NumDia: ' + numDi);
+
                 if (numSelecDia === numDi) {
-                    console.log('Genera Insert');
-                    console.log(fechaModificada.format());
                     costoFinal = costoFinal + this.contrato.montoTotal;
                 }
             }
@@ -251,10 +235,9 @@ export class DetalleContratoPage implements OnInit {
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
         let dias = duracion.asDays();
         let finalDias = dias * -1;
-        console.log(dias);
+      
         this.diasArray = this.contrato.dias.split(',');
-        console.log('****************************************');
-        console.log(this.diasArray);
+
         for (let di of this.diasArray) {
             switch (di) {
                 case 'LU':
@@ -279,10 +262,10 @@ export class DetalleContratoPage implements OnInit {
                 this.numDias.push(0);
                 break;
                 default:
-                console.log('Lo lamentamos, por el momento no disponemos de ');
+                break;
             }
         }
-        console.log(this.numDias);
+        
         
         let carrera: MdlCarrera = new MdlCarrera(
             null, null, null, null, null,
@@ -307,11 +290,8 @@ export class DetalleContratoPage implements OnInit {
             }
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
-                console.log(numSelecDia);
-                console.log('NumSecDia: ' + numSelecDia + ' NumDia: ' + numDi);
+             
                 if (numSelecDia === numDi) {
-                    console.log('Genera Insert');
-                    console.log(fechaModificada.format());
                     carrera = new MdlCarrera(
                         null, null, null, null, null,
                         null, null, null, null, null,
@@ -341,18 +321,16 @@ export class DetalleContratoPage implements OnInit {
             }
         }
         this.contrato.idConductora = Number(this.contrato.idConductora);
-       
+       this.contrato.codigoContrato = this.contrato.codigoContrato + '-' + this.contrato.id;
         await this.contratoService.insertarContrato(this.contrato)
         .then( async data => {
-            console.log(this.lstCarreras);
+            
             for (let carrera of this.lstCarreras) {
                 carrera.idContrato = this.contrato.id;
                 await this.carreraService.crearCarreraAsync(carrera)
                 .then( carreraInsertada => {
-                    console.log('inserto carrera');
-                    console.log(carreraInsertada);
                 }).catch(err => {
-                    console.log(err);
+                    
                 });
             }
             this.loading.dismiss();
@@ -365,9 +343,9 @@ export class DetalleContratoPage implements OnInit {
         this.lstCarreras = [];
         this.numDias = [];
         if(this.esNuevo) {
-            console.log('guardara como nuevo');
+            
         } else {
-            console.log('Guardara modificado');
+            
         }
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
@@ -383,10 +361,9 @@ export class DetalleContratoPage implements OnInit {
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
         let dias = duracion.asDays();
         let finalDias = dias * -1;
-        console.log(dias);
+       
         this.diasArray = this.contrato.dias.split(',');
-        console.log('****************************************');
-        console.log(this.diasArray);
+        
         for (let di of this.diasArray) {
             switch (di) {
                 case 'LU':
@@ -411,10 +388,10 @@ export class DetalleContratoPage implements OnInit {
                 this.numDias.push(0);
                 break;
                 default:
-                console.log('Lo lamentamos, por el momento no disponemos de ');
+                break;
             }
         }
-        console.log(this.numDias);
+     
         let carrera: MdlCarrera = new MdlCarrera(
             null, null, null, null, null,
             null, null, null, null, null,
@@ -433,11 +410,8 @@ export class DetalleContratoPage implements OnInit {
             }
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
-                console.log(numSelecDia);
-                console.log('NumSecDia: ' + numSelecDia + ' NumDia: ' + numDi);
+                
                 if (numSelecDia === numDi) {
-                    console.log('Genera Insert');
-                    console.log(fechaModificada.format());
                     carrera = new MdlCarrera(
                         null, null, null, null, null,
                         null, null, null, null, null,
@@ -470,17 +444,15 @@ export class DetalleContratoPage implements OnInit {
         if (!this.contrato.id) {
             this.contrato.id = Date.now();
         }
+        this.contrato.codigoContrato = this.contrato.codigoContrato + this.contrato.id;
         await this.contratoService.insertarContrato(this.contrato)
         .then( async data => {
-            console.log(this.lstCarreras);
+        
             for (let carrera of this.lstCarreras) {
                 carrera.idContrato = this.contrato.id;
                 await this.carreraService.crearCarreraAsync(carrera)
                 .then( carreraInsertada => {
-                    console.log('inserto carrera');
-                    console.log(carreraInsertada);
                 }).catch(err => {
-                    console.log(err);
                 });
             }
             this.loading.dismiss();
@@ -506,7 +478,7 @@ export class DetalleContratoPage implements OnInit {
         await this.parametrosService.listarParametros().subscribe(data => {
             // this.loading.dismiss();
             this.lstParametros = Object.assign(data);
-            console.log(data);
+     
             this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
                 .map(id => {
                     return {
@@ -514,7 +486,7 @@ export class DetalleContratoPage implements OnInit {
                         pais: this.lstParametros.find(s => s.pais === id).pais,
                     };
                 });
-            console.log(this.lstPaisesFiltrados);
+           
             if(this.contrato.id) {
                 this.filtrarCiudades(this.contrato.pais);
                 this.filtrarConductoras(this.contrato.ciudad);
@@ -562,19 +534,7 @@ export class DetalleContratoPage implements OnInit {
             vFechaFin: ['', [
                 Validators.required,
             ]],
-            vLatOrigen: ['', [
-                Validators.required,
-            ]],
-            vLongOrigen: ['', [
-                Validators.required,
-            ]],
             vCantidadPasajeros: ['', [
-                Validators.required,
-            ]],
-            vLatDestino: ['', [
-                Validators.required,
-            ]],
-            vLongDestino: ['', [
                 Validators.required,
             ]],
             vMontoTotal: ['', [
@@ -617,14 +577,14 @@ export class DetalleContratoPage implements OnInit {
         }).then(dato => {
             dato.present();
             dato.onDidDismiss().then(resultado => {
-                console.log(resultado.data);
+                
                 this.contrato.latOrigen = resultado.data.lat;
                 this.contrato.longOrigen = resultado.data.lng;
                 var geocoder = new google.maps.Geocoder();
                 let mylocation = new google.maps.LatLng(this.contrato.latOrigen, this.contrato.longOrigen);
                 geocoder.geocode({'location': mylocation}, (results, status: any) => {
                 if (status === 'OK') {
-                    console.log('entra a status ok');
+                    
                     this.processLocation(results, true);
                 }
                 });
@@ -644,14 +604,14 @@ export class DetalleContratoPage implements OnInit {
         }).then(dato => {
             dato.present();
             dato.onDidDismiss().then(resultado => {
-                console.log(resultado.data);
+       
                 this.contrato.latDestino = resultado.data.lat;
                 this.contrato.longDestino = resultado.data.lng;
                 var geocoder = new google.maps.Geocoder();
                 let mylocation = new google.maps.LatLng(this.contrato.latDestino, this.contrato.longDestino);
                 geocoder.geocode({'location': mylocation}, (results, status: any) => {
                     if (status === 'OK') {
-                    console.log('entra a status ok');
+                   
                     this.processLocation(results, false);
                     }
                 });
@@ -719,14 +679,13 @@ export class DetalleContratoPage implements OnInit {
                     role: 'cancel',
                     cssClass: 'secondary',
                     handler: () => {
-                        console.log('Confirm Cancel');
+                        
                     }
                 }, {
                     text: 'Ok',
                     handler: (data) => {
                         
-                        console.log('Confirm Ok');
-                        console.log(data);
+                        
                         this.contrato.dias = null;
                         for (let i = 0; i < data.length; i++) {
                             if (this.contrato.dias) {
@@ -748,7 +707,7 @@ export class DetalleContratoPage implements OnInit {
         return Observable.create((observer) => {
             this.distance.getDistanceMatrix(req, (rsp, status) => {
                 // status checking goes here
-                console.log(status);
+              
                 observer.next(rsp);
                 observer.complete();
             });
@@ -756,7 +715,6 @@ export class DetalleContratoPage implements OnInit {
     }
 
     public async determinarDistanciaTiempo() {
-        console.log('ingresa calcula tiempo');
 
         if (this.lstCiudadesFiltrado) {
             let responseMatrix: google.maps.DistanceMatrixRequest;
@@ -784,7 +742,6 @@ export class DetalleContratoPage implements OnInit {
             );*/
             let datos = this.getDistanceMatrix(responseMatrix);
             datos.subscribe(data => {
-                console.log(data);
                 let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
                     parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
                 );
@@ -796,10 +753,10 @@ export class DetalleContratoPage implements OnInit {
                         const element = results[j];
                         const distance = element.distance.value;
                         const time = element.duration.value;
-                        console.log(distance, time);
+                        
                         // calcular costos UBER: https://calculouber.netlify.com/
                         let montoFinal: number = Math.round((ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia))* ciudadParametro[0].tarifaDinamica + ciudadParametro[0].cuotaSolicitud);
-                        console.log(montoFinal);
+                        
                         if (montoFinal < 10) {
                             this.contrato.montoTotal = 10;
                         } else {
@@ -814,9 +771,7 @@ export class DetalleContratoPage implements OnInit {
     }
 
     async callBack(response: any, status: any) {
-        console.log('entra acá');
-        console.log(response);
-        console.log(status);
+        
         /*let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
           parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
         );*/
@@ -829,10 +784,6 @@ export class DetalleContratoPage implements OnInit {
                     const element = results[j];
                     const distance = element.distance.value;
                     const time = element.duration.value;
-                    console.log(distance, time);
-                    // let montoFinal: number = (ciudadParametro[0].base + (element.duration.value * ciudadParametro[0].tiempo) + (element.distance.value * ciudadParametro[0].distancia));
-                    // console.log(montoFinal);
-                    // this.contrato.montoTotal = montoFinal;
                     return await {distance: distance, time: time};
                 }
             }
@@ -908,7 +859,7 @@ export class DetalleContratoPage implements OnInit {
             icon: 'close',
             role: 'cancel',
             handler: () => {
-              console.log('Cancel clicked');
+              
             }
           }]
         });
@@ -925,12 +876,10 @@ export class DetalleContratoPage implements OnInit {
               role: 'cancel',
               cssClass: 'secondary',
               handler: (blah) => {
-                console.log('Confirm Cancel: blah');
               }
             }, {
               text: 'Aceptar',
               handler: async () => {
-                console.log('Confirm Okay');
                 if (this.contrato.id) {
                     await this.eliminarCarrerasContrato();
                 }
@@ -952,12 +901,10 @@ export class DetalleContratoPage implements OnInit {
               role: 'cancel',
               cssClass: 'secondary',
               handler: (blah) => {
-                console.log('Confirm Cancel: blah');
               }
             }, {
               text: 'Aceptar',
               handler: async () => {
-                console.log('Confirm Okay');
                 if (this.contrato.id) {
                     await this.eliminarCarrerasContrato();
                 }
@@ -998,10 +945,8 @@ export class DetalleContratoPage implements OnInit {
    processLocation(location, tipo: boolean) {
     if (location[1]) {
       for (var i = 0; i < location.length; i++) {
-        console.log('*************************************************');
         for (let j = 0; j < location[i].types.length; j++) {
           if (location[i].types[j] === 'route') {
-            console.log(location[i].formatted_address);
             if (tipo) {
               this.direccionIni = location[i].formatted_address;
             } else {

@@ -54,7 +54,6 @@ export class ListaFeriadosPage implements OnInit {
         text: 'Nuevo Feriado',
         icon: 'calendar',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             feriado: null
           });
@@ -66,7 +65,6 @@ export class ListaFeriadosPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });

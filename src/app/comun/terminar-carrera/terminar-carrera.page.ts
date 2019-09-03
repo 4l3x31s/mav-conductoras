@@ -98,7 +98,6 @@ export class TerminarCarreraPage implements OnInit {
         };
         this.pushNotifService.postGlobal(notificaciones, '')
         .subscribe(response => {
-          console.log(response);
         });
       }
     });

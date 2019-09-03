@@ -232,7 +232,6 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
           });
           this.filtrarCiudades(this.lstParametros[0].pais);
         }, error => {
-          console.log(error);
         });
       });
   }
@@ -264,7 +263,6 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         })
         .catch(error => {
           this.loadingService.dismiss();
-          console.log(error);
           this.alertService.present('Error', 'Hubo un error al grabar los datos');
           this.navController.navigateRoot('/home');
         });
@@ -284,13 +282,11 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
           })
           .catch(error => {
             this.loadingService.dismiss();
-            console.log(error);
             this.alertService.present('Error', 'Hubo un error al grabar los datos');
             this.navController.navigateRoot('/home');
           });
         }, error => {
           this.loadingService.dismiss();
-          console.log(error);
           this.alertService.present('Error', 'Hubo un error al grabar los datos');
           this.navController.navigateRoot('/home');
         });

@@ -111,7 +111,6 @@ export class DetalleCarreraPage implements OnInit {
     directionsDisplay.setMap(map);
     let respuesta = this.calculateAndDisplayRoute(directionsService, directionsDisplay, myLatlngIni, myLatlngFin);
     respuesta.subscribe(data => {
-      console.log(data);
     });
     let markers = [];
     markers.push(new google.maps.Marker
@@ -144,17 +143,7 @@ export class DetalleCarreraPage implements OnInit {
         });
       });
   }
-  /*respuestaRoute(response, status): Observable<any> {
-    return Observable.create((observer) => {
-      if (status === 'OK') {
-        directionsDisplay.setDirections(response);
-      } else {
-        window.alert('Directions request failed due to ' + status);
-      }
-      observer.next(response);
-      observer.complete();
-    });
-  }*/
+ 
   cerrar() {
     this.modalCtrl.dismiss();
   }
@@ -264,7 +253,6 @@ export class DetalleCarreraPage implements OnInit {
                   };
                   this.pushNotifService.postGlobal(notificaciones, '')
                   .subscribe(response => {
-                    console.log(response);
                   });
                 }
               });
@@ -306,7 +294,6 @@ export class DetalleCarreraPage implements OnInit {
                   };
                   this.pushNotifService.postGlobal(notificaciones, '')
                   .subscribe(response => {
-                    console.log(response);
                   });
                 }
               });
@@ -357,7 +344,6 @@ export class DetalleCarreraPage implements OnInit {
           };
           this.pushNotifService.postGlobal(notificaciones, '')
           .subscribe(response => {
-            console.log(response);
           });
         }
       });

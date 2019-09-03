@@ -37,11 +37,12 @@ export class DetalleDeudaPage implements OnInit {
 
   ngOnInit() {
     //ini TODO quitar
-    this.navParam.set({cliente:new MdlCliente(
+    /*this.navParam.set({cliente:new MdlCliente(
       1559758003416, 'Veronica Paredes', '5967540 LP', 'Vino Tinto', 'japaza', 'japaza', 
       2306334, 70505938, 'antoniojuan777@gmail.com', 'xxx', true
     )});
-    //fin TODO quitar
+    //fin TODO quitar*/
+    
     if (this.navParam.get() && this.navParam.get().cliente) {
       this.cliente = this.navParam.get().cliente;
     } else {

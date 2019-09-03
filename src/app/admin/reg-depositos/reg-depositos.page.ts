@@ -70,7 +70,6 @@ export class RegDepositosPage implements OnInit {
       })
       .catch( error => {
         this.loadingServices.dismiss();
-        console.log(error);
         this.alertService.present('Error', 'Hubo un error al grabar los datos.');
         this.navController.navigateRoot('/home');
       });

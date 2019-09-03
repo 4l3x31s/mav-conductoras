@@ -64,7 +64,6 @@ export class ModCarreraPage implements OnInit {
   ) {
       this.carrera = this.navParams.get();
       this.fechaMin = moment().format('YYYY-MM-DD');
-      console.log(this.carrera);
       this.carrera.moneda = 'Bolivianos';
       this.validarLugar();
       this.distance = new google.maps.DistanceMatrixService();
@@ -77,7 +76,6 @@ export class ModCarreraPage implements OnInit {
       this.cliente = cliente;
       this.determinarDistanciaTiempo();
     }, error => {
-      console.log(error);
     })
 
   }
@@ -86,7 +84,6 @@ export class ModCarreraPage implements OnInit {
     let geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': mylocation}, (results, status) => {
       if (status === 'OK') {
-            console.log('entra a status ok');
             this.processLocation(results);
           }
     })
@@ -94,15 +91,14 @@ export class ModCarreraPage implements OnInit {
   public filtrarContrato(atributo: string, valor: any) {
     this.filtros[atributo] = val => val == valor;
     this.lstConcudtorasFiltrado = _.filter(this.lstConductoras, _.conforms(this.filtros) );
-    console.log(this.lstConcudtorasFiltrado);
   }
   processLocation(location) {
     if (location[1]) {
       for (var i = 0; i < location.length; i++) {
         if (location[i].types[0] === 'locality') {
+          console.log(location[i]);
           this.ciudad = location[i].address_components[0].short_name;
-          this.pais = location[i].address_components[2].long_name;
-          console.log(this.ciudad, this.pais);
+          this.pais = location[i].address_components[3].long_name;
           this.seleccionarCiudad();
           this.obtenerParametros();
           this.parametrosPorPais(this.pais);
@@ -146,9 +142,7 @@ export class ModCarreraPage implements OnInit {
     let fechaActual = moment().format();
     let mensaje = null;
     
-    //if(fechaCarreraMoment.diff(fechaActual, 'seconds') < -120 ) {
-      //this.validarHoraPeticionCarrera();
-    //}else{     
+      
       const alert = await this.alertController.create({
         header: 'Confirmar',
         message: 'Desea crear la carrera en:  <br>' + 
@@ -185,7 +179,7 @@ export class ModCarreraPage implements OnInit {
     this.carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre
                                     + this.lstConcudtorasFiltrado[0].paterno
                                     + this.lstConcudtorasFiltrado[0].materno;
-    //console.log('idcarrera: ' + identificadorPrueba);
+
 
       this.carreraService.crearCarrera(this.carrera)
       .then(() => {
@@ -195,7 +189,6 @@ export class ModCarreraPage implements OnInit {
       })
       .catch( error => {
         this.loadingServices.dismiss();
-        console.log(error);
         this.alertService.present('Error', 'Hubo un error al grabar los datos');
       });
       this.navController.back();
@@ -212,7 +205,6 @@ export class ModCarreraPage implements OnInit {
     }).then( dato => {
       dato.present();
       dato.onDidDismiss().then(resultado => {
-        console.log('irMapaOrigen(): ' + resultado.data);
         this.carrera.latInicio = resultado.data.lat;
         this.carrera.longInicio = resultado.data.lng;
         //calcular costo
@@ -221,7 +213,6 @@ export class ModCarreraPage implements OnInit {
     });
   }
   filtrarCiudades(event) {
-    console.log(event);
     this.lstCiudadesFiltrado = this.lstParametros.filter(
         parametros => parametros.pais.indexOf(event) > -1
     );
@@ -229,19 +220,12 @@ export class ModCarreraPage implements OnInit {
 
   seleccionarCiudad() {
     this.ciudadSeleccionada = this.ciudad;
-    console.log('dentro de...')
-    console.log(this.pais);
-    console.log(this.ciudad);
     this.conductoraService.getConductoraPorPaisCiudad(this.pais.toUpperCase(), this.ciudad.toUpperCase())
         .subscribe(conductora => {
-          console.log('Esperando...')
-          console.log(conductora);
             if (conductora) {
                 this.lstConductoras = conductora;
                 this.dataUtilService.set(this.lstConductoras);
             }
-            console.log('datos conductoras');
-            console.log(this.lstConductoras);
         }, error => {
             this.lstConductoras = undefined;
         });
@@ -255,7 +239,6 @@ export class ModCarreraPage implements OnInit {
     }).then(dato => {
         dato.present();
         dato.onDidDismiss().then(resultado => {
-          console.log('irMapaDestino(): ' + resultado.data);
           this.carrera.latFin = resultado.data.lat;
           this.carrera.longFin = resultado.data.lng;
           //calcular costo
@@ -284,12 +267,8 @@ export class ModCarreraPage implements OnInit {
         avoidHighways: false,
         avoidTolls: false
     };
-    
-    
-    console.log('parametroCarrera:--> ' , this.parametroCarrera);
     let datos = this.getDistanceMatrix(responseMatrix);
-    datos.subscribe(data => {
-        console.log(data);        
+    datos.subscribe(data => {   
         const origins = data.originAddresses;        
         for (let i = 0; i < origins.length; i++) {
             const results = data.rows[i].elements;
@@ -297,10 +276,9 @@ export class ModCarreraPage implements OnInit {
                 const element = results[j];
                 const distance = element.distance.value;
                 const time = element.duration.value;
-                console.log(distance, time);
                 // calcular costos UBER: https://calculouber.netlify.com/
                 let montoFinal: number = Math.round((this.parametroCarrera.base + ((element.duration.value / 60) * this.parametroCarrera.tiempo) + ((element.distance.value / 1000) * this.parametroCarrera.distancia))* this.parametroCarrera.tarifaDinamica + this.parametroCarrera.cuotaSolicitud);
-                console.log(montoFinal);
+               
                 if (montoFinal < 10) {
                     this.carrera.costo = 10;
                 } else {
@@ -309,7 +287,6 @@ export class ModCarreraPage implements OnInit {
             }
         }
     });
-    console.log('this.carrera.costo: ' , this.carrera.costo);
   }
 
   
@@ -325,7 +302,6 @@ export class ModCarreraPage implements OnInit {
                     pais: this.lstParametros.find(s => s.pais === id).pais,
                 };
             });
-        console.log(this.lstPaisesFiltrados);
     }, error => {
         // this.loading.dismiss();
     });
@@ -352,7 +328,6 @@ export class ModCarreraPage implements OnInit {
     return Observable.create((observer) => {
         this.distance.getDistanceMatrix(req, (rsp, status) => {
             // status checking goes here
-            console.log(status);
             observer.next(rsp);
             observer.complete();
         });

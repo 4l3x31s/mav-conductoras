@@ -33,7 +33,6 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
     this.initMap();
     this.geolocalizacionService.listarCambios().subscribe( data => {
       this.deleteMarkers();
-      console.log(data);
       this.listaGeoPosicionamiento = Object.assign(data);
       for (let geoObj of this.listaGeoPosicionamiento) {
         let image = 'assets/image/pin-mav.png';
@@ -73,16 +72,12 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
                 this.pais=geoResults1[i].long_name;
               }
             }
-            console.log(this.ciudad);
-            console.log(this.pais);
             geoResults = [];
             geoResults1 = [];
           }
         })
 
       }, (error) => {
-        console.log("error current position")
-        console.log(error);
       }, { enableHighAccuracy: true });
 
       //navigator.geolocation.clearWatch(watchID);
@@ -100,7 +95,6 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
           fullscreenControl: false
         });
       }, err => {
-        console.log(err);
       });*/
 
         this.watchID = navigator.geolocation.watchPosition((data) => {
@@ -118,7 +112,6 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
         this.addMarker(updatelocation,image);
         this.setMapOnAll(this.map);
       }, error => {
-        console.log(error);
       });
       /*let watch = this.geolocation.watchPosition();
       watch.subscribe((data) => {
@@ -128,7 +121,6 @@ export class GeoConductorasPage implements OnInit, OnDestroy {
         this.addMarker(updatelocation,image);
         this.setMapOnAll(this.map);
       }, err => {
-        console.log(err);
       });*/
   }
   addMarker(location, image) {

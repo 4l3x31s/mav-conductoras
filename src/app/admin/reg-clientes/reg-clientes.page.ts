@@ -115,7 +115,6 @@ export class RegClientesPage implements OnInit {
       })
       .catch( error => {
         this.loadingServices.dismiss();
-        console.log(error);
         this.alertService.present('Error', 'Hubo un error al grabar los datos');
         this.navController.navigateRoot('/home');
       });
@@ -128,7 +127,6 @@ export class RegClientesPage implements OnInit {
         text: 'Nuevo Deposito',
         icon: 'cash',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             cliente: this.cliente,
             deposito: null
@@ -140,7 +138,6 @@ export class RegClientesPage implements OnInit {
         text: 'Registrar Contrato',
         icon: 'copy',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             cliente: this.cliente
           });
@@ -151,7 +148,6 @@ export class RegClientesPage implements OnInit {
         text: 'Lista Contratos Cliente',
         icon: 'list-box',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             cliente: this.cliente
           });
@@ -162,7 +158,6 @@ export class RegClientesPage implements OnInit {
         text: 'Carreras Cliente',
         icon: 'car',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             cliente: this.cliente
           });
@@ -170,11 +165,20 @@ export class RegClientesPage implements OnInit {
         }
       },
       {
+        text: 'Pagos Cliente',
+        icon: 'cash',
+        handler: () => {
+          this.navParams.set({
+            cliente: this.cliente
+          });
+          this.navController.navigateForward('/detalle-deuda');
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });

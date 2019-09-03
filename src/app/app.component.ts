@@ -41,11 +41,6 @@ export class AppComponent {
       url: '/detalle-ganancias',
       icon: 'cash'
     },
-    {
-      title: 'Deuda',
-      url: '/detalle-deuda',
-      icon: 'cash'
-    }
   ];
 
   public appPagesAdmin = [
@@ -114,7 +109,6 @@ export class AppComponent {
   }
 
   loggedIn() {
-    console.log("logged in");
     this.sesionService.getSesion()
       .subscribe(conductora=>{
         this.conductoraService.getConductora(conductora.id)
@@ -133,10 +127,8 @@ export class AppComponent {
   loggedOut() {
     this.authService.doLogout()
     .then( () => {
-      console.log("logged out");
       this.conductora = undefined;
     }, err => {
-      console.log("logged out");
       this.conductora = undefined;
     });
   }
@@ -148,22 +140,17 @@ export class AppComponent {
       this.splashScreen.hide();
       this.fcm.subscribeToTopic('people');
       this.fcm.getToken().then(token => {
-        console.log(token);
         this.tokenService.set(token);
       });
       this.fcm.onNotification().subscribe(data => {
-        console.log(data);
         if (data.wasTapped) {
-          console.log('Received in background');
           this.router.navigate([data.landing_page]);
         } else {
-          console.log('Received in foreground');
           this.router.navigate([data.landing_page]);
         }
       });
 
       this.fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
       });
 
 
@@ -185,7 +172,6 @@ export class AppComponent {
       let mdlGeoLocalizacion: MdlGeoLocalizacion = new MdlGeoLocalizacion(this.conductora.id, data.coords.latitude, data.coords.longitude);
       this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
     }, error => {
-      console.log(error);
     });
   }
 
@@ -209,7 +195,6 @@ export class AppComponent {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            //console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Si',
@@ -225,7 +210,6 @@ export class AppComponent {
                     this.navController.navigateRoot('/login');
                   })
                   .catch(e=>{
-                    console.log(e);
                     this.alertService.present('Error', 'Error al cerrar la sesion:'+JSON.stringify(e));
                     this.loadingService.dismiss();
                   })

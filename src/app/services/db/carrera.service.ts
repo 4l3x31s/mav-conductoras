@@ -45,7 +45,7 @@ export class CarreraService {
   getCarrerasPorContrato(idContrato: number) {
 
     return this.rootRef.child('carrera').orderByChild('idContrato').equalTo(idContrato).once('value').then<MdlCarrera[]>(datos => {
-      console.log(datos.val());
+      
       return datos.val();
     });
     // this.afDB.database.ref('carrera').orderByChild('idContrato').equalTo(idContrato);

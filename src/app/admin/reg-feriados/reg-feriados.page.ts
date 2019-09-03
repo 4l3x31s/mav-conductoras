@@ -22,13 +22,12 @@ export class RegFeriadosPage implements OnInit {
     public alertCtrl: AlertController,
     public navParams: NavParamService,
   ) {
-    console.log(this.navParams.get().feriado);
+
     if (navParams.get().feriado) {
       this.feriados = this.navParams.get().feriado;
     } else {
       this.feriados = new MdlFeriado(null, null, null, null);
     }
-    console.log(this.feriados);
 
   }
   ngOnInit() {

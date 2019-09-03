@@ -30,7 +30,6 @@ export class ListaClientesPage implements OnInit {
     this.listarClientes();
   }
   seleccionarCliente(cliente: MdlCliente) {
-    console.log(cliente);
     this.irActualizarCliente(cliente);
   }
   async listarClientes() {
@@ -50,7 +49,6 @@ export class ListaClientesPage implements OnInit {
     );
   }
   public borrarCliente(cliente: MdlCliente) {
-    console.log(cliente);
   }
   irActualizarCliente(cliente) {
     this.navParams.set({
@@ -69,7 +67,6 @@ export class ListaClientesPage implements OnInit {
         text: 'Nuevo Cliente',
         icon: 'person',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             cliente: null
           });
@@ -81,7 +78,6 @@ export class ListaClientesPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });

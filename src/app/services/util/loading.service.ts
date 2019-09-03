@@ -17,7 +17,7 @@ export class LoadingService {
       const datoa: any = a;
       datoa.present().then(() => {
         if (!this.isLoading) {
-          datoa.dismiss().then(() => console.log('abort presenting'));
+          datoa.dismiss().then(() => console.log('.'));
         }
       });
     });

@@ -71,7 +71,6 @@ export class HomePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            //console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Si',
@@ -86,7 +85,6 @@ export class HomePage implements OnInit {
                     this.navController.navigateRoot('/login');
                   })
                   .catch(e=>{
-                    console.log(e);
                     this.alertService.present('Error','Error al cerrar la sesion 2:'+JSON.stringify(e));
                     this.loadingService.dismiss();
                   })
@@ -124,7 +122,6 @@ export class HomePage implements OnInit {
       let mdlGeoLocalizacion: MdlGeoLocalizacion = new MdlGeoLocalizacion(this.conductora.id, data.coords.latitude, data.coords.longitude);
       this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
     }, error => {
-      console.log(error);
     });
   }
 }

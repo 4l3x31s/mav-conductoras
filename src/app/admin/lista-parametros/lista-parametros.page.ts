@@ -55,7 +55,6 @@ export class ListaParametrosPage implements OnInit {
         text: 'Nuevo Parametro',
         icon: 'person',
         handler: () => {
-          console.log('Share clicked');
           this.navParams.set({
             parametro: null
           });
@@ -67,7 +66,6 @@ export class ListaParametrosPage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });

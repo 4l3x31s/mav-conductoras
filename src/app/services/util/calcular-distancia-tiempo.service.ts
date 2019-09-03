@@ -34,7 +34,7 @@ export class CalcularDistanciaTiempoService {
             let element = results[j];
             let distance = element.distance.text;
             let time = element.duration.text;
-            console.log(distance, time);
+            
           }
           return results;
         }
