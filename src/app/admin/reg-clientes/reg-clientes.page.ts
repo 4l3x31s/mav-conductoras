@@ -31,7 +31,7 @@ export class RegClientesPage implements OnInit {
     if (navParams.get().cliente) {
       this.cliente = this.navParams.get().cliente;
     } else {
-      this.cliente = new MdlCliente(null, null , null, null, null, null, null, null, null, null, null);
+      this.cliente = new MdlCliente(null, null , null, null, null, null, null, null, null, null, null, null, null);
     }
   }
 
