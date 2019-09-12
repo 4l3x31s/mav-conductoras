@@ -11,7 +11,7 @@
   <ion-list *ngIf="cliente">
     <ion-item *ngIf="codigoColorCliente">
       <ion-label [ngStyle]="{'color': codigoColorCliente}">Color Cliente</ion-label>
-      <ion-select placeholder="Select One" (ionChange)="cambiarColor()" [(ngModel)]="codigoColorCliente">
+      <ion-select cancelText="Cancelar" placeholder="Select One" (ionChange)="cambiarColor()" [(ngModel)]="codigoColorCliente">
         <ion-select-option value="{{color.codigo}}" *ngFor="let color of colores">{{color.descripcion}}</ion-select-option>
       </ion-select>
     </ion-item>

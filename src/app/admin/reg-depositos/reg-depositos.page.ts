@@ -58,7 +58,7 @@ export class RegDepositosPage implements OnInit {
       ]]
     });
   }
-  get f() { return this.frmDeposito.controls; }
+  get f(): any { return this.frmDeposito.controls; }
 
   public grabar() {
     this.loadingServices.present();

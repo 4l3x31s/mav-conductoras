@@ -19,7 +19,9 @@ export class MdlContrato {
         public pais: string,
         public ciudad: string,
         public codigoContrato: string,
-        public generoCarrera: boolean
+        public generoCarrera: boolean,
+        public dirOrigen: string,
+        public dirDestino: string
     ) {
 
     }

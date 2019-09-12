@@ -29,7 +29,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import { HttpClientModule } from '@angular/common/http';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
+    apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
     authDomain: 'mav-db.firebaseapp.com',
     databaseURL: 'https://mav-db.firebaseio.com',
     projectId: 'mav-db',

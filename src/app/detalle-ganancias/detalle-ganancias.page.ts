@@ -38,7 +38,8 @@ export class DetalleGananciasPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.navParamService.get()) {
+    console.log(this.navParamService.get());
+    if (this.navParamService.get().conductora) {
       this.conductora = this.navParamService.get().conductora;
     }
     this.cargarDatos();

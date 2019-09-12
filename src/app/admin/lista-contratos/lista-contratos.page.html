@@ -8,15 +8,15 @@
     <ion-grid>
       <ion-row class="cabecera-tabla">
         <ion-col size="4">Código Contrato</ion-col>
-        <ion-col size="2">Fecha Inicio</ion-col>
-        <ion-col size="3">Fecha Fin</ion-col>
-        <ion-col size="3">Monto Total</ion-col>
+        <ion-col size="3">Origen</ion-col>
+        <ion-col size="3">Destino</ion-col>
+        <ion-col size="2">Monto Total</ion-col>
       </ion-row>
       <ion-row *ngFor="let contrato of lstContratoFiltrado"  nowrap >
-        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.codigoContrato}}</ion-col>
-        <ion-col size="4" (click)="irActualizarContrato(contrato)">{{contrato.fechaInicio}}</ion-col>
-        <ion-col size="2" (click)="irActualizarContrato(contrato)">{{contrato.fechaFin}}</ion-col>
-        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.montoTotal}}</ion-col>
+        <ion-col size="4" (click)="irActualizarContrato(contrato)">{{contrato.codigoContrato}}</ion-col>
+        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.dirOrigen}}</ion-col>
+        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.dirDestino}}</ion-col>
+        <ion-col size="2" (click)="irActualizarContrato(contrato)">{{contrato.montoTotal}}</ion-col>
         
       </ion-row>
     </ion-grid>

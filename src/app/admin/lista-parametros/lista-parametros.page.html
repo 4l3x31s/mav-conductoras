@@ -4,8 +4,9 @@
     <ion-list-header color="medium">
         <ion-label>LISTA DE PARAMETROS DE COBRO</ion-label>
       </ion-list-header>
+      <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Parametro" [(ngModel)]="txtBuscarParametros" (ionChange)="filtrar()" ></ion-searchbar>
   <ion-card>
-      <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarParametros" (ionChange)="filtrar()" ></ion-searchbar>
+      
       <ion-grid>
         <ion-row class="cabecera-tabla">
           <ion-col size="4">Pais</ion-col>

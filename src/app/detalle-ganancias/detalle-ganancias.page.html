@@ -1,13 +1,13 @@
-<cabecera titulo="Ganancias"></cabecera>
+<cabecera-back titulo="Ganancias"></cabecera-back>
 <ion-content>
     
   <ion-item>
     <ion-label>Fecha Inicio</ion-label>
-    <ion-datetime (ionChange)="filtrar()" [(ngModel)]="fechaInicio"></ion-datetime>
+    <ion-datetime cancelText="Cancelar" doneText="Aceptar" (ionChange)="filtrar()" [(ngModel)]="fechaInicio"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Fecha Fin</ion-label>
-    <ion-datetime (ionChange)="filtrar()" [(ngModel)]="fechaFin"></ion-datetime>
+    <ion-datetime cancelText="Cancelar" doneText="Aceptar" (ionChange)="filtrar()" [(ngModel)]="fechaFin"></ion-datetime>
   </ion-item>
 
   <ion-grid>

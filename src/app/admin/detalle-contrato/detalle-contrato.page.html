@@ -117,11 +117,7 @@
                 </ion-select>
             </ion-item>
             <print-error [control]="f.vTipoPago"></print-error>
-            <ion-item>
-                <ion-label position="stacked">Estado Pago</ion-label>
-                <ion-input formControlName="vEstadoPago" [(ngModel)]="contrato.estadoPago"></ion-input>
-            </ion-item>
-            <print-error [control]="f.vEstadoPago"></print-error>
+           
             <ion-item>
                 <ion-label position="stacked">Estado Contrato</ion-label>
                 <ion-select interface="popover" formControlName="vEstadoContrato" placeholder="Seleccione el Estado del Contrato"

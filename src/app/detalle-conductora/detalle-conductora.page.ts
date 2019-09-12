@@ -269,6 +269,8 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       } else {
         this.authService.doRegister(this.conductora.user, this.conductora.pass)
         .then(res => {
+          console.log('registro conductoras*******************');
+          console.log(res);
           this.conductoraService.grabarConductora(this.conductora)
           .then((conductora) => {
             this.conductora = conductora;
@@ -281,14 +283,35 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
             }
           })
           .catch(error => {
+            console.log(error);
             this.loadingService.dismiss();
             this.alertService.present('Error', 'Hubo un error al grabar los datos');
             this.navController.navigateRoot('/home');
           });
         }, error => {
           this.loadingService.dismiss();
-          this.alertService.present('Error', 'Hubo un error al grabar los datos');
-          this.navController.navigateRoot('/home');
+          console.log(error);
+          if (error.code === 'auth/email-already-in-use') {
+            this.conductoraService.getConductoraPorEmail(this.conductora.email)
+            .subscribe(data => {
+              if(data.length === 0) {
+                this.conductoraService.grabarConductora(this.conductora)
+                .then(resp => {
+                  console.log(resp);
+                  this.authService.resetPassword(this.conductora.email)
+                  .then(data => {
+                    console.log(data);
+                  });
+                  this.alertService.present('Alerta', 'Se le envio un correo de confirmacion verifique su email.');
+                  this.navController.navigateRoot('/home');
+                })
+              }
+            });
+            
+          } else {
+            this.alertService.present('Error', 'Hubo un error al grabar los datos');
+            this.navController.navigateRoot('/home');
+          }
         });
       }
     });
@@ -348,7 +371,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         text: 'Ganancias Conductora',
         icon: 'logo-usd',
         handler: () => {
-          this.navParam.set(this.conductora);
+          this.navParam.set({conductora:this.conductora});
           this.navController.navigateForward('detalle-ganancias');
         }
       },
@@ -383,3 +406,5 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       ,null,null);
   }
 }
+
+

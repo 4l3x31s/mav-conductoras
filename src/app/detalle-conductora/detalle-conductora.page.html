@@ -33,7 +33,7 @@
 
       <ion-item>
         <ion-label position="stacked">Fecha Nacimiento</ion-label>
-        <ion-datetime [ngModelOptions]="{standalone: true}" display-format="DD/MM/YYYY" [(ngModel)]="conductora.fechaNac"></ion-datetime>
+        <ion-datetime cancelText="Cancelar" doneText="Aceptar" [ngModelOptions]="{standalone: true}" display-format="DD/MM/YYYY" [(ngModel)]="conductora.fechaNac"></ion-datetime>
       </ion-item>
       <!-- <print-error [control]="f.vfechanac"></print-error> -->
 
@@ -45,7 +45,7 @@
 
       <ion-item>
         <ion-label position="stacked">Género</ion-label>
-        <ion-select [ngModelOptions]="{standalone: true}" placeholder="Selecionar uno" [(ngModel)]="conductora.genero">
+        <ion-select cancelText="Cancelar" [ngModelOptions]="{standalone: true}" placeholder="Selecionar uno" [(ngModel)]="conductora.genero">
           <ion-select-option value="F">Femenino</ion-select-option>
           <ion-select-option value="M">Masculino</ion-select-option>
         </ion-select>
@@ -54,7 +54,7 @@
 
       <ion-item>
         <ion-label position="stacked">Tipo Licencia</ion-label>
-        <ion-select [ngModelOptions]="{standalone: true}" placeholder="Selecione un valor" 
+        <ion-select cancelText="Cancelar" [ngModelOptions]="{standalone: true}" placeholder="Selecione un valor" 
           [(ngModel)]="conductora.tipoLicencia">
           <ion-select-option value="A">A</ion-select-option>
           <ion-select-option value="B">B</ion-select-option>
@@ -82,7 +82,7 @@
       
       <ion-item>
         <ion-label position="stacked">Pais</ion-label>
-        <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
+        <ion-select cancelText="Cancelar" interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
           (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="conductora.pais">
           <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">
             {{parametros.pais}}

@@ -42,7 +42,7 @@ export class DetalleContratoPage implements OnInit {
     public contrato: MdlContrato = new MdlContrato(
         null, null, null, null, null, null, null, null
         , null, null, null, null, null, null, null, null
-        , null, null, null, null
+        , null, null, null, null, null, null
     );
     public lstConductoras: MdlConductora[] = [];
     public lstClientes: MdlCliente[] = [];
@@ -102,7 +102,7 @@ export class DetalleContratoPage implements OnInit {
         } else {
             this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
         this.contrato.idUsuario = this.cliente.id;
         this.contrato.fechaInicio = moment().format();
@@ -340,6 +340,8 @@ export class DetalleContratoPage implements OnInit {
         });
     }
     async grabar() {
+        this.contrato.dirOrigen = this.direccionIni;
+        this.contrato.dirDestino = this.direccionFin;
         this.lstCarreras = [];
         this.numDias = [];
         if(this.esNuevo) {
@@ -355,6 +357,7 @@ export class DetalleContratoPage implements OnInit {
                 return;
         }
         this.loading.present();
+        this.obtenerCostoCarreras();
         let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
         let fechaIMoment = moment(this.contrato.fechaInicio);
         let fechaFMoment = moment(this.contrato.fechaFin);
@@ -547,9 +550,6 @@ export class DetalleContratoPage implements OnInit {
                 Validators.required,
             ]],
             vTipoPago: ['', [
-                Validators.required,
-            ]],
-            vEstadoPago: ['', [
                 Validators.required,
             ]],
             vEstadoContrato: ['', [
