@@ -1,3 +1,4 @@
+import { MdlParametrosCarrera } from './../../modelo/mdlParametrosCarrera';
 import { DepositoService } from './../../services/db/deposito.service';
 import { MdlDepositos } from 'src/app/modelo/mdlDepositos';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -8,6 +9,9 @@ import { LoadingService } from 'src/app/services/util/loading.service';
 import { AlertService } from 'src/app/services/util/alert.service';
 import { NavController, ActionSheetController } from '@ionic/angular';
 import { NavParamService } from 'src/app/services/nav-param.service';
+import { ParametrosCarreraService } from 'src/app/services/db/parametros-carrera.service';
+import { TokenNotifService } from 'src/app/services/token-notif.service';
+import { AuthService } from 'src/app/services/firebase/auth.service';
 
 @Component({
   selector: 'app-reg-clientes',
@@ -18,6 +22,9 @@ export class RegClientesPage implements OnInit {
   frmCliente: FormGroup;
   public cliente: MdlCliente;
   public lstDepositos: MdlDepositos[] = [];
+  public lstPaisesFiltrados = [];
+  public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
+  public lstParametros: MdlParametrosCarrera [] = [];
   constructor(
     public fb: FormBuilder,
     public clienteService: ClienteService,
@@ -26,7 +33,11 @@ export class RegClientesPage implements OnInit {
     public navController: NavController,
     public navParams: NavParamService,
     public depositosService: DepositoService,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    public loadingService: LoadingService,
+    public parametrosService: ParametrosCarreraService,
+    public tokenService: TokenNotifService,
+    public authService: AuthService,
   ) {
     if (navParams.get().cliente) {
       this.cliente = this.navParams.get().cliente;
@@ -36,6 +47,7 @@ export class RegClientesPage implements OnInit {
   }
 
   ngOnInit() {
+    this.obtenerParametros();
     this.iniciarValidaciones();
     this.listarDepositos();
   }
@@ -63,16 +75,17 @@ export class RegClientesPage implements OnInit {
         Validators.minLength(4),
         Validators.maxLength(50),
       ]],
-      vci: ['', [
+      /*vci: ['', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(15),
+        Validators.pattern(/^[0-9]/),
       ]],
       vdireccion: ['', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-      ]],
+      ]],*/
       vuser: ['', [
         Validators.required,
         Validators.minLength(4),
@@ -80,18 +93,22 @@ export class RegClientesPage implements OnInit {
       ]],
       vpass: ['', [
         Validators.required,
-        Validators.minLength(4),
+        Validators.minLength(6),
         Validators.maxLength(30),
       ]],
-      vtel: ['', [
+      vconfirmPass: ['',
+       Validators.required],
+      /*vtel: ['', [
         Validators.required,
         Validators.minLength(7),
         Validators.maxLength(7),
-      ]],
+        Validators.pattern(/^[0-9]/),
+      ]],*/
       vcel: ['', [
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(15),
+        Validators.pattern(/^[0-9]/),
       ]],
       vemail: ['', [
         Validators.required,
@@ -99,26 +116,67 @@ export class RegClientesPage implements OnInit {
         Validators.maxLength(30),
         Validators.email,
       ]],
-      vestado: ['', [
+      vciudad: ['', [
         Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(30),
       ]],
-    })
+      vpais: ['', [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(30),
+      ]],
+    }, {
+      validator: this.mustMatch('vpass', 'vconfirmPass')
+    });
   }
+  mustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const matchingControl = formGroup.controls[matchingControlName];
 
-  public grabar() {
-    this.loadingServices.present();
-      this.clienteService.crearCliente(this.cliente)
-      .then(() => {
-        this.loadingServices.dismiss();
-        this.alertService.present('Info', 'Datos guardados correctamente.');
-        this.navController.navigateBack('/lista-clientes');
-      })
-      .catch( error => {
-        this.loadingServices.dismiss();
-        this.alertService.present('Error', 'Hubo un error al grabar los datos');
-        this.navController.navigateRoot('/home');
-      });
-  }
+        if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+            // return if another validator has already found an error on the matchingControl
+            return;
+        }
+
+        // set error on matchingControl if validation fails
+        if (control.value !== matchingControl.value) {
+            matchingControl.setErrors({ mustMatch: 'Las contraseñas no coinciden' });
+        } else {
+            matchingControl.setErrors(null);
+        }
+    }
+}
+public grabar(){
+  this.loadingService.present().then(() => {
+    this.cliente.user = this.cliente.email;
+    this.cliente.ui = this.tokenService.get();
+    this.cliente.estado = true;
+    if(this.cliente.ui === undefined) {
+      this.cliente.ui = null;
+    }
+    this.authService.doRegister(this.cliente.user, this.cliente.pass)
+          .then(res => {
+            this.clienteService.crearCliente(this.cliente)
+            .then((cliente) => {
+              this.cliente = cliente;
+              this.loadingService.dismiss();
+              this.alertService.present('Info', 'Datos guardados correctamente.');   // nuevo cliente
+              this.navController.navigateBack('/lista-clientes');
+            })
+            .catch(error => {
+              this.loadingService.dismiss();
+              this.alertService.present('Error', 'Hubo un error al grabar los datos');
+              this.navController.navigateRoot('/lista-clientes');
+            });
+          }, error => {
+            this.loadingService.dismiss();
+            this.alertService.present('Error', 'Hubo un error al grabar los datos');
+            this.navController.navigateRoot('/lista-clientes');
+          })
+  });
+}
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones Cliente',
@@ -183,5 +241,34 @@ export class RegClientesPage implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+
+  obtenerParametros() {
+    this.loadingService.present()
+      .then(() => {
+        this.parametrosService.listarParametros().subscribe(data => {
+          this.loadingService.dismiss();
+          this.lstParametros = Object.assign(data);
+          this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
+          .map(id => {
+            return {
+              id: id,
+              pais: this.lstParametros.find( s => s.pais === id).pais,
+            };
+          });
+          this.filtrarCiudades(this.lstParametros[0].pais);
+        }, error => {
+        });
+      });
+    
+  }
+
+  filtrarCiudades(event) {
+    this.lstCiudadesFiltrado = this.lstParametros.filter(
+      parametros => parametros.pais.indexOf(event) > -1
+    );
+  }
+  public generarUsuario(){
+    this.cliente.user = this.cliente.email;
   }
 }
