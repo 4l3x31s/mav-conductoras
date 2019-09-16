@@ -342,6 +342,15 @@ export class DetalleContratoPage implements OnInit {
         });
     }
     async grabar() {
+        if(this.direccionIni === 'Donde te encontramos?'){
+            this.alertService.present('Alerta', 'Debes ingresar la direccion de inicio.');
+            return;
+        }
+        if(this.direccionFin === 'A donde quieres ir?') {
+            this.alertService.present('Alerta', 'Debes ingresar la direccion de destino.');
+            return;
+        }
+
         this.contrato.dirOrigen = this.direccionIni;
         this.contrato.dirDestino = this.direccionFin;
         this.lstCarreras = [];
