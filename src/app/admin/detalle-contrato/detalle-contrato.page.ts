@@ -166,7 +166,8 @@ export class DetalleContratoPage implements OnInit {
         });
     }
     obtenerCostoCarreras() {
-        if(this.contrato.dias.length>0) {
+        console.log("asi funciona");
+        if(this.contrato.dias !== null && this.contrato.dias.length>0) {
         this.lstCarreras = [];
         let numeroDias =[];
         let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
@@ -230,6 +231,75 @@ export class DetalleContratoPage implements OnInit {
         }
         this.costoTotal = costoFinal;
     }
+}
+
+costoChange(event) {
+    
+    console.log("asi funciona");
+    if(this.contrato.dias !== null && this.contrato.dias.length>0) {
+    this.lstCarreras = [];
+    let numeroDias =[];
+    let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
+    let fechaIMoment = moment(this.contrato.fechaInicio);
+    let fechaFMoment = moment(this.contrato.fechaFin);
+    let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
+    let dias = duracion.asDays();
+    let finalDias = dias * -1;
+    
+    let diasObt = this.contrato.dias.split(',');
+    
+    for (let di of diasObt) {
+        switch (di) {
+            case 'LU':
+                numeroDias.push(1);
+            break;
+            case 'MA':
+                numeroDias.push(2);
+            break;
+            case 'MI':
+                numeroDias.push(3);
+            break;
+            case 'JU':
+                numeroDias.push(4);
+            break;
+            case 'VI':
+                numeroDias.push(5);
+            break;
+            case 'SA':
+                numeroDias.push(6);
+            break;
+            case 'DO':
+                numeroDias.push(0);
+            break;
+            default:
+            break;
+        }
+    }
+    
+    let enteroDias = Math.floor(finalDias);
+    let decimalDias = finalDias - enteroDias;
+    if (decimalDias < 0.5) {
+        enteroDias = enteroDias + 1;
+        finalDias = enteroDias;
+    }
+    let costoFinal = 0;
+    for (let i = 0; i <= finalDias; i++) {
+        let fechaModificada: any;
+        if (i === 0) {
+            fechaModificada = fechaIMoment.add(0, 'd');
+        } else {
+            fechaModificada = fechaIMoment.add(1, 'd');
+        }
+        for (let numDi of numeroDias) {
+            let numSelecDia = fechaModificada.day();
+
+            if (numSelecDia === numDi) {
+                costoFinal = costoFinal + parseInt(event);
+            }
+        }
+    }
+    this.costoTotal = costoFinal;
+}
 }
     async realizarContrato() {
         this.lstCarreras = [];
