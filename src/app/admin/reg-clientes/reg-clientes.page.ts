@@ -25,6 +25,7 @@ export class RegClientesPage implements OnInit {
   public lstPaisesFiltrados = [];
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstParametros: MdlParametrosCarrera [] = [];
+  public myclass: string;
   constructor(
     public fb: FormBuilder,
     public clienteService: ClienteService,
@@ -50,6 +51,12 @@ export class RegClientesPage implements OnInit {
     this.obtenerParametros();
     this.iniciarValidaciones();
     this.listarDepositos();
+    if (this.cliente.id !== null) {
+      this.myclass = "ocultar";
+      this.frmCliente.get('vconfirmPass').setValue(this.cliente.pass);
+    } else {
+      this.myclass = "mostrar";
+    }
   }
   get f(): any { return this.frmCliente.controls; }
   listarDepositos() {

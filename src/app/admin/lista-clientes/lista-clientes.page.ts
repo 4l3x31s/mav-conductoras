@@ -1,3 +1,4 @@
+import { ExcelService } from './../../services/excel.service';
 import { DepositoService } from './../../services/db/deposito.service';
 import { NavParamService } from './../../services/nav-param.service';
 import { NavController, ActionSheetController } from '@ionic/angular';
@@ -23,7 +24,8 @@ export class ListaClientesPage implements OnInit {
     public navController: NavController,
     public navParams: NavParamService,
     public actionSheetController: ActionSheetController,
-    public iab: InAppBrowser
+    public iab: InAppBrowser,
+    private excelService:ExcelService
   ) { }
 
   ngOnInit() {
@@ -74,6 +76,19 @@ export class ListaClientesPage implements OnInit {
         }
       },
       {
+        text: 'Exportar a EXCEL',
+        icon: 'document',
+        handler: () => {
+          let plataforma = this.excelService.getDevice();
+          console.log(plataforma);
+          if (plataforma === 'android' || plataforma === 'ios') {
+            this.excelService.exportarExcel(this.lstClientes);
+          } else {
+            this.exportAsXLSX();
+          }
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
@@ -83,6 +98,7 @@ export class ListaClientesPage implements OnInit {
     });
     await actionSheet.present();
   }
- 
-
+  exportAsXLSX():void {
+    this.excelService.exportAsExcelFile(this.lstClientes, 'sample');
+ }
 }

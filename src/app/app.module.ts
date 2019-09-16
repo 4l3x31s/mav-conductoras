@@ -27,6 +27,9 @@ import { IonicRatingModule } from 'ionic4-rating';
 import { ClientePageModule } from './comun/cliente/cliente.module';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { HttpClientModule } from '@angular/common/http';
+import { ExcelService } from './services/excel.service';
+import {File} from '@ionic-native/file/ngx';
+import { Device } from '@ionic-native/device/ngx';
 
 export const firebaseConfig = {
     apiKey: 'AIzaSyCC22o8Imks6DbAf4DXrxgtW_wPE6XYLHs',
@@ -67,7 +70,10 @@ export const firebaseConfig = {
     Geolocation,
     InAppBrowser,
     LocalNotifications,
+    ExcelService,
     FCM,
+    File,
+    Device,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

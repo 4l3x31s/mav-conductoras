@@ -163,8 +163,9 @@ export class DetalleContratoPage implements OnInit {
         });
     }
     obtenerCostoCarreras() {
+        if(this.contrato.dias.length>0) {
         this.lstCarreras = [];
-        this.numDias = [];
+        let numeroDias =[];
         let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
         let fechaIMoment = moment(this.contrato.fechaInicio);
         let fechaFMoment = moment(this.contrato.fechaFin);
@@ -172,30 +173,30 @@ export class DetalleContratoPage implements OnInit {
         let dias = duracion.asDays();
         let finalDias = dias * -1;
         
-        this.diasArray = this.contrato.dias.split(',');
+        let diasObt = this.contrato.dias.split(',');
         
-        for (let di of this.diasArray) {
+        for (let di of diasObt) {
             switch (di) {
                 case 'LU':
-                this.numDias.push(1);
+                    numeroDias.push(1);
                 break;
                 case 'MA':
-                this.numDias.push(2);
+                    numeroDias.push(2);
                 break;
                 case 'MI':
-                this.numDias.push(3);
+                    numeroDias.push(3);
                 break;
                 case 'JU':
-                this.numDias.push(4);
+                    numeroDias.push(4);
                 break;
                 case 'VI':
-                this.numDias.push(5);
+                    numeroDias.push(5);
                 break;
                 case 'SA':
-                this.numDias.push(6);
+                    numeroDias.push(6);
                 break;
                 case 'DO':
-                this.numDias.push(0);
+                    numeroDias.push(0);
                 break;
                 default:
                 break;
@@ -216,7 +217,7 @@ export class DetalleContratoPage implements OnInit {
             } else {
                 fechaModificada = fechaIMoment.add(1, 'd');
             }
-            for (let numDi of this.numDias) {
+            for (let numDi of numeroDias) {
                 let numSelecDia = fechaModificada.day();
 
                 if (numSelecDia === numDi) {
@@ -226,6 +227,7 @@ export class DetalleContratoPage implements OnInit {
         }
         this.costoTotal = costoFinal;
     }
+}
     async realizarContrato() {
         this.lstCarreras = [];
         this.numDias = [];
@@ -344,11 +346,7 @@ export class DetalleContratoPage implements OnInit {
         this.contrato.dirDestino = this.direccionFin;
         this.lstCarreras = [];
         this.numDias = [];
-        if(this.esNuevo) {
-            
-        } else {
-            
-        }
+        
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
         } else {

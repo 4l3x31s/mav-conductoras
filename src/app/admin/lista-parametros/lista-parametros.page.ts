@@ -4,6 +4,7 @@ import { LoadingService } from 'src/app/services/util/loading.service';
 import { ParametrosCarreraService } from './../../services/db/parametros-carrera.service';
 import { MdlParametrosCarrera } from 'src/app/modelo/mdlParametrosCarrera';
 import { Component, OnInit } from '@angular/core';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-lista-parametros',
@@ -19,7 +20,8 @@ export class ListaParametrosPage implements OnInit {
     public loading: LoadingService,
     public navController: NavController,
     public navParams: NavParamService,
-    public actionSheetController: ActionSheetController
+    public actionSheetController: ActionSheetController,
+    public excelService: ExcelService
   ) { }
 
   ngOnInit() {
@@ -62,6 +64,19 @@ export class ListaParametrosPage implements OnInit {
         }
       },
       {
+        text: 'Exportar a EXCEL',
+        icon: 'document',
+        handler: () => {
+          let plataforma = this.excelService.getDevice();
+          console.log(plataforma);
+          if (plataforma === 'android' || plataforma === 'ios') {
+            this.excelService.exportarExcel(this.listParametros);
+          } else {
+            this.exportAsXLSX();
+          }
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
@@ -71,5 +86,7 @@ export class ListaParametrosPage implements OnInit {
     });
     await actionSheet.present();
   }
-
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.listParametros, 'sample');
+ }
 }
