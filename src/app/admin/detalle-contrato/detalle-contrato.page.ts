@@ -98,14 +98,17 @@ export class DetalleContratoPage implements OnInit {
         if (navParams.get().contrato) {
             this.esNuevo = false;
             this.contrato = this.navParams.get().contrato;
+            this.direccionIni = this.contrato.dirOrigen;
+            this.direccionFin = this.contrato.dirDestino;
             
         } else {
             this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
                 null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            this.contrato.fechaInicio = moment().format();
         }
         this.contrato.idUsuario = this.cliente.id;
-        this.contrato.fechaInicio = moment().format();
+        
     }
 
     ngOnInit() {

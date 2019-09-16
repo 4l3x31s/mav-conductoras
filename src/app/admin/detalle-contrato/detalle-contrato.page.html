@@ -86,8 +86,8 @@
            
            
             <ion-item>
-                <ion-label position="stacked">Monto Total</ion-label>
-                <ion-input formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
+                <ion-label position="stacked">Monto por Carrera</ion-label>
+                <ion-input (ngModelChange)="obtenerCostoCarreras()" formControlName="vMontoTotal" [(ngModel)]="contrato.montoTotal" type="number"></ion-input>
             </ion-item>
             
             <print-error [control]="f.vMontoTotal"></print-error>
