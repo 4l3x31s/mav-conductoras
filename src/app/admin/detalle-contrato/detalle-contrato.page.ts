@@ -172,7 +172,8 @@ export class DetalleContratoPage implements OnInit {
         let numeroDias =[];
         let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
         let fechaIMoment = moment(this.contrato.fechaInicio);
-        let fechaFMoment = moment(this.contrato.fechaFin);
+        let fechaFMoment = moment(this.contrato.fechaFin, 'YYYY-MM-DD');
+        console.log(fechaFMoment);
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
         let dias = duracion.asDays();
         let finalDias = dias * -1;
@@ -238,6 +239,7 @@ costoChange(event) {
     console.log("asi funciona");
     if(this.contrato.dias !== null && this.contrato.dias.length>0) {
     this.lstCarreras = [];
+    console.log(this.contrato.fechaFin);
     let numeroDias =[];
     let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
     let fechaIMoment = moment(this.contrato.fechaInicio);
