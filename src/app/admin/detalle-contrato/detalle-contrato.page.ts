@@ -1,9 +1,9 @@
 /// <reference types='@types/googlemaps' />
 
 
-import { ActionSheetController } from '@ionic/angular';
+import {ActionSheetController} from '@ionic/angular';
 
-import { MapParamService } from './../../services/map-param.service';
+import {MapParamService} from './../../services/map-param.service';
 
 import {AlertService} from 'src/app/services/util/alert.service';
 import {ParametrosCarreraService} from './../../services/db/parametros-carrera.service';
@@ -25,8 +25,8 @@ import {MdlParametrosCarrera} from 'src/app/modelo/mdlParametrosCarrera';
 import {DataUtilService} from 'src/app/services/util/data-util.service';
 import {Observable} from 'rxjs';
 import * as moment from 'moment';
-import { ContratoService } from './../../services/db/contrato.service';
-import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
+import {ContratoService} from './../../services/db/contrato.service';
+import {MdlCarrera} from 'src/app/modelo/mdlCarrera';
 import * as _ from 'lodash';
 
 
@@ -68,8 +68,8 @@ export class DetalleContratoPage implements OnInit {
     // directionsService = new google.maps.DirectionsService;
     // directionsDisplay = new google.maps.DirectionsRenderer;
     distance: any;
-    public conductora: MdlConductora = new MdlConductora(null,null,null,null,null,null,null,null,
-        null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+    public conductora: MdlConductora = new MdlConductora(null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
     direccionIni: any = 'Donde te encontramos?';
     direccionFin: any = 'A donde quieres ir?';
@@ -90,8 +90,7 @@ export class DetalleContratoPage implements OnInit {
                 public dataUtilService: DataUtilService,
                 public contratoService: ContratoService,
                 public mapParamService: MapParamService,
-                public actionSheetController: ActionSheetController
-                ) {
+                public actionSheetController: ActionSheetController) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
         this.txtDescripcionLugar = "Registrado en la Carrera";
@@ -100,7 +99,7 @@ export class DetalleContratoPage implements OnInit {
             this.contrato = this.navParams.get().contrato;
             this.direccionIni = this.contrato.dirOrigen;
             this.direccionFin = this.contrato.dirDestino;
-            
+
         } else {
             this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
@@ -108,7 +107,7 @@ export class DetalleContratoPage implements OnInit {
             this.contrato.fechaInicio = moment().format();
         }
         this.contrato.idUsuario = this.cliente.id;
-        
+
     }
 
     ngOnInit() {
@@ -118,11 +117,11 @@ export class DetalleContratoPage implements OnInit {
         this.obtenerParametros();
         // this.obtenerConductoras();
         this.obtenerFeriados();
-        
+
     }
 
     filtrarCiudades(event) {
-        
+
         this.lstCiudadesFiltrado = this.lstParametros.filter(
             parametros => parametros.pais.indexOf(event) > -1
         );
@@ -139,170 +138,180 @@ export class DetalleContratoPage implements OnInit {
                     this.lstConductoras = conductora;
                     this.dataUtilService.set(this.lstConductoras);
                 }
-                
+
             }, error => {
                 this.lstConductoras = undefined;
             });
     }
+
     public filtrarContrato(atributo: string, valor: any) {
         this.filtros[atributo] = val => val == valor;
-        this.lstConcudtorasFiltrado = _.filter(this.lstConductoras, _.conforms(this.filtros) );
-        
+        this.lstConcudtorasFiltrado = _.filter(this.lstConductoras, _.conforms(this.filtros));
+
     }
+
     async modificarCarreras() {
-        
+
         await this.eliminarCarrerasContrato();
         this.realizarContrato();
     }
+
     async eliminarCarrerasContrato() {
         await this.carreraService.getCarrerasPorContrato(this.contrato.id)
-        .then(lisCarreras => {
-            let filtro = {};
-            filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
-            let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
-            for (const item of lstCarrerasFiltrado) {
-                this.carreraService.eliminarCarrera(item.id);
-            }
-        });
+            .then(lisCarreras => {
+                let filtro = {};
+                filtro['fechaInicio'] = val => val >= this.contrato.fechaInicio;
+                let lstCarrerasFiltrado: MdlCarrera[] = _.filter(lisCarreras, _.conforms(filtro));
+                for (const item of lstCarrerasFiltrado) {
+                    this.carreraService.eliminarCarrera(item.id);
+                }
+            });
     }
+
     obtenerCostoCarreras() {
         console.log("asi funciona");
-        if(this.contrato.dias !== null && this.contrato.dias.length>0) {
-        this.lstCarreras = [];
-        let numeroDias =[];
-        let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
-        let fechaIMoment = moment(this.contrato.fechaInicio);
-        let fechaFMoment = moment(this.contrato.fechaFin, 'YYYY-MM-DD');
-        console.log(fechaFMoment);
-        let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
-        let dias = duracion.asDays();
-        let finalDias = dias * -1;
-        
-        let diasObt = this.contrato.dias.split(',');
-        
-        for (let di of diasObt) {
-            switch (di) {
-                case 'LU':
-                    numeroDias.push(1);
-                break;
-                case 'MA':
-                    numeroDias.push(2);
-                break;
-                case 'MI':
-                    numeroDias.push(3);
-                break;
-                case 'JU':
-                    numeroDias.push(4);
-                break;
-                case 'VI':
-                    numeroDias.push(5);
-                break;
-                case 'SA':
-                    numeroDias.push(6);
-                break;
-                case 'DO':
-                    numeroDias.push(0);
-                break;
-                default:
-                break;
-            }
-        }
-        
-        let enteroDias = Math.floor(finalDias);
-        let decimalDias = finalDias - enteroDias;
-        if (decimalDias < 0.5) {
-            enteroDias = enteroDias + 1;
-            finalDias = enteroDias;
-        }
-        let costoFinal = 0;
-        for (let i = 0; i <= finalDias; i++) {
-            let fechaModificada: any;
-            if (i === 0) {
-                fechaModificada = fechaIMoment.add(0, 'd');
-            } else {
-                fechaModificada = fechaIMoment.add(1, 'd');
-            }
-            for (let numDi of numeroDias) {
-                let numSelecDia = fechaModificada.day();
+        if (this.contrato.dias !== null && this.contrato.dias.length > 0) {
+            this.lstCarreras = [];
+            let numeroDias = [];
+            let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
+            let fechaIMoment = moment(this.contrato.fechaInicio);
+            let fechaFMoment = moment(this.contrato.fechaFin, 'YYYY-MM-DD');
+            let fechaModificadoTest = moment(fechaFMoment.format('YYYY') + '-' + fechaFMoment.format('MM') + '-' + fechaFMoment.format('DD'));
+            fechaFMoment = fechaModificadoTest;
+            console.log(fechaFMoment);
+            let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
+            let dias = duracion.asDays();
+            let finalDias = dias * -1;
 
-                if (numSelecDia === numDi) {
-                    costoFinal = costoFinal + this.contrato.montoTotal;
+            let diasObt = this.contrato.dias.split(',');
+
+            for (let di of diasObt) {
+                switch (di) {
+                    case 'LU':
+                        numeroDias.push(1);
+                        break;
+                    case 'MA':
+                        numeroDias.push(2);
+                        break;
+                    case 'MI':
+                        numeroDias.push(3);
+                        break;
+                    case 'JU':
+                        numeroDias.push(4);
+                        break;
+                    case 'VI':
+                        numeroDias.push(5);
+                        break;
+                    case 'SA':
+                        numeroDias.push(6);
+                        break;
+                    case 'DO':
+                        numeroDias.push(0);
+                        break;
+                    default:
+                        break;
                 }
             }
-        }
-        this.costoTotal = costoFinal;
-    }
-}
 
-costoChange(event) {
-    
-    console.log("asi funciona");
-    if(this.contrato.dias !== null && this.contrato.dias.length>0) {
-    this.lstCarreras = [];
-    console.log(this.contrato.fechaFin);
-    let numeroDias =[];
-    let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
-    let fechaIMoment = moment(this.contrato.fechaInicio);
-    let fechaFMoment = moment(this.contrato.fechaFin);
-    let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
-    let dias = duracion.asDays();
-    let finalDias = dias * -1;
-    
-    let diasObt = this.contrato.dias.split(',');
-    
-    for (let di of diasObt) {
-        switch (di) {
-            case 'LU':
-                numeroDias.push(1);
-            break;
-            case 'MA':
-                numeroDias.push(2);
-            break;
-            case 'MI':
-                numeroDias.push(3);
-            break;
-            case 'JU':
-                numeroDias.push(4);
-            break;
-            case 'VI':
-                numeroDias.push(5);
-            break;
-            case 'SA':
-                numeroDias.push(6);
-            break;
-            case 'DO':
-                numeroDias.push(0);
-            break;
-            default:
-            break;
-        }
-    }
-    
-    let enteroDias = Math.floor(finalDias);
-    let decimalDias = finalDias - enteroDias;
-    if (decimalDias < 0.5) {
-        enteroDias = enteroDias + 1;
-        finalDias = enteroDias;
-    }
-    let costoFinal = 0;
-    for (let i = 0; i <= finalDias; i++) {
-        let fechaModificada: any;
-        if (i === 0) {
-            fechaModificada = fechaIMoment.add(0, 'd');
-        } else {
-            fechaModificada = fechaIMoment.add(1, 'd');
-        }
-        for (let numDi of numeroDias) {
-            let numSelecDia = fechaModificada.day();
-
-            if (numSelecDia === numDi) {
-                costoFinal = costoFinal + parseInt(event);
+            let enteroDias = Math.floor(finalDias);
+            let decimalDias = finalDias - enteroDias;
+            if (decimalDias < 0.5) {
+                enteroDias = enteroDias + 1;
+                finalDias = enteroDias;
             }
+            let costoFinal = 0;
+            for (let i = 0; i <= finalDias; i++) {
+                let fechaModificada: any;
+                if (i === 0) {
+                    fechaModificada = fechaIMoment.add(0, 'd');
+                } else {
+                    fechaModificada = fechaIMoment.add(1, 'd');
+                }
+                for (let numDi of numeroDias) {
+                    let numSelecDia = fechaModificada.day();
+
+                    if (numSelecDia === numDi) {
+                        costoFinal = costoFinal + this.contrato.montoTotal;
+                    }
+                }
+            }
+            this.costoTotal = costoFinal;
         }
     }
-    this.costoTotal = costoFinal;
-}
-}
+
+    costoChange(event) {
+        console.log("asi funciona");
+        if (this.contrato.dias !== null && this.contrato.dias.length > 0) {
+            this.lstCarreras = [];
+            console.log(this.contrato.fechaFin);
+            let numeroDias = [];
+            let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
+            let fechaIMoment = moment(this.contrato.fechaInicio);
+            let fechaFMoment = moment(this.contrato.fechaFin);
+
+            let fechaModificadoTest = moment(fechaFMoment.format('YYYY') + '-' + fechaFMoment.format('MM') + '-' + fechaFMoment.format('DD'));
+
+            fechaFMoment = fechaModificadoTest;
+            let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
+            let dias = duracion.asDays();
+            let finalDias = dias * -1;
+
+            let diasObt = this.contrato.dias.split(',');
+
+            for (let di of diasObt) {
+                switch (di) {
+                    case 'LU':
+                        numeroDias.push(1);
+                        break;
+                    case 'MA':
+                        numeroDias.push(2);
+                        break;
+                    case 'MI':
+                        numeroDias.push(3);
+                        break;
+                    case 'JU':
+                        numeroDias.push(4);
+                        break;
+                    case 'VI':
+                        numeroDias.push(5);
+                        break;
+                    case 'SA':
+                        numeroDias.push(6);
+                        break;
+                    case 'DO':
+                        numeroDias.push(0);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            let enteroDias = Math.floor(finalDias);
+            let decimalDias = finalDias - enteroDias;
+            if (decimalDias < 0.5) {
+                enteroDias = enteroDias + 1;
+                finalDias = enteroDias;
+            }
+            let costoFinal = 0;
+            for (let i = 0; i <= finalDias; i++) {
+                let fechaModificada: any;
+                if (i === 0) {
+                    fechaModificada = fechaIMoment.add(0, 'd');
+                } else {
+                    fechaModificada = fechaIMoment.add(1, 'd');
+                }
+                for (let numDi of numeroDias) {
+                    let numSelecDia = fechaModificada.day();
+
+                    if (numSelecDia === numDi) {
+                        costoFinal = costoFinal + parseInt(event);
+                    }
+                }
+            }
+            this.costoTotal = costoFinal;
+        }
+    }
+
     async realizarContrato() {
         this.lstCarreras = [];
         this.numDias = [];
@@ -312,38 +321,38 @@ costoChange(event) {
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
         let dias = duracion.asDays();
         let finalDias = dias * -1;
-      
+
         this.diasArray = this.contrato.dias.split(',');
 
         for (let di of this.diasArray) {
             switch (di) {
                 case 'LU':
-                this.numDias.push(1);
-                break;
+                    this.numDias.push(1);
+                    break;
                 case 'MA':
-                this.numDias.push(2);
-                break;
+                    this.numDias.push(2);
+                    break;
                 case 'MI':
-                this.numDias.push(3);
-                break;
+                    this.numDias.push(3);
+                    break;
                 case 'JU':
-                this.numDias.push(4);
-                break;
+                    this.numDias.push(4);
+                    break;
                 case 'VI':
-                this.numDias.push(5);
-                break;
+                    this.numDias.push(5);
+                    break;
                 case 'SA':
-                this.numDias.push(6);
-                break;
+                    this.numDias.push(6);
+                    break;
                 case 'DO':
-                this.numDias.push(0);
-                break;
+                    this.numDias.push(0);
+                    break;
                 default:
-                break;
+                    break;
             }
         }
-        
-        
+
+
         let carrera: MdlCarrera = new MdlCarrera(
             null, null, null, null, null,
             null, null, null, null, null,
@@ -367,16 +376,16 @@ costoChange(event) {
             }
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
-             
+
                 if (numSelecDia === numDi) {
                     carrera = new MdlCarrera(
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null, null, null,null, null);
+                        null, null, null, null, null, null);
                     //carrera.id = Date.now();
-                    
+
                     carrera.idConductora = Number(this.contrato.idConductora);
                     carrera.idUsuario = this.contrato.idUsuario;
                     carrera.latInicio = this.contrato.latOrigen;
@@ -398,30 +407,31 @@ costoChange(event) {
             }
         }
         this.contrato.idConductora = Number(this.contrato.idConductora);
-       this.contrato.codigoContrato = this.contrato.codigoContrato + '-' + this.contrato.id;
+        this.contrato.codigoContrato = this.contrato.codigoContrato + '-' + this.contrato.id;
         await this.contratoService.insertarContrato(this.contrato)
-        .then( async data => {
-            
-            for (let carrera of this.lstCarreras) {
-                carrera.idContrato = this.contrato.id;
-                await this.carreraService.crearCarreraAsync(carrera)
-                .then( carreraInsertada => {
-                }).catch(err => {
-                    
+            .then(async data => {
+
+                for (let carrera of this.lstCarreras) {
+                    carrera.idContrato = this.contrato.id;
+                    await this.carreraService.crearCarreraAsync(carrera)
+                        .then(carreraInsertada => {
+                        }).catch(err => {
+
+                        });
+                }
+                this.loading.dismiss();
+                await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then(async () => {
+                    await this.navController.navigateForward('/lista-clientes');
                 });
-            }
-            this.loading.dismiss();
-            await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
-                await this.navController.navigateForward('/lista-clientes');
             });
-        });
     }
+
     async grabar() {
-        if(this.direccionIni === 'Donde te encontramos?'){
+        if (this.direccionIni === 'Donde te encontramos?') {
             this.alertService.present('Alerta', 'Debes ingresar la direccion de inicio.');
             return;
         }
-        if(this.direccionFin === 'A donde quieres ir?') {
+        if (this.direccionFin === 'A donde quieres ir?') {
             this.alertService.present('Alerta', 'Debes ingresar la direccion de destino.');
             return;
         }
@@ -430,53 +440,56 @@ costoChange(event) {
         this.contrato.dirDestino = this.direccionFin;
         this.lstCarreras = [];
         this.numDias = [];
-        
+
         if (this.lstConductoras) {
             // TODO: Validaciones de guardado acá.
         } else {
             this.alertService.present('Alerta',
                 'No existe una conductora seleccionada o no existen conductoras disponibles para la radicatoria.');
-                return;
+            return;
         }
         this.loading.present();
         this.obtenerCostoCarreras();
         let fechaSinFormato = moment(this.contrato.fechaInicio).toObject();
         let fechaIMoment = moment(this.contrato.fechaInicio);
         let fechaFMoment = moment(this.contrato.fechaFin);
+        let fechaModificadoTest = moment(fechaFMoment.format('YYYY') + '-' + fechaFMoment.format('MM') + '-' + fechaFMoment.format('DD'));
+
+        fechaFMoment = fechaModificadoTest;
         let duracion = moment.duration(fechaIMoment.diff(fechaFMoment));
         let dias = duracion.asDays();
         let finalDias = dias * -1;
-       
+
         this.diasArray = this.contrato.dias.split(',');
-        
+
         for (let di of this.diasArray) {
             switch (di) {
                 case 'LU':
-                this.numDias.push(1);
-                break;
+                    this.numDias.push(1);
+                    break;
                 case 'MA':
-                this.numDias.push(2);
-                break;
+                    this.numDias.push(2);
+                    break;
                 case 'MI':
-                this.numDias.push(3);
-                break;
+                    this.numDias.push(3);
+                    break;
                 case 'JU':
-                this.numDias.push(4);
-                break;
+                    this.numDias.push(4);
+                    break;
                 case 'VI':
-                this.numDias.push(5);
-                break;
+                    this.numDias.push(5);
+                    break;
                 case 'SA':
-                this.numDias.push(6);
-                break;
+                    this.numDias.push(6);
+                    break;
                 case 'DO':
-                this.numDias.push(0);
-                break;
+                    this.numDias.push(0);
+                    break;
                 default:
-                break;
+                    break;
             }
         }
-     
+
         let carrera: MdlCarrera = new MdlCarrera(
             null, null, null, null, null,
             null, null, null, null, null,
@@ -484,7 +497,7 @@ costoChange(event) {
             null, null, null, null, null,
             null, null, null, null, null, null);
 
-            this.filtrarContrato('id', this.contrato.idConductora);
+        this.filtrarContrato('id', this.contrato.idConductora);
 
         for (let i = 0; i <= finalDias; i++) {
             let fechaModificada: any;
@@ -495,16 +508,16 @@ costoChange(event) {
             }
             for (let numDi of this.numDias) {
                 let numSelecDia = fechaModificada.day();
-                
+
                 if (numSelecDia === numDi) {
                     carrera = new MdlCarrera(
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null, null, null,null, null);
+                        null, null, null, null, null, null);
                     //carrera.id = Date.now();
-                    
+
                     carrera.idConductora = Number(this.contrato.idConductora);
                     carrera.idUsuario = this.contrato.idUsuario;
                     carrera.latInicio = this.contrato.latOrigen;
@@ -531,20 +544,20 @@ costoChange(event) {
         }
         this.contrato.codigoContrato = this.contrato.codigoContrato + this.contrato.id;
         await this.contratoService.insertarContrato(this.contrato)
-        .then( async data => {
-        
-            for (let carrera of this.lstCarreras) {
-                carrera.idContrato = this.contrato.id;
-                await this.carreraService.crearCarreraAsync(carrera)
-                .then( carreraInsertada => {
-                }).catch(err => {
+            .then(async data => {
+
+                for (let carrera of this.lstCarreras) {
+                    carrera.idContrato = this.contrato.id;
+                    await this.carreraService.crearCarreraAsync(carrera)
+                        .then(carreraInsertada => {
+                        }).catch(err => {
+                        });
+                }
+                this.loading.dismiss();
+                await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then(async () => {
+                    await this.navController.navigateForward('/lista-clientes');
                 });
-            }
-            this.loading.dismiss();
-            await this.alertService.present('Info', 'Las carreras fueron registradas correctamente.').then( async () => {
-                await this.navController.navigateForward('/lista-clientes');
             });
-        });
 
     }
 
@@ -563,7 +576,7 @@ costoChange(event) {
         await this.parametrosService.listarParametros().subscribe(data => {
             // this.loading.dismiss();
             this.lstParametros = Object.assign(data);
-     
+
             this.lstPaisesFiltrados = Array.from(new Set(this.lstParametros.map(s => s.pais)))
                 .map(id => {
                     return {
@@ -571,8 +584,8 @@ costoChange(event) {
                         pais: this.lstParametros.find(s => s.pais === id).pais,
                     };
                 });
-           
-            if(this.contrato.id) {
+
+            if (this.contrato.id) {
                 this.filtrarCiudades(this.contrato.pais);
                 this.filtrarConductoras(this.contrato.ciudad);
             }
@@ -659,16 +672,16 @@ costoChange(event) {
         }).then(dato => {
             dato.present();
             dato.onDidDismiss().then(resultado => {
-                
+
                 this.contrato.latOrigen = resultado.data.lat;
                 this.contrato.longOrigen = resultado.data.lng;
                 var geocoder = new google.maps.Geocoder();
                 let mylocation = new google.maps.LatLng(this.contrato.latOrigen, this.contrato.longOrigen);
                 geocoder.geocode({'location': mylocation}, (results, status: any) => {
-                if (status === 'OK') {
-                    
-                    this.processLocation(results, true);
-                }
+                    if (status === 'OK') {
+
+                        this.processLocation(results, true);
+                    }
                 });
             });
         });
@@ -686,15 +699,15 @@ costoChange(event) {
         }).then(dato => {
             dato.present();
             dato.onDidDismiss().then(resultado => {
-       
+
                 this.contrato.latDestino = resultado.data.lat;
                 this.contrato.longDestino = resultado.data.lng;
                 var geocoder = new google.maps.Geocoder();
                 let mylocation = new google.maps.LatLng(this.contrato.latDestino, this.contrato.longDestino);
                 geocoder.geocode({'location': mylocation}, (results, status: any) => {
                     if (status === 'OK') {
-                   
-                    this.processLocation(results, false);
+
+                        this.processLocation(results, false);
                     }
                 });
                 this.determinarDistanciaTiempo();
@@ -761,13 +774,13 @@ costoChange(event) {
                     role: 'cancel',
                     cssClass: 'secondary',
                     handler: () => {
-                        
+
                     }
                 }, {
                     text: 'Ok',
                     handler: (data) => {
-                        
-                        
+
+
                         this.contrato.dias = null;
                         for (let i = 0; i < data.length; i++) {
                             if (this.contrato.dias) {
@@ -789,7 +802,7 @@ costoChange(event) {
         return Observable.create((observer) => {
             this.distance.getDistanceMatrix(req, (rsp, status) => {
                 // status checking goes here
-              
+
                 observer.next(rsp);
                 observer.complete();
             });
@@ -835,10 +848,10 @@ costoChange(event) {
                         const element = results[j];
                         const distance = element.distance.value;
                         const time = element.duration.value;
-                        
+
                         // calcular costos UBER: https://calculouber.netlify.com/
-                        let montoFinal: number = Math.round((ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia))* ciudadParametro[0].tarifaDinamica + ciudadParametro[0].cuotaSolicitud);
-                        
+                        let montoFinal: number = Math.round((ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia)) * ciudadParametro[0].tarifaDinamica + ciudadParametro[0].cuotaSolicitud);
+
                         if (montoFinal < 10) {
                             this.contrato.montoTotal = 10;
                         } else {
@@ -853,7 +866,7 @@ costoChange(event) {
     }
 
     async callBack(response: any, status: any) {
-        
+
         /*let ciudadParametro: MdlParametrosCarrera[] = this.lstCiudadesFiltrado.filter(
           parametros => parametros.ciudad.indexOf(this.ciudadSeleccionada) > -1
         );*/
@@ -874,134 +887,137 @@ costoChange(event) {
 
     async presentActionSheet() {
         const actionSheet = await this.actionSheetController.create({
-          header: 'Albums',
-          buttons: [{
-            text: 'Guardar Como Vuelta',
-            icon: 'share',
-            handler: () => {
-                if (!this.frmContrato.invalid) {
-                    this.esVuelta = true;
-                    this.contrato.id = null;
-                    let latOr = this.contrato.latOrigen;
-                    let lngOr = this.contrato.longOrigen;
-                    let latDes = this.contrato.latDestino;
-                    let lngDes = this.contrato.longDestino;
-                    this.contrato.latOrigen = latDes;
-                    this.contrato.longOrigen = lngDes;
-                    this.contrato.latDestino = latOr;
-                    this.contrato.longDestino = lngOr;
-                    this.alertService.present('Guardado', 'Esta seguro de guardar los datos')
-                    this.presentAlertConfirm();
-                } else {
-                    return;
+            header: 'Albums',
+            buttons: [{
+                text: 'Guardar Como Vuelta',
+                icon: 'share',
+                handler: () => {
+                    if (!this.frmContrato.invalid) {
+                        this.esVuelta = true;
+                        this.contrato.id = null;
+                        let latOr = this.contrato.latOrigen;
+                        let lngOr = this.contrato.longOrigen;
+                        let latDes = this.contrato.latDestino;
+                        let lngDes = this.contrato.longDestino;
+                        this.contrato.latOrigen = latDes;
+                        this.contrato.longOrigen = lngDes;
+                        this.contrato.latDestino = latOr;
+                        this.contrato.longDestino = lngOr;
+                        this.alertService.present('Guardado', 'Esta seguro de guardar los datos')
+                        this.presentAlertConfirm();
+                    } else {
+                        return;
+                    }
+
                 }
-                
-            }
-          }, {
-            text: 'Guardar Como Nuevo',
-            icon: 'arrow-dropright-circle',
-            handler: () => {
-                if (!this.frmContrato.invalid) {
-                    this.contrato.id = null;
-                    this.esVuelta = false;
-                    this.presentAlertConfirm();
-                } else {
-                    return;
+            }, {
+                text: 'Guardar Como Nuevo',
+                icon: 'arrow-dropright-circle',
+                handler: () => {
+                    if (!this.frmContrato.invalid) {
+                        this.contrato.id = null;
+                        this.esVuelta = false;
+                        this.presentAlertConfirm();
+                    } else {
+                        return;
+                    }
                 }
-            }
-          }, {
-            text: 'Actualizar Carreras',
-            icon: 'arrow-dropright-circle',
-            handler: () => {
-                this.modificarCarreras();
-            }
-          },
-          {
-            text: 'Guardar Modificado',
-            icon: 'save',
-            handler: () => {
-                if (!this.frmContrato.invalid) {
-                    this.esVuelta = false;
-                    this.presentAlertConfirm();
-                } else {
-                    return;
+            }, {
+                text: 'Actualizar Carreras',
+                icon: 'arrow-dropright-circle',
+                handler: () => {
+                    this.modificarCarreras();
                 }
-            }
-          },
-          {
-            text: 'Eliminar Contrato',
-            icon: 'save',
-            handler: () => {
-               this.eliminarContratoAlert();
-                
-            }
-          },
-           {
-            text: 'Cancelar',
-            icon: 'close',
-            role: 'cancel',
-            handler: () => {
-              
-            }
-          }]
+            },
+                {
+                    text: 'Guardar Modificado',
+                    icon: 'save',
+                    handler: () => {
+                        if (!this.frmContrato.invalid) {
+                            this.esVuelta = false;
+                            this.presentAlertConfirm();
+                        } else {
+                            return;
+                        }
+                    }
+                },
+                {
+                    text: 'Eliminar Contrato',
+                    icon: 'save',
+                    handler: () => {
+                        this.eliminarContratoAlert();
+
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    icon: 'close',
+                    role: 'cancel',
+                    handler: () => {
+
+                    }
+                }]
         });
         await actionSheet.present();
-      }
+    }
 
-      async presentAlertConfirm() {
+    async presentAlertConfirm() {
         const alert = await this.alertController.create({
-          header: 'Confirmación!',
-          message: 'Está seguro de registrar los datos?, Verifique que la hora de la carrera este correcta.',
-          buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah) => {
-              }
-            }, {
-              text: 'Aceptar',
-              handler: async () => {
-                if (this.contrato.id) {
-                    await this.eliminarCarrerasContrato();
+            header: 'Confirmación!',
+            message: 'Está seguro de registrar los datos?, Verifique que la hora de la carrera este correcta.',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: (blah) => {
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: async () => {
+                        if (this.contrato.id) {
+                            await this.eliminarCarrerasContrato();
+                        }
+                        this.grabar();
+                    }
                 }
-                this.grabar();
-              }
-            }
-          ]
+            ]
         });
-    
+
         await alert.present();
-      }
-      async eliminarContratoAlert() {
+    }
+
+    async eliminarContratoAlert() {
         const alert = await this.alertController.create({
-          header: 'Confirmación!',
-          message: 'Desea eliminar el contrato seleccionado?',
-          buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: (blah) => {
-              }
-            }, {
-              text: 'Aceptar',
-              handler: async () => {
-                if (this.contrato.id) {
-                    await this.eliminarCarrerasContrato();
+            header: 'Confirmación!',
+            message: 'Desea eliminar el contrato seleccionado?',
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: (blah) => {
+                    }
+                }, {
+                    text: 'Aceptar',
+                    handler: async () => {
+                        if (this.contrato.id) {
+                            await this.eliminarCarrerasContrato();
+                        }
+                        this.eliminarContrato();
+                    }
                 }
-                this.eliminarContrato();
-              }
-            }
-          ]
+            ]
         });
-    
+
         await alert.present();
-      }
-      async eliminarContrato() {
-          await this.eliminarCarrerasContrato();
-          this.contratoService.eliminarContrato(this.contrato.id);
-      }
+    }
+
+    async eliminarContrato() {
+        await this.eliminarCarrerasContrato();
+        this.contratoService.eliminarContrato(this.contrato.id);
+    }
+
     /*
 
     http://uber-tarifas-la-paz-bo.ubertarifa.com/
@@ -1024,19 +1040,19 @@ costoChange(event) {
 
 
     */
-   processLocation(location, tipo: boolean) {
-    if (location[1]) {
-      for (var i = 0; i < location.length; i++) {
-        for (let j = 0; j < location[i].types.length; j++) {
-          if (location[i].types[j] === 'route') {
-            if (tipo) {
-              this.direccionIni = location[i].formatted_address;
-            } else {
-              this.direccionFin = location[i].formatted_address;
+    processLocation(location, tipo: boolean) {
+        if (location[1]) {
+            for (var i = 0; i < location.length; i++) {
+                for (let j = 0; j < location[i].types.length; j++) {
+                    if (location[i].types[j] === 'route') {
+                        if (tipo) {
+                            this.direccionIni = location[i].formatted_address;
+                        } else {
+                            this.direccionFin = location[i].formatted_address;
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
 }
