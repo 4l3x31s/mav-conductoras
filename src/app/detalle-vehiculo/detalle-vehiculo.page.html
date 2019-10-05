@@ -3,6 +3,11 @@
 <ion-content>
   <form [formGroup]="form" novalidate *ngIf="vehiculo">
     <ion-list>
+    <ion-item>
+        <ion-label position="floating">Placa</ion-label>
+        <ion-input formControlName="vplaca" [(ngModel)]="vehiculo.placa" type="text"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vplaca"></print-error>
       <ion-item>
         <ion-label position="floating">Capacidad</ion-label>
         <ion-input formControlName="vcapacidad" [(ngModel)]="vehiculo.capacidad" type="number"></ion-input>
@@ -22,7 +27,7 @@
       <print-error [control]="f.vmodelo"></print-error>
     </ion-list>
     <div padding>
-      <ion-button expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
+      <ion-button color="verdec" expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
         Grabar
       </ion-button>
     </div>

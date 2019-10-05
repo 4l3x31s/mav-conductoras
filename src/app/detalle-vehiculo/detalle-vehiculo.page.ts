@@ -41,7 +41,7 @@ export class DetalleVehiculoPage implements OnInit {
             this.vehiculo=vehiculo[0];
           } else {
             this.vehiculo = new MdlVehiculo(
-              null,this.conductora.id,null,null,null
+              null,this.conductora.id,null,null,null,null
             );
           }
         });
@@ -66,9 +66,13 @@ export class DetalleVehiculoPage implements OnInit {
         Validators.required,
         Validators.min(1950)
       ]],
+      //vplaca
+      vplaca: ['', [
+        Validators.required,
+      ]],
     });
   }
-  get f() { return this.form.controls; }
+  get f(): any { return this.form.controls; }
 
   grabar(){
     this.loadingService.present().then(() => {

@@ -49,8 +49,14 @@ export class LoginPage implements OnInit {
                 if (conductora.admin){
                   this.navController.navigateRoot('/home-admin');
                 } else {
-                  this.navController.navigateRoot('/home');
+                  if(!conductora.estado) {
+                    this.navParam.set({conductora: conductora});
+                    this.navController.navigateRoot('/detalle-conductora');
+                  } else {
+                    this.navController.navigateRoot('/home');
+                  }
                 }
+                
               }
               this.loadingService.dismiss();
             },
@@ -90,6 +96,10 @@ export class LoginPage implements OnInit {
               this.navController.navigateRoot('/home-admin');
             } else {
               this.navController.navigateRoot('/home');
+            }
+            if(!conductora.estado) {
+              this.navParam.set({conductora: conductora});
+              this.navController.navigateForward('/detalle-conductora');
             }
             this.loadingService.dismiss();
           }, error => {

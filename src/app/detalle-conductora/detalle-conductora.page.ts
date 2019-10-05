@@ -264,7 +264,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         .catch(error => {
           this.loadingService.dismiss();
           this.alertService.present('Error', 'Hubo un error al grabar los datos');
-          this.navController.navigateRoot('/home');
+          this.navController.navigateRoot('/login');
         });
       } else {
         this.authService.doRegister(this.conductora.user, this.conductora.pass)
@@ -286,7 +286,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
             console.log(error);
             this.loadingService.dismiss();
             this.alertService.present('Error', 'Hubo un error al grabar los datos');
-            this.navController.navigateRoot('/home');
+            this.navController.navigateRoot('/login');
           });
         }, error => {
           this.loadingService.dismiss();
@@ -310,7 +310,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
             
           } else {
             this.alertService.present('Error', 'Hubo un error al grabar los datos');
-            this.navController.navigateRoot('/home');
+            this.navController.navigateRoot('/login');
           }
         });
       }

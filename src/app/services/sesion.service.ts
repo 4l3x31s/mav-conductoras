@@ -40,7 +40,8 @@ export class SesionService {
                   });
               }
             } else {
-              observer.error({message:'Usuario no habilitado por el administrador'});
+              //observer.error({message:'Usuario no habilitado por el administrador'});
+              observer.next(conductora[0]);
               observer.complete();
             }
             

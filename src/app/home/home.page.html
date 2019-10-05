@@ -5,17 +5,19 @@
     <ion-list-header color="medium">
       <ion-label>Remise/Carreras</ion-label>
     </ion-list-header>
-    <ion-item *ngFor="let carrera of pendientes">
-      <ion-label text-wrap (click)="irDetalleCarrera(carrera)">
-        <p><b>{{ carrera.nombreCliente }}</b></p>
-        <ion-text color="primary">
-          <h3>{{ carrera.descLugar }}</h3>
-        </ion-text>
-        <p><i>{{carrera.fechaInicio | date: 'dd/MM/yyyy HH:mm:ss'}}</i></p>
-      </ion-label>
-      <ion-button slot="end" (click)="tomarCarrera(carrera)">
-        Tomar
-      </ion-button>
-    </ion-item>
+    <div *ngIf="conductora.estado" >
+      <ion-item *ngFor="let carrera of pendientes">
+        <ion-label text-wrap (click)="irDetalleCarrera(carrera)">
+          <p><b>{{ carrera.nombreCliente }}</b></p>
+          <ion-text color="primary">
+            <h3>{{ carrera.descLugar }}</h3>
+          </ion-text>
+          <p><i>{{carrera.fechaInicio | date: 'dd/MM/yyyy HH:mm:ss'}}</i></p>
+        </ion-label>
+        <ion-button slot="end" (click)="tomarCarrera(carrera)">
+          Tomar
+        </ion-button>
+      </ion-item>
+    </div>
   </ion-list>
 </ion-content>

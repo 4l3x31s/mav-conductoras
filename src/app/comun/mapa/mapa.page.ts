@@ -1,3 +1,4 @@
+import { LoadingService } from './../../services/util/loading.service';
 import { MapParamService } from './../../services/map-param.service';
 import { AlertService } from './../../services/util/alert.service';
 import { ToastService } from './../../services/util/toast.service';
@@ -31,9 +32,11 @@ export class MapaPage implements OnInit {
     public alertController: AlertService,
     public mapParamService: MapParamService,
     public geolocation: Geolocation,
+    public loadingService: LoadingService,
     ) { }
 
     ngOnInit() {
+      this.loadingService.present();
       if (this.navParam.get()){
         this.paginaRetorno = this.navParam.get().page;
       } else {
@@ -87,6 +90,7 @@ export class MapaPage implements OnInit {
           animation: google.maps.Animation.DROP,
           icon: 'assets/image/car-pin.png'
         }));
+        this.loadingService.dismiss();
       markers[0].addListener('dragend', () => {
         const objStr: string = JSON.stringify(markers[0].getPosition());
         const obj = JSON.parse(objStr);
@@ -99,10 +103,12 @@ export class MapaPage implements OnInit {
               let direccion = JSON.parse(JSON.stringify(markers2[0].position));
               this.latitud = direccion.lat;
               this.longitud = direccion.lng;
+              this.loadingService.dismiss();
         let respuesta = this.markerEvent(markers2);
             respuesta.subscribe(obj => {
               this.latitud = obj.lat;
               this.longitud = obj.lng;
+              this.loadingService.dismiss();
             })
       })
     }

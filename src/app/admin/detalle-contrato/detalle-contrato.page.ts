@@ -99,6 +99,7 @@ export class DetalleContratoPage implements OnInit {
             this.contrato = this.navParams.get().contrato;
             this.direccionIni = this.contrato.dirOrigen;
             this.direccionFin = this.contrato.dirDestino;
+            console.log('entra contrato');
 
         } else {
             this.esNuevo = true;
@@ -107,6 +108,7 @@ export class DetalleContratoPage implements OnInit {
             this.contrato.fechaInicio = moment().format();
         }
         this.contrato.idUsuario = this.cliente.id;
+        console.log(this.contrato);
 
     }
 
@@ -850,7 +852,7 @@ export class DetalleContratoPage implements OnInit {
                         const time = element.duration.value;
 
                         // calcular costos UBER: https://calculouber.netlify.com/
-                        let montoFinal: number = Math.round((ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia)) * ciudadParametro[0].tarifaDinamica + ciudadParametro[0].cuotaSolicitud);
+                        let montoFinal: number = (Math.round((ciudadParametro[0].base + ((element.duration.value / 60) * ciudadParametro[0].tiempo) + ((element.distance.value / 1000) * ciudadParametro[0].distancia)) * ciudadParametro[0].tarifaDinamica) + ciudadParametro[0].cuotaSolicitud);
 
                         if (montoFinal < 10) {
                             this.contrato.montoTotal = 10;

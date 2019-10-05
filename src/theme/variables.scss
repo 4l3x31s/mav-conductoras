@@ -205,3 +205,12 @@ ion-label.titulo-pagina{
   padding-left: 15px;
   font-size: 12px;
 }
+.color-administradora {
+  color: deeppink;
+}
+.aceptados {
+  color: var(--ion-color-dark) !important;
+}
+.rechazados {
+  color: var(--ion-color-danger) !important;
+}

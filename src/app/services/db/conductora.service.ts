@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { MdlCliente } from 'src/app/modelo/mdlCliente';
 import { UtilService } from '../util/util.service';
+import { TokenNotifService } from '../token-notif.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class ConductoraService {
   
   constructor(
     public afDB: AngularFireDatabase,
-    public utilService: UtilService
+    public utilService: UtilService,
+    public tokenService: TokenNotifService
   ) { }
 
   /**
@@ -23,6 +25,7 @@ export class ConductoraService {
     if (!conductora.id) {
       conductora.id = Date.now();
     }
+    conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
     return this.afDB.database.ref('conductora/' + conductora.id)
               .set(this.utilService.serializar(conductora))
                 .then(()=>{
@@ -73,6 +76,10 @@ export class ConductoraService {
   getConductoraPorEmail(email: string): Observable<MdlConductora[]> {
     return this.afDB.list<MdlConductora>('conductora',
       ref => ref.orderByChild('email').equalTo(email)).valueChanges();
+  }
+  listConductoraAdmin(esAdmin: boolean): Observable<MdlConductora[]> {
+    return this.afDB.list<MdlConductora>('conductora',
+      ref => ref.orderByChild('admin').equalTo(esAdmin)).valueChanges();
   }
 
   getConductoraPorCelular(celular: number): Observable<MdlConductora[]> {
