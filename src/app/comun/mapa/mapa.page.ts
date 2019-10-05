@@ -1,12 +1,10 @@
-import { LoadingService } from './../../services/util/loading.service';
-import { MapParamService } from './../../services/map-param.service';
 import { AlertService } from './../../services/util/alert.service';
 import { ToastService } from './../../services/util/toast.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { NavParamService } from './../../services/nav-param.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DataUtilService } from 'src/app/services/util/data-util.service';
+import { MapParamService } from 'src/app/services/map-param.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 declare var google;
@@ -32,169 +30,173 @@ export class MapaPage implements OnInit {
     public alertController: AlertService,
     public mapParamService: MapParamService,
     public geolocation: Geolocation,
-    public loadingService: LoadingService,
     ) { }
 
-    ngOnInit() {
-      this.loadingService.present();
-      if (this.navParam.get()){
-        this.paginaRetorno = this.navParam.get().page;
-      } else {
-      }
-      this.initAutocomplete();
+  ngOnInit() {
+    if (this.navParam.get()){
+      this.paginaRetorno = this.navParam.get().page;
+    } else {
     }
-    initAutocomplete() {
-      let myLatlng: any = { lat: -16.4971653, lng: -68.1320507};
-      let ubicacion = this.mapParamService.get();
-      if (ubicacion) {
-        if (ubicacion.lat !== null) {
-          myLatlng = { lat: parseFloat(ubicacion.lat), lng: parseFloat(ubicacion.lng)};
-          this.cargarMapa(myLatlng);
-        } else {
-          this.obtenerGeolocalizacion();
-        }
+    
+    this.initAutocomplete();
+  }
+  initAutocomplete() {
+    let myLatlng: any = { lat: -16.4971653, lng: -68.1320507};
+    let ubicacion = this.mapParamService.get();
+    if (ubicacion) {
+      if (ubicacion.lat !== null) {
+        myLatlng = { lat: parseFloat(ubicacion.lat), lng: parseFloat(ubicacion.lng)};
+        this.cargarMapa(myLatlng);
       } else {
         this.obtenerGeolocalizacion();
       }
+    } else {
+      this.obtenerGeolocalizacion();
     }
-    obtenerGeolocalizacion() {
-        navigator.geolocation.getCurrentPosition((resp) => {
-          let myLatlng = { lat: resp.coords.latitude, lng: resp.coords.longitude};
-          this.cargarMapa(myLatlng);
+  }
+  obtenerGeolocalizacion() {
+      navigator.geolocation.getCurrentPosition((resp) => {
+        let myLatlng = { lat: resp.coords.latitude, lng: resp.coords.longitude};
+        this.cargarMapa(myLatlng);
+      });
+  }
+  cargarMapa(myLatlng: any) {
+    const mapOptions = {
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullScreenControl: false,
+      zoomControl: false,
+      scaleControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
+      center: myLatlng,
+	  draggable: true
+    };
+    this.latitud = myLatlng.lat;
+    this.longitud = myLatlng.lng;
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.iniciarBusqueda();
+    let markers = [];
+    markers.push(new google.maps.Marker({
+        position: myLatlng,
+        map: this.map,
+        title: 'Mueveme',
+		draggable: false,
+        animation: google.maps.Animation.DROP,
+        icon: 'assets/image/car-pin.png'
+      }));
+	this.map.addListener('center_changed', () => {
+		markers[0].setPosition(this.map.getCenter());
+		const objStr: string = JSON.stringify(markers[0].getPosition());
+		console.log(objStr);
+		const obj = JSON.parse(objStr);
+		this.latitud = obj.lat;
+		this.longitud = obj.lng;
+	});
+    
+	let respuesta = this.buscarTexto(this.map, markers, this.alertController);
+    respuesta.subscribe(markers2 => {
+		let direccion = JSON.parse(JSON.stringify(markers2[0].position));
+		this.latitud = direccion.lat;
+		this.longitud = direccion.lng;
+		let resp = this.markerEvent(markers2);
+		resp.subscribe(obj => {
+		this.latitud = obj.lat;
+		this.longitud = obj.lng;
+	  })
+    })
+  }
+  
+  iniciarBusqueda() {
+    let input = document.getElementById('pac-input');
+    this.searchBox = new google.maps.places.SearchBox(input);
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    this.map.addListener('bounds_changed', () =>{
+      this.searchBox.setBounds(this.map.getBounds());
+    });
+  }
+
+  buscarTexto(map, markers, alertController): Observable<any> {
+    return Observable.create((observer) => {
+      this.searchBox.addListener('places_changed', () =>{
+        let places = this.searchBox.getPlaces();
+        if (places.length === 0) {
+          return;
+        }
+        markers.forEach(function(marker) {
+          marker.setMap(null);
         });
-    }
-    cargarMapa(myLatlng: any) {
-      const mapOptions = {
-        zoom: 16,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullScreenControl: false,
-        zoomControl: false,
-        scaleControl: false,
-        rotateControl: false,
-        fullscreenControl: false,
-        center: myLatlng
-      };
-      this.latitud = myLatlng.lat;
-      this.longitud = myLatlng.lng;
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      this.iniciarBusqueda();
-      let markers = [];
-      markers.push(new google.maps.Marker
-        ({
-          position: myLatlng,
-          map: this.map,
-          draggable: true,
-          title: 'Mueveme',
-          animation: google.maps.Animation.DROP,
-          icon: 'assets/image/car-pin.png'
-        }));
-        this.loadingService.dismiss();
-      markers[0].addListener('dragend', () => {
-        const objStr: string = JSON.stringify(markers[0].getPosition());
-        const obj = JSON.parse(objStr);
-        // window.alert(JSON.stringify(marker.getPosition()));
-        this.latitud = obj.lat;
-        this.longitud = obj.lng;
-      });
-      let respuesta = this.buscarTexto(this.map, markers, this.alertController);
-      respuesta.subscribe( markers2 => {
-              let direccion = JSON.parse(JSON.stringify(markers2[0].position));
-              this.latitud = direccion.lat;
-              this.longitud = direccion.lng;
-              this.loadingService.dismiss();
-        let respuesta = this.markerEvent(markers2);
-            respuesta.subscribe(obj => {
-              this.latitud = obj.lat;
-              this.longitud = obj.lng;
-              this.loadingService.dismiss();
-            })
-      })
-    }
-    iniciarBusqueda() {
-      let input = document.getElementById('pac-input');
-      this.searchBox = new google.maps.places.SearchBox(input);
-      this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-  
-      this.map.addListener('bounds_changed', () =>{
-        this.searchBox.setBounds(this.map.getBounds());
-      });
-    }
-  
-    buscarTexto(map,markers, alertController): Observable<any> {
-      return Observable.create((observer) => {
-        this.searchBox.addListener('places_changed', () =>{
-          let places = this.searchBox.getPlaces();
-          if (places.length === 0) {
+		
+        markers = [];
+        var bounds = new google.maps.LatLngBounds();
+        let contador = 0;
+        places.forEach(function(place) {
+          if (!place.geometry) {
             return;
           }
+          if (contador < 1) {
+            markers.push(new google.maps.Marker({
+              map: map,
+              draggable: false,
+              title: 'Mueveme',
+              animation: google.maps.Animation.DROP,
+              position: place.geometry.location,
+              icon: 'assets/image/car-pin.png'
+            }));
+			map.addListener('center_changed', () => {
+				markers[0].setPosition(map.getCenter());
+			});
+            if (place.geometry.viewport) {
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          }
+          contador++;
+        });
+        if(contador === 1) {
+          map.fitBounds(bounds);
+          observer.next(markers);
+          observer.complete();
+        } else {
           markers.forEach(function(marker) {
             marker.setMap(null);
           });
-          markers = [];
-          var bounds = new google.maps.LatLngBounds();
-          let contador = 0;
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              return;
-            }
-            if (contador < 1) {
-              markers.push(new google.maps.Marker({
-                map: map,
-                draggable: true,
-                title: 'Mueveme',
-                animation: google.maps.Animation.DROP,
-                position: place.geometry.location,
-                icon: 'assets/image/car-pin.png'
-              }));
-              
-              if (place.geometry.viewport) {
-                bounds.union(place.geometry.viewport);
-              } else {
-                bounds.extend(place.geometry.location);
-              }
-            }
-            contador++;
-          });
-          if(contador === 1) {
-            map.fitBounds(bounds);
-            observer.next(markers);
-            observer.complete();
-          } else {
-            markers.forEach(function(marker) {
-              marker.setMap(null);
-            });
-            alertController.present('Alerta', 'debes escojer una opcion de la lista');
-            return;
-          }
-        });
-    });
-    }
-    markerEvent(markers): Observable<any> {
-      return Observable.create((observer) => {
-          markers[0].addListener('dragend', () => {
-          const objStr: string = JSON.stringify(markers[0].getPosition());
-          const obj = JSON.parse(objStr);
-          observer.next(obj);
-          observer.complete();
-        });
-        
-    });
-    }
-    guardarLatLong() {
-      if(this.latitud && this.longitud){
-        this.toastCtrl.presentToast('Los datos fueron guardados exitosamente');
-        this.modalController.dismiss({
-          lat: this.latitud,
-          lng: this.longitud
+          alertController.present('Alerta', 'debes escojer una opcion de la lista');
+          return;
+        }
       });
-      } else {
-        this.alertController.present('Alerta', 'Debes seleccionar un punto antes de terminar.');
-      }
+  });
+  }
+  markerEvent(markers): Observable<any> {
+    return Observable.create((observer) => {
+		this.map.addListener('center_changed', () => {
+			markers[0].setPosition(this.map.getCenter());
+			const objStr: string = JSON.stringify(markers[0].getPosition());
+			console.log(objStr);
+			const obj = JSON.parse(objStr);
+			// window.alert(JSON.stringify(marker.getPosition()));
+			this.latitud = obj.lat;
+			this.longitud = obj.lng;
+		});
+	});
+  }
+  guardarLatLong() {
+    if(this.latitud && this.longitud){
+      this.toastCtrl.presentToast('Los datos fueron guardados exitosamente');
+      this.modalController.dismiss({
+        lat: this.latitud,
+        lng: this.longitud
+    });
+    } else {
+      this.alertController.present('Alerta', 'Debes seleccionar un punto antes de terminar.');
     }
-  
-    cerrar(){
-      this.modalController.dismiss();
-    }
+  }
+
+  cerrar(){
+    this.modalController.dismiss();
+  }
 }
