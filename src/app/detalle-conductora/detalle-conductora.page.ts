@@ -1,5 +1,5 @@
 import { AuthService } from './../services/firebase/auth.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
 import { MdlConductora } from '../modelo/mldConductora';
 import { ConductoraService } from '../services/db/conductora.service';
@@ -13,6 +13,7 @@ import { MdlParametrosCarrera } from '../modelo/mdlParametrosCarrera';
 import { ParametrosCarreraService } from '../services/db/parametros-carrera.service';
 import { Observable } from 'rxjs';
 import { TokenNotifService } from '../services/token-notif.service';
+import { PushNotifService } from '../services/push-notif.service';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -20,7 +21,11 @@ import { TokenNotifService } from '../services/token-notif.service';
   styleUrls: ['./detalle-conductora.page.scss'],
 })
 export class DetalleConductoraPage implements OnInit, OnDestroy {
-  
+
+  @ViewChild('pass') pass: ElementRef;
+
+  mostrarPass: boolean = false;
+  tipoPass: string = 'password';
 
   form: FormGroup;
   myclass: any;
@@ -31,6 +36,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   public lstParametros: MdlParametrosCarrera [] = [];
   public isSesionAdmin = false;
   public isRegister = false;
+  public lstAdministradoras: MdlConductora[] = [];
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -44,10 +50,11 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     public actionSheetController: ActionSheetController,
     public authService: AuthService,
     public tokenService: TokenNotifService,
+    public pushNotifService: PushNotifService,
   ) {
     this.myclass = 'mostrar';
    }
-
+   
   iniciarValidaciones() {
     this.form = this.fb.group({
       vnombre: ['', [
@@ -125,6 +132,15 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       validator: this.mustMatch('vpass', 'vconfirmPass')
     });
     
+  }
+  cambiarValor() {
+    if(this.mostrarPass) {
+      this.mostrarPass = false;
+      this.tipoPass = 'password';
+    }else {
+      this.mostrarPass = true;
+      this.tipoPass = 'text';
+    }
   }
 
   mustMatch(controlName: string, matchingControlName: string) {
@@ -215,6 +231,10 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
           this.isSesionAdmin = true;
         }
       });
+    this.conductoraService.listConductoraAdmin(true)
+    .subscribe(lstConductoras => {
+      this.lstAdministradoras = lstConductoras;
+    });
   }
 
   obtenerParametros() {
@@ -254,7 +274,32 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         .then((conductora) => {
           this.conductora = conductora;
           this.loadingService.dismiss();
-          this.alertService.present('Info', 'Datos guardados correctamente.');
+          if(this.conductora.estado) {
+            if(!this.conductora.admin) {
+              //conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
+              if(this.conductora.ui) {
+                let notificaciones = {
+                  notification:{
+                    title: 'Mujeres al Volante',
+                    body: 'Felicidades tu cuenta se ha activado.' ,
+                    sound: 'default',
+                    click_action: 'FCM_PLUGIN_ACTIVITY',
+                    icon: 'fcm_push_icon'
+                  },
+                  data: {
+                    landing_page: 'home',
+                  },
+                  to: this.conductora.ui,
+                  priority: 'high',
+                  restricted_package_name: ''
+                };
+                this.pushNotifService.postGlobal(notificaciones, '')
+                .subscribe(response => {
+                });
+              }
+            }
+          }
+          this.alertService.present('Info', 'Los datos se han registrado correctamente.');
           if (this.isSesionAdmin) {
             this.navController.navigateBack('/lista-conductoras');
           } else {
@@ -271,14 +316,38 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         .then(res => {
           console.log('registro conductoras*******************');
           console.log(res);
+          this.conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
           this.conductoraService.grabarConductora(this.conductora)
           .then((conductora) => {
             this.conductora = conductora;
             this.loadingService.dismiss();
-            this.alertService.present('Info', 'Datos guardados correctamente.');
+            this.lstAdministradoras.forEach(element => {
+              if(element.ui) {
+                let notificaciones = {
+                  notification:{
+                    title: 'Mujeres al Volante',
+                    body: 'Una conductora acaba de registrarse!!!!',
+                    sound: 'default',
+                    click_action: 'FCM_PLUGIN_ACTIVITY',
+                    icon: 'fcm_push_icon'
+                  },
+                  data: {
+                    landing_page: 'home-admin',
+                  },
+                  to: element.ui,
+                  priority: 'high',
+                  restricted_package_name: ''
+                };
+                this.pushNotifService.postGlobal(notificaciones, '')
+                .subscribe(response => {
+                });
+              }
+            });
+            
+            this.alertService.present('Info', 'Gracias por registrarte en un momento nuestro personal se comunicara contigo.');
             if (this.isSesionAdmin) {
               this.navController.navigateBack('/lista-conductoras');
-            } else {
+            } else {  
               this.navController.navigateRoot('/home');
             }
           })
@@ -318,12 +387,56 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   }
 
   irDetalleVehiculo() {
+    this.lstAdministradoras.forEach(element => {
+      if(element.ui) {
+        let notificaciones = {
+          notification:{
+            title: 'Mujeres al Volante',
+            body: 'La conductora ' + this.conductora.nombre + ' ' + this.conductora.paterno + ', esta registrando sus imagenes.' ,
+            sound: 'default',
+            click_action: 'FCM_PLUGIN_ACTIVITY',
+            icon: 'fcm_push_icon'
+          },
+          data: {
+            landing_page: 'home-admin',
+          },
+          to: element.ui,
+          priority: 'high',
+          restricted_package_name: ''
+        };
+        this.pushNotifService.postGlobal(notificaciones, '')
+        .subscribe(response => {
+        });
+      }
+    });
     this.navParam.set({ conductora: this.conductora});
     this.navController.navigateForward('/detalle-vehiculo');
   }
 
   irDetalleImagenes() {
-    this.navParam.set({conductora: this.conductora})
+    this.lstAdministradoras.forEach(element => {
+      if(element.ui) {
+        let notificaciones = {
+          notification:{
+            title: 'Mujeres al Volante',
+            body: 'La conductora ' + this.conductora.nombre + ' ' + this.conductora.paterno + ', esta registrando sus imagenes.' ,
+            sound: 'default',
+            click_action: 'FCM_PLUGIN_ACTIVITY',
+            icon: 'fcm_push_icon'
+          },
+          data: {
+            landing_page: 'home-admin',
+          },
+          to: element.ui,
+          priority: 'high',
+          restricted_package_name: ''
+        };
+        this.pushNotifService.postGlobal(notificaciones, '')
+        .subscribe(response => {
+        });
+      }
+    });
+    this.navParam.set({conductora: this.conductora});
     this.navController.navigateForward('/detalle-imagenes-conductora');
   }
 
@@ -404,6 +517,10 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       ,null,null,null,null
       ,null,null,null,null
       ,null,null);
+  }
+  outFocus() {
+    this.conductora.email = this.conductora.email.trim();
+    this.conductora.email = this.conductora.email.replace(' ', '');
   }
 }
 

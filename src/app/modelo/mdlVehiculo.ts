@@ -5,7 +5,8 @@ export class MdlVehiculo {
         public capacidad: number,
         public marca: string,
         public modelo: string,
-        public placa: string
+        public placa: string,
+        public color: string
     ) {
 
     }

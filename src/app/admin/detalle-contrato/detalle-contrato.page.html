@@ -8,7 +8,9 @@
         <ion-list>
             <ion-item>
                 <ion-label position="stacked">Cliente</ion-label>
-                <ion-input formControlName="vNombreCliente" readonly>{{cliente.nombre}}</ion-input>
+                <ion-input formControlName="vNombreCliente" readonly>{{cliente.nombre}}
+                </ion-input>
+                <ion-icon *ngIf="cliente.cel" (click)="irWhatsApp()" slot="end" name="logo-whatsapp" style="color: #00E676"></ion-icon>
             </ion-item>
             <ion-item>
                 <ion-label position="stacked">Codigo Contrato</ion-label>

@@ -25,7 +25,7 @@ export class ConductoraService {
     if (!conductora.id) {
       conductora.id = Date.now();
     }
-    conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
+   
     return this.afDB.database.ref('conductora/' + conductora.id)
               .set(this.utilService.serializar(conductora))
                 .then(()=>{
