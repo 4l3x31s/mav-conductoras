@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SesionService } from '../services/sesion.service';
 import { MdlConductora } from '../modelo/mldConductora';
-import { NavController, AlertController, Events, ModalController } from '@ionic/angular';
+import { NavController, AlertController, Events, ModalController, Platform } from '@ionic/angular';
 import { LoadingService } from '../services/util/loading.service';
 import { AlertService } from '../services/util/alert.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -20,6 +20,7 @@ export class HomePage implements OnInit {
   conductora: MdlConductora;
   pendientes: MdlCarrera[];
   watchID: any;
+  subscription: any;
   constructor(
     public sesionService: SesionService,
     public navController: NavController,
@@ -30,7 +31,8 @@ export class HomePage implements OnInit {
     public iab: InAppBrowser,
     public carreraService: CarreraService,
     public modalController: ModalController,
-    public geolocalizacionService: GeolocalizacionService
+    public geolocalizacionService: GeolocalizacionService,
+    public platform: Platform,
   ) { }
 
   ngOnInit() {
@@ -123,5 +125,14 @@ export class HomePage implements OnInit {
       this.geolocalizacionService.crearGeolocalizacion(mdlGeoLocalizacion);
     }, error => {
     });
+  }
+  ionViewDidEnter(){
+      this.subscription = this.platform.backButton.subscribe(()=>{
+          navigator['app'].exitApp();
+      });
+  }
+  
+  ionViewWillLeave(){
+      this.subscription.unsubscribe();
   }
 }

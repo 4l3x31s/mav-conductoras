@@ -102,7 +102,10 @@
           <ion-col size="3">{{deposito.tipo}}</ion-col>
           <ion-col size="3">{{deposito.fecha}}</ion-col>
           <ion-col size="3">{{deposito.monto}}</ion-col>
-          <ion-col size="3">{{deposito.verificado}}</ion-col>
+          <ion-col size="3">
+            <span *ngIf="deposito.verificado" style="font-size: 1.5em !important" ><ion-icon color="whatsapp" name="checkmark"></ion-icon></span>
+            <span *ngIf="!deposito.verificado" style="font-size: 1.5em !important" ><ion-icon color="danger" name="close"></ion-icon></span>
+          </ion-col>
         </ion-row>
       </ion-grid>
     

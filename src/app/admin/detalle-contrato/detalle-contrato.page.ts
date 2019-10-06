@@ -408,6 +408,8 @@ export class DetalleContratoPage implements OnInit {
                     carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre + ' ' + this.lstConcudtorasFiltrado[0].paterno;
                     carrera.pais = this.contrato.pais;
                     carrera.ciudad = this.contrato.ciudad;
+                    carrera.direccionInicio = this.direccionIni;
+                    carrera.direccionDestino = this.direccionFin;
                     this.lstCarreras.push(carrera);
                 }
             }
@@ -909,10 +911,16 @@ export class DetalleContratoPage implements OnInit {
                         let lngOr = this.contrato.longOrigen;
                         let latDes = this.contrato.latDestino;
                         let lngDes = this.contrato.longDestino;
+                        let dirIni = this.contrato.dirOrigen;
+                        let dirFin = this.contrato.dirDestino;
+                        this.direccionIni = dirFin;
+                        this.direccionFin = dirIni;
                         this.contrato.latOrigen = latDes;
                         this.contrato.longOrigen = lngDes;
                         this.contrato.latDestino = latOr;
                         this.contrato.longDestino = lngOr;
+                        this.contrato.dirOrigen = dirIni;
+                        this.contrato.dirDestino = dirFin;
                         this.alertService.present('Guardado', 'Esta seguro de guardar los datos')
                         this.presentAlertConfirm();
                     } else {

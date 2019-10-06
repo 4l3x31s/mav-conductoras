@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SesionService } from '../services/sesion.service';
 import { MdlConductora } from '../modelo/mldConductora';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home-admin',
@@ -10,10 +10,11 @@ import { NavController } from '@ionic/angular';
 })
 export class HomeAdminPage implements OnInit {
   conductora: MdlConductora;
-
+  subscription: any;
   constructor(
     public sesionService: SesionService,
     public navController: NavController,
+    public platform: Platform,
   ) { }
 
   ngOnInit() {
@@ -32,5 +33,13 @@ export class HomeAdminPage implements OnInit {
         alert('error crearSesionBase:'+JSON.stringify(e));
       });
   }
-
+  ionViewDidEnter(){
+    this.subscription = this.platform.backButton.subscribe(()=>{
+        navigator['app'].exitApp();
+    });
+  }
+  
+  ionViewWillLeave(){
+      this.subscription.unsubscribe();
+  }
 }
