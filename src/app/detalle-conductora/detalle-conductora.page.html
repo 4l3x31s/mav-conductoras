@@ -137,7 +137,7 @@
       <div [ngClass]="myclass" >
         <ion-item>
           <ion-label position="stacked">Correo Electrónico</ion-label>
-          <ion-input formControlName="vemail" [(ngModel)]="conductora.email"></ion-input>
+          <ion-input formControlName="vemail" (focusout)="outFocus()" [(ngModel)]="conductora.email"></ion-input>
         </ion-item>
         <print-error [control]="f.vemail"></print-error>
   
@@ -148,12 +148,14 @@
   
         <ion-item>
           <ion-label position="stacked">Contraseña</ion-label>
-          <ion-input type="password" formControlName="vpass" [(ngModel)]="conductora.pass"></ion-input>
+          <ion-input #pass [type]="tipoPass" formControlName="vpass" [(ngModel)]="conductora.pass">
+          </ion-input>
+          <ion-icon (click)="cambiarValor()" name="eye" color="medium" slot="end"></ion-icon>
         </ion-item>
         <print-error [control]="f.vpass"></print-error>
   
         <ion-item>
-          <ion-label position="stacked">Confirmar Contraseña</ion-label>
+          <ion-label #confPass position="stacked">Confirmar Contraseña</ion-label>
           <ion-input type="password" formControlName="vconfirmPass" name="vconfirmPass" ></ion-input>
         </ion-item>
         <print-error [control]="f.vconfirmPass"></print-error>

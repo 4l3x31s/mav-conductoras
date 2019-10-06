@@ -28,6 +28,7 @@ import * as moment from 'moment';
 import {ContratoService} from './../../services/db/contrato.service';
 import {MdlCarrera} from 'src/app/modelo/mdlCarrera';
 import * as _ from 'lodash';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 
 declare var google: any;
@@ -90,7 +91,8 @@ export class DetalleContratoPage implements OnInit {
                 public dataUtilService: DataUtilService,
                 public contratoService: ContratoService,
                 public mapParamService: MapParamService,
-                public actionSheetController: ActionSheetController) {
+                public actionSheetController: ActionSheetController,
+                public iab: InAppBrowser,) {
         this.cliente = this.navParams.get().cliente;
         this.distance = new google.maps.DistanceMatrixService();
         this.txtDescripcionLugar = "Registrado en la Carrera";
@@ -360,7 +362,8 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null, null, null, null, null, null);
+            null, null, null, null, null,
+            null, null, null);
 
         this.filtrarContrato('id', this.contrato.idConductora);
         let enteroDias = Math.floor(finalDias);
@@ -385,7 +388,8 @@ export class DetalleContratoPage implements OnInit {
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null, null, null, null, null);
+                        null, null, null, null, null,
+                        null, null, null);
                     //carrera.id = Date.now();
 
                     carrera.idConductora = Number(this.contrato.idConductora);
@@ -497,7 +501,8 @@ export class DetalleContratoPage implements OnInit {
             null, null, null, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null, null, null, null, null, null);
+            null, null, null, null, null,
+            null, null, null);
 
         this.filtrarContrato('id', this.contrato.idConductora);
 
@@ -517,7 +522,8 @@ export class DetalleContratoPage implements OnInit {
                         null, null, null, null, null,
                         null, null, null, null, null,
                         null, null, null, null, null,
-                        null, null, null, null, null, null);
+                        null, null, null, null, null,
+                        null, null, null);
                     //carrera.id = Date.now();
 
                     carrera.idConductora = Number(this.contrato.idConductora);
@@ -536,6 +542,8 @@ export class DetalleContratoPage implements OnInit {
                     carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre + ' ' + this.lstConcudtorasFiltrado[0].paterno;
                     carrera.pais = this.contrato.pais;
                     carrera.ciudad = this.contrato.ciudad;
+                    carrera.direccionInicio = this.direccionIni;
+                    carrera.direccionDestino = this.direccionFin;
                     this.lstCarreras.push(carrera);
                 }
             }
@@ -1057,4 +1065,7 @@ export class DetalleContratoPage implements OnInit {
             }
         }
     }
+    irWhatsApp() {
+        this.iab.create('https://api.whatsapp.com/send?phone=591' + this.cliente.cel + '&text=Hola', '_system', 'location=yes');
+      }
 }

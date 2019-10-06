@@ -1,3 +1,4 @@
+import { MdlContrato } from './../../modelo/mdlContrato';
 import { MdlParametrosCarrera } from './../../modelo/mdlParametrosCarrera';
 import { DepositoService } from './../../services/db/deposito.service';
 import { MdlDepositos } from 'src/app/modelo/mdlDepositos';
@@ -12,6 +13,9 @@ import { NavParamService } from 'src/app/services/nav-param.service';
 import { ParametrosCarreraService } from 'src/app/services/db/parametros-carrera.service';
 import { TokenNotifService } from 'src/app/services/token-notif.service';
 import { AuthService } from 'src/app/services/firebase/auth.service';
+import { ExcelService } from 'src/app/services/excel.service';
+import { CarreraService } from 'src/app/services/db/carrera.service';
+import { MdlCarrera } from 'src/app/modelo/mdlCarrera';
 
 @Component({
   selector: 'app-reg-clientes',
@@ -26,6 +30,7 @@ export class RegClientesPage implements OnInit {
   public lstCiudadesFiltrado: MdlParametrosCarrera [] = [];
   public lstParametros: MdlParametrosCarrera [] = [];
   public myclass: string;
+  public lstCarreras: MdlCarrera[] = [];
   constructor(
     public fb: FormBuilder,
     public clienteService: ClienteService,
@@ -39,6 +44,8 @@ export class RegClientesPage implements OnInit {
     public parametrosService: ParametrosCarreraService,
     public tokenService: TokenNotifService,
     public authService: AuthService,
+    public carreraService: CarreraService,
+    public excelService: ExcelService,
   ) {
     if (navParams.get().cliente) {
       this.cliente = this.navParams.get().cliente;
@@ -57,6 +64,9 @@ export class RegClientesPage implements OnInit {
     } else {
       this.myclass = "mostrar";
     }
+    this.carreraService.getCarrerasPorCliente(this.cliente.id).subscribe( carreras => {
+      this.lstCarreras = carreras;
+    });
   }
   get f(): any { return this.frmCliente.controls; }
   listarDepositos() {
@@ -240,6 +250,19 @@ public grabar(){
         }
       },
       {
+        text: 'Carreras Cliente',
+        icon: 'list-box',
+        handler: () => {
+          let plataforma = this.excelService.getDevice();
+          console.log(plataforma);
+          if (plataforma === 'android' || plataforma === 'ios') {
+            this.excelService.exportarExcel(this.lstCarreras);
+          } else {
+            this.exportAsXLSX();
+          }
+        }
+      },
+      {
         text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
@@ -249,7 +272,9 @@ public grabar(){
     });
     await actionSheet.present();
   }
-
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.lstCarreras, 'sample');
+ }
   obtenerParametros() {
     this.loadingService.present()
       .then(() => {

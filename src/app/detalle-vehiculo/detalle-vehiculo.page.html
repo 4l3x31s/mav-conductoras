@@ -25,6 +25,12 @@
         <ion-input formControlName="vmodelo" [(ngModel)]="vehiculo.modelo" type="number"></ion-input>
       </ion-item>
       <print-error [control]="f.vmodelo"></print-error>
+
+      <ion-item>
+        <ion-label position="floating">Color</ion-label>
+        <ion-input formControlName="vcolor" [(ngModel)]="vehiculo.color" type="text"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vcolor"></print-error>
     </ion-list>
     <div padding>
       <ion-button color="verdec" expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">

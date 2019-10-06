@@ -7,6 +7,8 @@ import { NavController, Events, AlertController, ToastController } from '@ionic/
 import { AlertService } from '../services/util/alert.service';
 import { environment } from '../../environments/environment';
 import { NavParamService } from '../services/nav-param.service';
+import { TokenNotifService } from '../services/token-notif.service';
+import { ConductoraService } from '../services/db/conductora.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +30,9 @@ export class LoginPage implements OnInit {
     public authService: AuthService,
     public alertController: AlertController,
     public toastController: ToastController,
-    public navParam: NavParamService
+    public navParam: NavParamService,
+    public tokenService: TokenNotifService,
+    public conductoraService: ConductoraService
   ) { }
 
   ngOnInit() {
@@ -91,6 +95,8 @@ export class LoginPage implements OnInit {
         .then( res => {
           this.sesionService.login(this.user)
           .subscribe((conductora) => {
+            conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
+            this.conductoraService.grabarConductora(conductora);
             this.events.publish('user:login');
             if (conductora.admin){
               this.navController.navigateRoot('/home-admin');
@@ -174,5 +180,9 @@ export class LoginPage implements OnInit {
   }
   enviarCorreo() {
     this.presentAlertPrompt();
+  }
+  outFocus() {
+    this.user = this.user.trim();
+    this.user = this.user.replace(' ', '');
   }
 }
