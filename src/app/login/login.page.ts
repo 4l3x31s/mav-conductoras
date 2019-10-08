@@ -50,6 +50,12 @@ export class LoginPage implements OnInit {
           this.sesionService.getSesion()
             .subscribe((conductora)=>{
               if(conductora){
+                
+                conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
+                console.log(conductora);
+                if(conductora.ui!=null){
+                  this.conductoraService.grabarConductora(conductora);
+                }
                 if (conductora.admin){
                   this.navController.navigateRoot('/home-admin');
                 } else {
@@ -96,7 +102,10 @@ export class LoginPage implements OnInit {
           this.sesionService.login(this.user)
           .subscribe((conductora) => {
             conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
-            this.conductoraService.grabarConductora(conductora);
+            console.log(conductora);
+            if(conductora.ui!=null){
+              this.conductoraService.grabarConductora(conductora);
+            }
             this.events.publish('user:login');
             if (conductora.admin){
               this.navController.navigateRoot('/home-admin');
