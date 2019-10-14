@@ -112,8 +112,8 @@ export class HomePage implements OnInit {
   }
   tomarCarrera(carrera:MdlCarrera){
     this.carreraService.tomarCarrera(this.conductora, carrera)
-      .then(()=>{
-        this.alertService.present('Información','Se asignó correctamente.')
+      .then(() => {
+        this.alertService.present('Información', 'Se asignó correctamente.')
           .then(()=>{
             this.navController.navigateForward('/detalle-carreras');
           });
