@@ -13,7 +13,10 @@
       </ion-row>
       <ion-row *ngFor="let cliente of lstClientesFiltrado"  nowrap >
         <ion-col size="4" (click)="seleccionarCliente(cliente)">{{cliente.nombre}}</ion-col>
-        <ion-col size="2" (click)="seleccionarCliente(cliente)">{{cliente.estado}}</ion-col>
+        <ion-col size="2" (click)="seleccionarCliente(cliente)">
+          <span *ngIf="cliente.estado" style="font-size: 1.5em !important" ><ion-icon color="whatsapp" name="checkmark"></ion-icon></span>
+          <span *ngIf="!cliente.estado" style="font-size: 1.5em !important" ><ion-icon color="danger" name="close"></ion-icon></span>
+        </ion-col>
         <ion-col size="3" (click)="seleccionarCliente(cliente)">{{cliente.direccion}}</ion-col>
         <ion-col size="3" (click)="abrirWhatsapp(cliente)"><ion-icon color="whatsapp" name="logo-whatsapp"></ion-icon>{{cliente.cel}}</ion-col>
       </ion-row>

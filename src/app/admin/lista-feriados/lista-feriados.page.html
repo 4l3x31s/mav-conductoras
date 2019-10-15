@@ -10,15 +10,18 @@
     
     <ion-grid>
       <ion-row class="cabecera-tabla">
-        <ion-col size="4">Feriado</ion-col>
-        <ion-col size="2">Fecha</ion-col>
+        <ion-col size="5">Feriado</ion-col>
+        <ion-col size="4">Fecha</ion-col>
         <ion-col size="3">Estado</ion-col>
         
       </ion-row>
       <ion-row *ngFor="let feriado of listFeriadosFiltrado" (click)="seleccionarFeriado(feriado)" nowrap >
-        <ion-col size="4">{{feriado.descFeriado}}</ion-col>
-        <ion-col size="2">{{feriado.fecha}}</ion-col>
-        <ion-col size="3">{{feriado.estado}}</ion-col>
+        <ion-col size="5">{{feriado.descFeriado}}</ion-col>
+        <ion-col size="4">{{feriado.fecha}}</ion-col>
+        <ion-col size="3">
+          <span *ngIf="feriado.estado" style="font-size: 1.5em !important" ><ion-icon color="whatsapp" name="checkmark"></ion-icon></span>
+          <span *ngIf="!feriado.estado" style="font-size: 1.5em !important" ><ion-icon color="danger" name="close"></ion-icon></span>
+        </ion-col>
       </ion-row>
   
     </ion-grid>
