@@ -16,14 +16,14 @@
         <ion-col size="4" (click)="irActualizarContrato(contrato)">{{contrato.codigoContrato}}</ion-col>
         <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.dirOrigen}}</ion-col>
         <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.dirDestino}}</ion-col>
-        <ion-col size="2" (click)="irActualizarContrato(contrato)">{{contrato.montoTotal}}</ion-col>
+        <ion-col size="2" (click)="irActualizarContrato(contrato)">{{contrato.montoTotalCarreras}}</ion-col>
         
       </ion-row>
     </ion-grid>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button color="verdec" (click)="presentActionSheet()">
-          <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+      <ion-fab-button color="verdec" (click)="presentActionSheet()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>

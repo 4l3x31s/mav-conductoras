@@ -43,7 +43,7 @@ export class DetalleContratoPage implements OnInit {
     public contrato: MdlContrato = new MdlContrato(
         null, null, null, null, null, null, null, null
         , null, null, null, null, null, null, null, null
-        , null, null, null, null, null, null
+        , null, null, null, null, null, null, null
     );
     public lstConductoras: MdlConductora[] = [];
     public lstClientes: MdlCliente[] = [];
@@ -99,6 +99,7 @@ export class DetalleContratoPage implements OnInit {
         if (navParams.get().contrato) {
             this.esNuevo = false;
             this.contrato = this.navParams.get().contrato;
+            this.costoTotal = this.contrato.montoTotalCarreras;
             this.direccionIni = this.contrato.dirOrigen;
             this.direccionFin = this.contrato.dirDestino;
             console.log('entra contrato');
@@ -106,7 +107,8 @@ export class DetalleContratoPage implements OnInit {
         } else {
             this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null);
             this.contrato.fechaInicio = moment().format();
         }
         this.contrato.idUsuario = this.cliente.id;
@@ -414,8 +416,10 @@ export class DetalleContratoPage implements OnInit {
                 }
             }
         }
+        console.log(this.costoTotal);
+        this.contrato.montoTotalCarreras = this.costoTotal;
         this.contrato.idConductora = Number(this.contrato.idConductora);
-        this.contrato.codigoContrato = this.contrato.codigoContrato + '-' + this.contrato.id;
+        
         await this.contratoService.insertarContrato(this.contrato)
             .then(async data => {
 
@@ -550,11 +554,13 @@ export class DetalleContratoPage implements OnInit {
                 }
             }
         }
+        console.log(this.costoTotal);
+        this.contrato.montoTotalCarreras = this.costoTotal;
         this.contrato.idConductora = Number(this.contrato.idConductora);
         if (!this.contrato.id) {
             this.contrato.id = Date.now();
         }
-        this.contrato.codigoContrato = this.contrato.codigoContrato + this.contrato.id;
+        
         await this.contratoService.insertarContrato(this.contrato)
             .then(async data => {
 
