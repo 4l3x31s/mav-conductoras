@@ -20,7 +20,7 @@ export class ContratoService {
     if (!contrato.id) {
       contrato.id = Date.now();
     }
-    contrato.codigoContrato = contrato.codigoContrato + '-' + contrato.id;
+    contrato.codigoContrato = contrato.codigoContrato + contrato.id;
     return this.afDB.database.ref('contrato/' + contrato.id).set(this.utilService.serializar(contrato));
   }
   listaContratosPorUsuario(idUsuario: number) {
