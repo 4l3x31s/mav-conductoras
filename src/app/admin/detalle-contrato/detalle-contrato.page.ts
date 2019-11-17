@@ -43,7 +43,7 @@ export class DetalleContratoPage implements OnInit {
     public contrato: MdlContrato = new MdlContrato(
         null, null, null, null, null, null, null, null
         , null, null, null, null, null, null, null, null
-        , null, null, null, null, null, null, null
+        , null, null, null, null, null, null, null, null
     );
     public lstConductoras: MdlConductora[] = [];
     public lstClientes: MdlCliente[] = [];
@@ -108,7 +108,7 @@ export class DetalleContratoPage implements OnInit {
             this.esNuevo = true;
             this.contrato = new MdlContrato(null, null, null, null,
                 null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null);
             this.contrato.fechaInicio = moment().format();
         }
         this.contrato.idUsuario = this.cliente.id;
@@ -117,7 +117,10 @@ export class DetalleContratoPage implements OnInit {
     }
 
     ngOnInit() {
-        this.contrato.codigoContrato = 'MAV-LPZ-';
+        if(!this.contrato.codigoContrato)
+        {
+            this.contrato.codigoContrato = 'MAV-LPZ-';
+        }
         this.initValidaciones();
         // this.obtenerClientes();
         this.obtenerParametros();
@@ -439,6 +442,7 @@ export class DetalleContratoPage implements OnInit {
     }
 
     async grabar() {
+
         if (this.direccionIni === 'Donde te encontramos?') {
             this.alertService.present('Alerta', 'Debes ingresar la direccion de inicio.');
             return;
@@ -560,7 +564,7 @@ export class DetalleContratoPage implements OnInit {
         if (!this.contrato.id) {
             this.contrato.id = Date.now();
         }
-        
+        this.contrato.nombreConductora = this.lstConcudtorasFiltrado[0].nombre + ' ' + this.lstConcudtorasFiltrado[0].paterno;
         await this.contratoService.insertarContrato(this.contrato)
             .then(async data => {
 

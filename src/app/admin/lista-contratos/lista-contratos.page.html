@@ -4,19 +4,18 @@
     <ion-list-header color="medium">
         <ion-label>LISTA CONTRATOS</ion-label>
       </ion-list-header>
-    <!--<ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarCliente" (ionChange)="filtrar()" ></ion-searchbar>-->
-    <ion-grid>
+     <ion-grid>
       <ion-row class="cabecera-tabla">
         <ion-col size="4">Código Contrato</ion-col>
         <ion-col size="3">Origen</ion-col>
         <ion-col size="3">Destino</ion-col>
         <ion-col size="2">Monto Total</ion-col>
       </ion-row>
-      <ion-row *ngFor="let contrato of lstContratoFiltrado"  nowrap >
-        <ion-col size="4" (click)="irActualizarContrato(contrato)">{{contrato.codigoContrato}}</ion-col>
-        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.dirOrigen}}</ion-col>
-        <ion-col size="3" (click)="irActualizarContrato(contrato)">{{contrato.dirDestino}}</ion-col>
-        <ion-col size="2" (click)="irActualizarContrato(contrato)">{{contrato.montoTotalCarreras}}</ion-col>
+      <ion-row *ngFor="let contrato of lstContratoFiltrado" (click)="irActualizarContrato(contrato)" nowrap >
+        <ion-col size="4" >{{contrato.codigoContrato}}</ion-col>
+        <ion-col size="3" >{{contrato.dirOrigen}}</ion-col>
+        <ion-col size="3" >{{contrato.dirDestino}}</ion-col>
+        <ion-col size="2" >{{contrato.montoTotalCarreras}}</ion-col>
         
       </ion-row>
     </ion-grid>
