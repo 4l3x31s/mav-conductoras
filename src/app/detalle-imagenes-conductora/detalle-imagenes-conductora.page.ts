@@ -18,10 +18,12 @@ export class DetalleImagenesConductoraPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.navParam.get());
     if(this.navParam.get()){
       this.conductora = this.navParam.get().conductora;
+      console.log(this.conductora);
     } else {
-      this.navController.navigateRoot('/login');
+      //this.navController.navigateRoot('/login');
     }
   }
 
