@@ -69,7 +69,7 @@ export class DetalleCarrerasPage implements OnInit {
     this.loadingService.present()
       .then(() => {
         if (this.navParams.get().conductora) {
-          this.conductora = this.navParams.get().conductora;
+           this.conductora = this.navParams.get().conductora;
           this.obtenerCarreras();
         } else {
           this.sesionService.getSesion()
@@ -85,8 +85,7 @@ export class DetalleCarrerasPage implements OnInit {
       });
   }
   obtenerCarreras() {
-    this.carreraService.getCarrerasPorConductora(this.conductora.id)
-      .subscribe(carreras => {
+    this.carreraService.getCarrerasPorConductora(this.conductora.id).subscribe(carreras => {
         this.loadingService.dismiss();
         this.carreras = carreras;
         this.calendarEvents = [];

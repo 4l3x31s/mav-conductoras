@@ -159,6 +159,7 @@ export class ModCarreraPage implements OnInit {
           }, {
             text: 'Confirmar',
             handler: () => {
+              this.carrera.estado = 2;
               this.grabar();
             }
           }
@@ -173,7 +174,7 @@ export class ModCarreraPage implements OnInit {
     this.loadingServices.present();
     //var identificadorPrueba = Date.now();
     this.carrera.idUsuario = this.cliente.id;
-    this.carrera.estado = 1;
+    this.carrera.estado = 2;
     this.carrera.nombreCliente = this.cliente.nombre;
     this.filtrarContrato('id', this.carrera.idConductora);
     this.carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre
