@@ -91,10 +91,12 @@ export class DetalleCarrerasPage implements OnInit {
         this.calendarEvents = [];
         if (this.carreras && this.carreras.length > 0) {
           this.carreras.forEach(element => {
+            console.log(element);
             let cadena = '';
             if (element.estado !== 3) {
               cadena = '*';
             }
+            console.log(cadena + ' ' + element.costo + 'Bs. ' + element.nombreCliente);
             this.calendarEvents = this.calendarEvents.concat({
               title: cadena + ' ' + element.costo + 'Bs. ' + element.nombreCliente,
               start: element.fechaInicio,
