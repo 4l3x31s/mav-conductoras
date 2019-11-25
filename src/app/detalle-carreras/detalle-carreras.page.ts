@@ -89,18 +89,20 @@ export class DetalleCarrerasPage implements OnInit {
         this.loadingService.dismiss();
         this.carreras = carreras;
         this.calendarEvents = [];
-        if (this.carreras && this.carreras.length > 0) {
+        if (this.carreras && this.carreras.length > 0 ) {
           this.carreras.forEach(element => {
-            let cadena = '';
-            if (element.estado !== 3) {
-              cadena = '*';
+            if(element.estado !== 1){
+              let cadena = '';
+              if (element.estado !== 3) {
+                cadena = '*';
+              }
+              this.calendarEvents = this.calendarEvents.concat({
+                title: cadena + ' ' + element.costo + 'Bs. ' + element.nombreCliente,
+                start: element.fechaInicio,
+                idCarrera: element.id,
+                backgroundColor: this.clienteService.getColorPorCliente(element)
+              });
             }
-            this.calendarEvents = this.calendarEvents.concat({
-              title: cadena + ' ' + element.costo + 'Bs. ' + element.nombreCliente,
-              start: element.fechaInicio,
-              idCarrera: element.id,
-              backgroundColor: this.clienteService.getColorPorCliente(element)
-            });
           });
         }
       },

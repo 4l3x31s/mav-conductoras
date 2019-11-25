@@ -22,8 +22,8 @@ declare var google;
 })
 export class TerminarCarreraPage implements OnInit {
 
-  @Input()
-  carrera: MdlCarrera;
+  @Input() carrera: MdlCarrera;
+  @Input() motivo: boolean;
   
   public lstParametrosCarrera: MdlParametrosCarrera [] = [];
   public lstFiltroParametrosCarrera: MdlParametrosCarrera [] = [];
@@ -31,6 +31,7 @@ export class TerminarCarreraPage implements OnInit {
   form: FormGroup;
   filtros = {};
   distance: any;
+
   constructor(
     private modalCtrl: ModalController,
     public fb: FormBuilder,
@@ -44,19 +45,29 @@ export class TerminarCarreraPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.distance = new google.maps.DistanceMatrixService();
-    this.carrera.califConductora = 3;
-    this.iniciarValidaciones();
-    
-    navigator.geolocation.getCurrentPosition((resp) => {
-      
-      this.carrera.latFin = resp.coords.latitude;
-      this.carrera.longFin = resp.coords.longitude;
-      this.determinarDistanciaTiempo();
-    }, (error) => {
-      this.loadingService.dismiss();
-    }, { enableHighAccuracy: true });
-    
+    if(this.motivo){
+      this.iniciarValidaciones();
+      navigator.geolocation.getCurrentPosition((resp) => {
+        this.carrera.latFin = resp.coords.latitude;
+        this.carrera.longFin = resp.coords.longitude;
+        this.determinarDistanciaTiempo();
+      }, (error) => {
+        this.loadingService.dismiss();
+      }, { enableHighAccuracy: true });
+      this.carrera.costo = 0;
+      this.carrera.califConductora = 0;
+    } else {
+      this.distance = new google.maps.DistanceMatrixService();
+      this.carrera.califConductora = 3;
+      this.iniciarValidaciones();
+      navigator.geolocation.getCurrentPosition((resp) => {
+        this.carrera.latFin = resp.coords.latitude;
+        this.carrera.longFin = resp.coords.longitude;
+        this.determinarDistanciaTiempo();
+      }, (error) => {
+        this.loadingService.dismiss();
+      }, { enableHighAccuracy: true });
+    }
   }
 
   iniciarValidaciones() {
@@ -74,6 +85,28 @@ export class TerminarCarreraPage implements OnInit {
 
   cerrar() {
     this.modalCtrl.dismiss();
+  }
+  async confirmarBorrar(){
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: '¿Desea borrar la carrera?',
+      buttons: [
+        {
+          text: 'cancelar',
+          role: 'cancelar',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          }
+        }, {
+          text: 'Confirmar',
+          handler: () => {
+            this.borrar();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async confirmarTerminar() {
@@ -99,9 +132,15 @@ export class TerminarCarreraPage implements OnInit {
 
     await alert.present();
   }
+  borrar(){
+    this.carreraService.borrarCarrera(this.carrera, this.carrera.obsConductora).then(()=>{
+      this.alertService.present('Información', 'Carrera Eliminada');
+      this.cerrar();
+    });
+  }
+
   terminar() {
-    this.clienteService.getCliente(this.carrera.idConductora)
-    .subscribe( data => {
+    this.clienteService.getCliente(this.carrera.idConductora).subscribe( data => {
       let cliente: MdlCliente = data;
       if (cliente.ui) {
         let notificaciones = {
@@ -124,32 +163,30 @@ export class TerminarCarreraPage implements OnInit {
         });
       }
     });
-    this.carreraService.terminarCarrera(this.carrera)
-      .then(()=>{
-        this.alertService.present('Información','Carrera Terminada');
-        this.cerrar();
-      });
+    this.carreraService.terminarCarrera(this.carrera).then(()=>{
+      this.alertService.present('Información', 'Carrera Terminada');
+      this.cerrar();
+    });
   }
 
   public async determinarDistanciaTiempo() {
     let responseMatrix: google.maps.DistanceMatrixRequest;
-
     responseMatrix = {
-        origins:
-            [{
-                lat: Number(this.carrera.latInicio),
-                lng: Number(this.carrera.longInicio)
-            }],
-        destinations:
-            [{
-                lat: Number(this.carrera.latFin),
-                lng: Number(this.carrera.longFin)
-            }],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC,
-        durationInTraffic: false,
-        avoidHighways: false,
-        avoidTolls: false
+      origins:
+        [{
+            lat: Number(this.carrera.latInicio),
+            lng: Number(this.carrera.longInicio)
+        }],
+      destinations:
+        [{
+            lat: Number(this.carrera.latFin),
+            lng: Number(this.carrera.longFin)
+        }],
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+      durationInTraffic: false,
+      avoidHighways: false,
+      avoidTolls: false
     };
     this.parametrosPorPais(this.carrera.pais.toUpperCase(), responseMatrix);
   }
@@ -193,12 +230,10 @@ export class TerminarCarreraPage implements OnInit {
 
   getDistanceMatrix(req: google.maps.DistanceMatrixRequest): Observable<google.maps.DistanceMatrixResponse> {
     return Observable.create((observer) => {
-        this.distance.getDistanceMatrix(req, (rsp, status) => {
-            // status checking goes here
-      
-            observer.next(rsp);
-            observer.complete();
-        });
+      this.distance.getDistanceMatrix(req, (rsp, status) => {
+        observer.next(rsp);
+        observer.complete();
+      });
     });
   }
 }

@@ -41,6 +41,11 @@ export class AppComponent {
       url: '/detalle-ganancias',
       icon: 'cash'
     },
+    {
+      title: 'Ganancias Parciales',
+      url: '/detalle-ganancias-parciales',
+      icon: 'cash'
+    },
   ];
 
   public appPagesAdmin = [
@@ -73,6 +78,11 @@ export class AppComponent {
       title: 'Ubicación Conductoras',
       url: '/geo-conductoras',
       icon: 'map'
+    },
+    {
+      title: 'Informes y Reportes',
+      url: '/informes-reportes',
+      icon: 'copy'
     }
   ];
   urlFoto: string;

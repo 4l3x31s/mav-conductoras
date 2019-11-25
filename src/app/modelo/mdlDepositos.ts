@@ -6,7 +6,8 @@ export class MdlDepositos {
         public fecha: string,
         public monto: number,
         public verificado: boolean,
-        public observaciones: string
+        public observaciones: string,
+        public nombreCliente: string
     ) {
 
     }

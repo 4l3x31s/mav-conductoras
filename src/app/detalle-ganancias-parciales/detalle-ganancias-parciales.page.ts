@@ -12,12 +12,11 @@ import { ModalController } from '@ionic/angular';
 import { ClientePage } from '../comun/cliente/cliente.page';
 
 @Component({
-  selector: 'app-detalle-ganancias',
-  templateUrl: './detalle-ganancias.page.html',
-  styleUrls: ['./detalle-ganancias.page.scss'],
+  selector: 'app-detalle-ganancias-parciales',
+  templateUrl: './detalle-ganancias-parciales.page.html',
+  styleUrls: ['./detalle-ganancias-parciales.page.scss'],
 })
-export class DetalleGananciasPage implements OnInit {
-
+export class DetalleGananciasParcialesPage implements OnInit {
   conductora: MdlConductora;
   contratos: any[];
   totalRemiseCobrado: number = 0;
@@ -74,7 +73,7 @@ export class DetalleGananciasPage implements OnInit {
     this.totalContratos = 0;
     if (this.carreras) {
       this.carreras.forEach(carrera => {
-        if (carrera.estado === 3
+        if (carrera.estado !==1
           && moment(carrera.fechaInicio).isAfter(this.fechaInicio)
           && moment(carrera.fechaInicio).isSameOrBefore(this.fechaFin)) {
             if (carrera.idContrato) {
@@ -96,9 +95,10 @@ export class DetalleGananciasPage implements OnInit {
     if (!this.contratos) {
       this.contratos = new Array();
     }
+
     let index = this.contratos.findIndex(i => i.idContrato === carrera.idContrato);
     if (index > -1) {
-      let aux:any=carrera.costo;
+      let aux: any = carrera.costo;
       let contrato = this.contratos[index];
       contrato.total += parseInt(aux);
       this.contratos[index] = contrato;
@@ -141,4 +141,5 @@ export class DetalleGananciasPage implements OnInit {
       });
       
   }
+
 }

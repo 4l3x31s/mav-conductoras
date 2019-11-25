@@ -47,10 +47,9 @@
         <ion-label position="stacked">Fecha/Hora Fin</ion-label>
         <ion-datetime value="{{ carrera.fechaFin }}" readonly displayFormat="DD/MM/YYYY HH:mm"></ion-datetime>
       </ion-item>
+      
       <ion-item>
-        <ion-label position="floating">Valoración Carrera</ion-label>
-      </ion-item>
-      <ion-item>
+        <ion-label position="stacked">Valoración Carrera</ion-label>
         <rating [rate]="carrera.califConductora"
           readonly="true"
           size="default">

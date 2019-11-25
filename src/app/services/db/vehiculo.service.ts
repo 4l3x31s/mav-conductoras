@@ -17,7 +17,9 @@ export class VehiculoService {
   ) {
     this.rootRef = this.afDB.database.ref();
   }
-
+  listVehiculos() {
+    return this.afDB.list<MdlVehiculo>('vehiculo').valueChanges();
+  }
   getVehiculoPorConductora(idConductora: number): Observable<MdlVehiculo[]> {
     return this.afDB.list<MdlVehiculo>('vehiculo/',
       ref => ref.orderByChild('idConductora').equalTo(idConductora)).valueChanges();

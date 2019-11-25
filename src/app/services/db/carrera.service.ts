@@ -89,6 +89,13 @@ export class CarreraService {
     carrera.nombreConductora = null;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
+  borrarCarrera(carrera: MdlCarrera, motivo: string): Promise<any>{
+    carrera.estado = 3;
+    carrera.costo = 0;
+    carrera.obsConductora = motivo;
+    carrera.califConductora = 0;
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
   eliminarCarrera(idCarrera: number) {
     this.afDB.database.ref('carrera/' + idCarrera).remove();
   }

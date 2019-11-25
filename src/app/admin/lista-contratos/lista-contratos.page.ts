@@ -46,6 +46,7 @@ export class ListaContratosPage implements OnInit {
     },  error => {
       this.loading.dismiss();
     });
+
   }
   irActualizarContrato(contrato: MdlContrato) {
     this.navParams.set({
@@ -80,6 +81,11 @@ export class ListaContratosPage implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+  public filtrar() {
+    this.lstContratoFiltrado = this.lstContrato.filter(contrato =>
+      contrato.codigoContrato.toLowerCase().indexOf(this.txtBuscarContrato.toLowerCase()) > -1
+    );
   }
   exportAsXLSX(): void {
     this.excelService.exportAsExcelFile(this.lstContrato, 'sample');

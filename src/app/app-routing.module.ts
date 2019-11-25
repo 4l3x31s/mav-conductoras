@@ -37,12 +37,14 @@ const routes: Routes = [
   { path: 'lista-feriados', loadChildren: './admin/lista-feriados/lista-feriados.module#ListaFeriadosPageModule' },
   { path: 'geo-conductoras', loadChildren: './admin/geo-conductoras/geo-conductoras.module#GeoConductorasPageModule' },
   { path: 'home-admin', loadChildren: './home-admin/home-admin.module#HomeAdminPageModule' },
-  { path: 'terminar-carrera', loadChildren: './comun/terminar-carrera/terminar-carrera.module#TerminarCarreraPageModule' },  { path: 'detalle-ganancias', loadChildren: './detalle-ganancias/detalle-ganancias.module#DetalleGananciasPageModule' },
+  { path: 'terminar-carrera', loadChildren: './comun/terminar-carrera/terminar-carrera.module#TerminarCarreraPageModule' },
+  { path: 'detalle-ganancias', loadChildren: './detalle-ganancias/detalle-ganancias.module#DetalleGananciasPageModule' },
   { path: 'cliente', loadChildren: './comun/cliente/cliente.module#ClientePageModule' },
-  { path: 'reporte', loadChildren: './admin/reporte/reporte.module#ReportePageModule' },
   { path: 'mod-carrera', loadChildren: './admin/mod-carrera/mod-carrera.module#ModCarreraPageModule' },
   { path: 'calendario-carrera', loadChildren: './comun/calendario-carrera/calendario-carrera.module#CalendarioCarreraPageModule' },
   { path: 'detalle-deuda', loadChildren: './detalle-deuda/detalle-deuda.module#DetalleDeudaPageModule' },
+  { path: 'informes-reportes', loadChildren: './admin/informes-reportes/informes-reportes.module#InformesReportesPageModule' },  { path: 'detalle-ganancias-parciales', loadChildren: './detalle-ganancias-parciales/detalle-ganancias-parciales.module#DetalleGananciasParcialesPageModule' },
+
 
 
 ];

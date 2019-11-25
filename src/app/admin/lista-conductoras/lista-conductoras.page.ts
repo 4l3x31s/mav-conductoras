@@ -64,7 +64,6 @@ export class ListaConductorasPage implements OnInit {
         text: 'Exportar a EXCEL',
         icon: 'document',
         handler: () => {
-          
           let plataforma = this.excelService.getDevice();
           console.log(plataforma);
           if (plataforma === 'android' || plataforma === 'ios') {

@@ -30,7 +30,7 @@ export class RegDepositosPage implements OnInit {
     if (this.navParams.get().deposito) {
       this.deposito = this.navParams.get().deposito;
     } else {
-      this.deposito = new MdlDepositos(null, null, null, null, null, null, null);
+      this.deposito = new MdlDepositos(null, null, null, null, null, null, null, this.cliente.nombre);
       this.deposito.verificado = false;
     }
     this.deposito.idCliente = this.cliente.id;

@@ -132,7 +132,6 @@ export class ModCarreraPage implements OnInit {
       message: 'No puede registrar una hora menor a la actual.',
       buttons: ['Aceptar']
     });
-
     await alert.present();
   }
 
@@ -141,33 +140,29 @@ export class ModCarreraPage implements OnInit {
     let fechaCarreraMoment = moment(fechaCarrera);
     let fechaActual = moment().format();
     let mensaje = null;
-    
-      
-      const alert = await this.alertController.create({
-        header: 'Confirmar',
-        message: 'Desea crear la carrera en:  <br>' + 
-                 'Fecha:  <strong>' + fechaCarrera.date  + '/' + (fechaCarrera.months + 1) + '/'+ fechaCarrera.years +'</strong> <br> '+ 
-                 'Hora :  <strong>' + fechaCarrera.hours + ':' + fechaCarrera.minutes + ' ? </strong>',
-        buttons: [
-          {
-            text: 'cancelar',
-            role: 'cancelar',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              //this.grabar();
-            }
-          }, {
-            text: 'Confirmar',
-            handler: () => {
-              this.carrera.estado = 2;
-              this.grabar();
-            }
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: 'Desea crear la carrera en:  <br>' + 
+                'Fecha:  <strong>' + fechaCarrera.date  + '/' + (fechaCarrera.months + 1) + '/'+ fechaCarrera.years +'</strong> <br> '+ 
+                'Hora :  <strong>' + fechaCarrera.hours + ':' + fechaCarrera.minutes + ' ? </strong>',
+      buttons: [
+        {
+          text: 'cancelar',
+          role: 'cancelar',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            //this.grabar();
           }
-        ]
-      });
-
-      await alert.present();
-    //}
+        }, {
+          text: 'Confirmar',
+          handler: () => {
+            this.carrera.estado = 2;
+            this.grabar();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   public grabar(){
@@ -180,25 +175,19 @@ export class ModCarreraPage implements OnInit {
     this.carrera.nombreConductora = this.lstConcudtorasFiltrado[0].nombre
                                     + this.lstConcudtorasFiltrado[0].paterno
                                     + this.lstConcudtorasFiltrado[0].materno;
-
-
-      this.carreraService.crearCarrera(this.carrera)
-      .then(() => {
-        this.loadingServices.dismiss();
-        this.alertService.present('Información', 'Datos guardados correctamente.');
-        this.carrera = this.carreraService.getCarreraSesion();
-      })
-      .catch( error => {
-        this.loadingServices.dismiss();
-        this.alertService.present('Error', 'Hubo un error al grabar los datos');
-      });
-      this.navController.back();
+    this.carreraService.crearCarrera(this.carrera).then(() => {
+      this.loadingServices.dismiss();
+      this.alertService.present('Información', 'Datos guardados correctamente.');
+      this.carrera = this.carreraService.getCarreraSesion();
+    }).catch( error => {
+      this.loadingServices.dismiss();
+      this.alertService.present('Error', 'Hubo un error al grabar los datos');
+    });
+    this.navController.back();
       //this.navController.navigateRoot('/home-admin');
-
   }
 
   async irMapaOrigen() {
-
     let ubicacion: any = { lat: this.carrera.latInicio, lng: this.carrera.longInicio};
     this.mapParamService.set(ubicacion);
     const modal = await this.modalController.create({
@@ -242,7 +231,6 @@ export class ModCarreraPage implements OnInit {
         dato.onDidDismiss().then(resultado => {
           this.carrera.latFin = resultado.data.lat;
           this.carrera.longFin = resultado.data.lng;
-          //calcular costo
           this.determinarDistanciaTiempo();
         });
     });
@@ -250,7 +238,6 @@ export class ModCarreraPage implements OnInit {
 
   public async determinarDistanciaTiempo() {
     let responseMatrix: google.maps.DistanceMatrixRequest;
-
     responseMatrix = {
         origins:
             [{
@@ -269,8 +256,8 @@ export class ModCarreraPage implements OnInit {
         avoidTolls: false
     };
     let datos = this.getDistanceMatrix(responseMatrix);
-    datos.subscribe(data => {   
-        const origins = data.originAddresses;        
+    datos.subscribe(data => {
+        const origins = data.originAddresses;
         for (let i = 0; i < origins.length; i++) {
             const results = data.rows[i].elements;
             for (let j = 0; j < results.length; j++) {
@@ -279,7 +266,6 @@ export class ModCarreraPage implements OnInit {
                 const time = element.duration.value;
                 // calcular costos UBER: https://calculouber.netlify.com/
                 let montoFinal: number = Math.round((this.parametroCarrera.base + ((element.duration.value / 60) * this.parametroCarrera.tiempo) + ((element.distance.value / 1000) * this.parametroCarrera.distancia))* this.parametroCarrera.tarifaDinamica + this.parametroCarrera.cuotaSolicitud);
-               
                 if (montoFinal < 10) {
                     this.carrera.costo = 10;
                 } else {

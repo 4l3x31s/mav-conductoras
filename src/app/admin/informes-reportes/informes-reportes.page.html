@@ -1,0 +1,49 @@
+<cabecera titulo="Informes y reportes"></cabecera>
+
+<ion-content>
+  <ion-list-header color="medium">
+    <ion-label>Informes y reportes para clientes</ion-label>
+  </ion-list-header>
+  <ion-list>
+    <ion-item>
+      <ion-label color="medium">Seleccione un cliente para<br>generar estos informes</ion-label>
+      <ion-select okText="Seleccionar cliente" cancelText = "Cancelar" [(ngModel)]="idCliente" (ionChange)="guardarValor()" placeholder="Seleccionar">
+        <ion-select-option *ngFor="let cliente of lstCliente" value="{{cliente.id}}">{{cliente.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Detalle para Clientes</ion-label>
+      <ion-button color="verdec" (click)="detalleClientes()">Generar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Depósito para control</ion-label>
+      <ion-button color="verdec" (click)="depositoControl()">Generar</ion-button>
+    </ion-item>
+    <ion-list-header color="medium">
+      <ion-label>Informes y reportes generales</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Estado de clientes</ion-label>
+      <ion-button color="verdec" (click)="estadoClientes()">Generar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tarifas de referencia</ion-label>
+      <ion-button color="verdec" (click)="tarifaRef()">Generar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Estado de conductora</ion-label>
+      <ion-button color="verdec" (click)="estadoCond()">Generar</ion-button>
+    </ion-item>
+    <ion-list-header color="medium">
+      <ion-label>Informes y reportes de servicios</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Servicio efectivo-deposito</ion-label>
+      <ion-button color="verdec" (click)="efecDep()">Generar</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Servicio personalizado</ion-label>
+      <ion-button color="verdec" (click)="pers()">Generar</ion-button>
+    </ion-item>      
+  </ion-list>
+</ion-content>

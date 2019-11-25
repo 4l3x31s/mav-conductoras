@@ -29,7 +29,7 @@ export class DetalleCarreraPage implements OnInit {
   carrera: MdlCarrera;
   
   cliente: MdlCliente;
-  
+  motivo: string;
   @ViewChild('map')
   mapElement: ElementRef;
   conductora: MdlConductora;
@@ -165,13 +165,6 @@ export class DetalleCarreraPage implements OnInit {
     if(this.carrera.estado == 2
         && this.carrera.idConductora == this.conductora.id){
       opciones.push({
-        text: 'Terminar Carrera',
-        icon: 'skip-forward',
-        handler: () => {
-          this.irTerminarCarrera();
-        }
-      });
-      opciones.push({
         text: 'Avisar en Camino',
         icon: 'send',
         handler: () => {
@@ -185,6 +178,13 @@ export class DetalleCarreraPage implements OnInit {
           this.marcarEmpezarCarrera();
         }
       });
+      opciones.push({
+        text: 'Terminar Carrera',
+        icon: 'skip-forward',
+        handler: () => {
+          this.irTerminarCarrera();
+        }
+      });
     }
     if (this.conductora.admin) {
       opciones.push({
@@ -192,6 +192,13 @@ export class DetalleCarreraPage implements OnInit {
         icon: 'compass',
         handler: () => {
           this.modificarCarrera();
+        }
+      });
+      opciones.push({
+        text: 'Borrar Carrera',
+        icon: 'trash',
+        handler: () =>{
+          this.borrarCarrera();
         }
       });
     }
@@ -217,14 +224,29 @@ export class DetalleCarreraPage implements OnInit {
         }
       });
     }
-    
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones Carrera',
-      buttons: opciones
+      buttons: opciones,
+      cssClass: 'actions'
     });
     await actionSheet.present();
   }
-
+  async borrarCarrera(){
+    const modal = await this.modalController.create({
+      component: TerminarCarreraPage,
+      componentProps: {
+        carrera: this.carrera,
+        motivo: true
+      }
+    });
+    modal.onDidDismiss().then(()=>{
+      this.carreraService.getCarreraPorId(this.carrera.id)
+        .subscribe(carrera=>{
+          this.carrera = carrera;
+        })
+    });
+    return await modal.present();
+  }
   tomarCarrera() {
     this.carreraService.tomarCarrera(this.conductora,this.carrera)
       .then(()=>{
