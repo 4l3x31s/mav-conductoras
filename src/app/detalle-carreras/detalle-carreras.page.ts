@@ -89,7 +89,6 @@ export class DetalleCarrerasPage implements OnInit {
         this.loadingService.dismiss();
         this.carreras = carreras;
         this.calendarEvents = [];
-        if (this.carreras && this.carreras.length > 0 ) {
           this.carreras.forEach(element => {
             if(element.estado !== 1){
               let cadena = '';
@@ -102,11 +101,9 @@ export class DetalleCarrerasPage implements OnInit {
                 idCarrera: element.id,
                 backgroundColor: this.clienteService.getColorPorCliente(element)
               });
-            }
+            }  
           });
-        }
-      },
-      error => {
+        },error => {
         console.error(error);
         this.alertService.present('Error', 'Error al recuperar las carreras.');
         this.navController.navigateRoot('/login');
