@@ -46,7 +46,7 @@
           
           <ion-menu-toggle auto-hide="false" >
             <div *ngIf="conductora.admin">
-              <div class="titulos-menu" >
+              <div style="color:white;" class="titulos-menu" >
               Administracion
               </div>
               <div *ngFor="let p of appPagesAdmin">
@@ -59,12 +59,12 @@
               </div>
             </div>
             <div *ngIf="conductora.estado" >
-              <div class="titulos-menu">
+              <div style="color:white;" class="titulos-menu">
               Conductoras
               </div>
               <div *ngFor="let p of appPages">
                   <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="irPagina(p)">
-                      <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                      <ion-icon style="color:white;" slot="start" [name]="p.icon"></ion-icon>
                       <ion-label>
                         {{p.title}}
                       </ion-label>

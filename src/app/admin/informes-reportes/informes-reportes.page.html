@@ -1,12 +1,12 @@
 <cabecera titulo="Informes y reportes"></cabecera>
 
 <ion-content>
-  <ion-list-header color="medium">
+  <ion-list-header color="verdec">
     <ion-label>Informes y reportes para clientes</ion-label>
   </ion-list-header>
   <ion-list>
     <ion-item>
-      <ion-label color="medium">Seleccione un cliente para<br>generar estos informes</ion-label>
+      <ion-label color="verdec">Seleccione un cliente para<br>generar estos informes</ion-label>
       <ion-select okText="Seleccionar cliente" cancelText = "Cancelar" [(ngModel)]="idCliente" (ionChange)="guardarValor()" placeholder="Seleccionar">
         <ion-select-option *ngFor="let cliente of lstCliente" value="{{cliente.id}}">{{cliente.nombre}}</ion-select-option>
       </ion-select>
@@ -19,7 +19,7 @@
       <ion-label>Depósito para control</ion-label>
       <ion-button color="verdec" (click)="depositoControl()">Generar</ion-button>
     </ion-item>
-    <ion-list-header color="medium">
+    <ion-list-header color="verdec">
       <ion-label>Informes y reportes generales</ion-label>
     </ion-list-header>
     <ion-item>
@@ -34,7 +34,7 @@
       <ion-label>Estado de conductora</ion-label>
       <ion-button color="verdec" (click)="estadoCond()">Generar</ion-button>
     </ion-item>
-    <ion-list-header color="medium">
+    <ion-list-header color="verdec">
       <ion-label>Informes y reportes de servicios</ion-label>
     </ion-list-header>
     <ion-item>

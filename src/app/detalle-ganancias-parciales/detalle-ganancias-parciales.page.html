@@ -1,11 +1,11 @@
 <cabecera-back titulo="Ganancias Parciales"></cabecera-back>
 <ion-content>
   <ion-item>
-    <ion-label>Fecha Inicio<br><p style="color: grey;">Seleccione fecha inicio</p></ion-label>
+    <ion-label>Fecha Inicio<br><p style="color: white;">Seleccione fecha inicio</p></ion-label>
     <ion-datetime cancelText="Cancelar" doneText="Aceptar" (ionChange)="filtrar()" [(ngModel)]="fechaInicio"></ion-datetime>
   </ion-item>
   <ion-item>
-    <ion-label>Fecha Fin<br><p style="color: grey;">Seleccione fecha fin</p></ion-label>
+    <ion-label>Fecha Fin<br><p style="color: white;">Seleccione fecha fin</p></ion-label>
     <ion-datetime cancelText="Cancelar" doneText="Aceptar" (ionChange)="filtrar()" [(ngModel)]="fechaFin"></ion-datetime>
   </ion-item>
 
@@ -14,19 +14,19 @@
     <ion-row *ngFor="let contrato of contratos">
       <ion-col size="9" align-self-center [ngStyle]="{'color': contrato.colorCliente}" (click)="irCliente(contrato.idUsuario)">
         {{ contrato.nombreCliente }}
-        <small style="color: gray"><i>(Contrato)</i></small>
+        <small style="color: white"><i>(Contrato)</i></small>
       </ion-col>
       <ion-col size="3" align-self-center class="ion-text-right">{{contrato.total}}</ion-col>
     </ion-row>
     <!-- remise cobradas -->
     <ion-row>
-      <ion-col size="8">Carreras Remise Cobradas</ion-col>
-      <ion-col size="4" class="ion-text-right">{{ totalRemiseCobrado }}</ion-col>
+      <ion-col style="color: white" size="8">Carreras Remise Cobradas</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">{{ totalRemiseCobrado }}</ion-col>
     </ion-row>
     <!-- remise depositadas -->
     <ion-row>
-      <ion-col size="8">Carreras Remise Depositadas</ion-col>
-      <ion-col size="4" class="ion-text-right">{{totalRemiseDepositados}}</ion-col>
+      <ion-col style="color: white" size="8">Carreras Remise Depositadas</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">{{totalRemiseDepositados}}</ion-col>
     </ion-row>
     <!-- remplazos a cobrar -->
     <!-- 
@@ -44,8 +44,8 @@
     </ion-row> -->
     <!-- subtotal -->
     <ion-row>
-      <ion-col size="8"></ion-col>
-      <ion-col size="4" class="ion-text-right" style="border-top: 1px solid black"><b>{{ totalContratos + totalRemiseCobrado + totalRemiseDepositados }}</b></ion-col>
+      <ion-col style="color: white" size="8"></ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right" style="border-top: 1px solid white"><b style="color: white">{{ totalContratos + totalRemiseCobrado + totalRemiseDepositados }}</b></ion-col>
     </ion-row>
     <!-- remplazos a pagar -->
     <!-- <ion-row>
@@ -67,24 +67,24 @@
   
   <ion-grid>
     <ion-row>
-      <ion-col size="8">TOTAL</ion-col>
-      <ion-col size="4" class="ion-text-right">{{totalContratos + totalRemiseCobrado + totalRemiseDepositados}}</ion-col>
+      <ion-col style="color: white" size="8">TOTAL</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">{{totalContratos + totalRemiseCobrado + totalRemiseDepositados}}</ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="8">Carreras cobradas en efectivo</ion-col>
-      <ion-col size="4" class="ion-text-right">-{{totalRemiseCobrado}}</ion-col>
+      <ion-col style="color: white" size="8">Carreras cobradas en efectivo</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">-{{totalRemiseCobrado}}</ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="8">MAV (20%)</ion-col>
-      <ion-col size="4" class="ion-text-right">-{{ (totalContratos + totalRemiseCobrado + totalRemiseDepositados)*0.2 }}</ion-col>
+      <ion-col style="color: white" size="8">MAV (20%)</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">-{{ (totalContratos + totalRemiseCobrado + totalRemiseDepositados)*0.2 }}</ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="8">Transferencia</ion-col>
-      <ion-col size="4" class="ion-text-right" style="border-top: 1px solid black">
-          {{
+      <ion-col style="color: white" size="8">Transferencia</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right" style="border-top: 1px solid white">
+          <b style="color: white">{{
             (totalContratos + totalRemiseDepositados)-(totalContratos + totalRemiseCobrado + totalRemiseDepositados)*0.2
           }}
-          
+        </b>
       </ion-col>
     </ion-row>
   </ion-grid>

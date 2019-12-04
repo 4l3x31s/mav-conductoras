@@ -1,6 +1,6 @@
 <cabecera titulo="Clientes"></cabecera>
 <ion-content>
-    <ion-list-header color="medium">
+    <ion-list-header color="verdec">
         <ion-label>LISTA DE CLIENTES</ion-label>
       </ion-list-header>
     <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Nombre" [(ngModel)]="txtBuscarCliente" (ionChange)="filtrar()" ></ion-searchbar>
@@ -11,7 +11,7 @@
         <ion-col size="3">Direccion</ion-col>
         <ion-col size="3">Telefono</ion-col>
       </ion-row>
-      <ion-row *ngFor="let cliente of lstClientesFiltrado"  nowrap >
+      <ion-row style="color:white;" *ngFor="let cliente of lstClientesFiltrado"  nowrap >
         <ion-col size="4" (click)="seleccionarCliente(cliente)">{{cliente.nombre}}</ion-col>
         <ion-col size="2" (click)="seleccionarCliente(cliente)">
           <span *ngIf="cliente.estado" style="font-size: 1.5em !important" ><ion-icon color="whatsapp" name="checkmark"></ion-icon></span>

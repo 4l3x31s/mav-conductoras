@@ -10,7 +10,7 @@
 <ion-content *ngIf="conductora">
   <form [formGroup]="form" novalidate>
     <ion-list>
-      <ion-list-header color="medium">
+      <ion-list-header color="verdec">
         <ion-label>DATOS GENERALES</ion-label>
       </ion-list-header>
       <ion-item>
@@ -76,7 +76,7 @@
       </ion-item>
       <print-error [control]="f.vcelular"></print-error>
 
-      <ion-list-header color="medium">
+      <ion-list-header color="verdec">
         <ion-label>RADICATORIA</ion-label>
       </ion-list-header>
       
@@ -123,7 +123,7 @@
         <ion-icon name="create" slot="end"></ion-icon>
       </ion-item>
 
-      <ion-list-header color="medium">
+      <ion-list-header color="verdec">
         <ion-label>CUENTA</ion-label>
       </ion-list-header>
 
@@ -150,7 +150,7 @@
           <ion-label position="stacked">Contraseña</ion-label>
           <ion-input #pass [type]="tipoPass" formControlName="vpass" [(ngModel)]="conductora.pass">
           </ion-input>
-          <ion-icon (click)="cambiarValor()" name="eye" color="medium" slot="end"></ion-icon>
+          <ion-icon (click)="cambiarValor()" name="eye" color="verdec" slot="end"></ion-icon>
         </ion-item>
         <print-error [control]="f.vpass"></print-error>
   

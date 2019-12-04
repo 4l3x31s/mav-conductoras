@@ -1,7 +1,7 @@
 <cabecera titulo="Parametros Cobro"></cabecera>
 
 <ion-content>
-    <ion-list-header color="medium">
+    <ion-list-header color="verdec">
         <ion-label>LISTA DE PARAMETROS DE COBRO</ion-label>
       </ion-list-header>
       <ion-searchbar showCancelButton cancelButtonText="Cancelar" placeholder="Buscar por Parametro" [(ngModel)]="txtBuscarParametros" (ionChange)="filtrar()" ></ion-searchbar>
@@ -14,7 +14,7 @@
           <ion-col size="3">Minimo</ion-col>
           <ion-col size="3">Base</ion-col>
         </ion-row>
-        <ion-row *ngFor="let parametro of listParametrosFiltrado" (click)="seleccionarParametro(parametro)" nowrap >
+        <ion-row style="color:white;" *ngFor="let parametro of listParametrosFiltrado" (click)="seleccionarParametro(parametro)" nowrap >
           <ion-col size="4">{{parametro.pais}}</ion-col>
           <ion-col size="2">{{parametro.ciudad}}</ion-col>
           <ion-col size="3">{{parametro.tarifaMinima}}</ion-col>

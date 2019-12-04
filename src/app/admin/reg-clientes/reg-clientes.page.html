@@ -1,7 +1,7 @@
 <cabecera-back titulo="Registro Clientes"></cabecera-back>
 
 <ion-content>
-    <ion-list-header color="medium">
+    <ion-list-header color="verdec">
         <ion-label>DATOS CLIENTE</ion-label>
       </ion-list-header>
     <form [formGroup]="frmCliente" novalidate>
@@ -88,7 +88,7 @@
         <ion-button expand="block" [disabled]="frmCliente.invalid" (click)="grabar()" color="verdec">Registrar</ion-button>
       </form>
     <div *ngIf="cliente.id" >
-        <ion-list-header color="medium">
+        <ion-list-header color="verdec">
             <ion-label>DEPOSITOS CLIENTE</ion-label>
           </ion-list-header>
       <ion-grid>
@@ -98,7 +98,7 @@
           <ion-col size="3">Monto</ion-col>
           <ion-col size="3">Verificado</ion-col>
         </ion-row>
-        <ion-row *ngFor="let deposito of lstDepositos" (click)="seleccionarDeposito(deposito)" nowrap >
+        <ion-row style="color:white;" *ngFor="let deposito of lstDepositos" (click)="seleccionarDeposito(deposito)" nowrap >
           <ion-col size="3">{{deposito.tipo}}</ion-col>
           <ion-col size="3">{{deposito.fecha}}</ion-col>
           <ion-col size="3">{{deposito.monto}}</ion-col>
