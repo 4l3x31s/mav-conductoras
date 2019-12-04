@@ -84,7 +84,7 @@ export class ListaContratosPage implements OnInit {
   }
   public filtrar() {
     this.lstContratoFiltrado = this.lstContrato.filter(contrato =>
-      contrato.codigoContrato.toLowerCase().indexOf(this.txtBuscarContrato.toLowerCase()) > -1
+      contrato.fechaInicio.toLowerCase().indexOf(this.txtBuscarContrato.toLowerCase()) > -1
     );
   }
   exportAsXLSX(): void {
