@@ -46,6 +46,11 @@ export class AppComponent {
       url: '/detalle-ganancias-parciales',
       icon: 'cash'
     },
+    {
+      title: 'Términos y Condiciones',
+      url: '/terminos-condiciones',
+      icon: 'document'
+    },
   ];
 
   public appPagesAdmin = [

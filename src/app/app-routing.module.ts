@@ -44,6 +44,7 @@ const routes: Routes = [
   { path: 'calendario-carrera', loadChildren: './comun/calendario-carrera/calendario-carrera.module#CalendarioCarreraPageModule' },
   { path: 'detalle-deuda', loadChildren: './detalle-deuda/detalle-deuda.module#DetalleDeudaPageModule' },
   { path: 'informes-reportes', loadChildren: './admin/informes-reportes/informes-reportes.module#InformesReportesPageModule' },  { path: 'detalle-ganancias-parciales', loadChildren: './detalle-ganancias-parciales/detalle-ganancias-parciales.module#DetalleGananciasParcialesPageModule' },
+  { path: 'terminos-condiciones', loadChildren: './terminos-condiciones/terminos-condiciones.module#TerminosCondicionesPageModule' },
 
 
 

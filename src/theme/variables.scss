@@ -247,7 +247,11 @@ ion-content{
    input:-internal-autofill-selected {
      background-color: transparent !important;
      background-image: none !important;
-     color: rgb(0, 0, 0) !important;
+     color: rgb(255, 255, 255) !important;
+     --highlight-color-focused: var(--ion-color-verdec);
+   }
+   .has-focus{
+     color: var(--ion-color-verdec) !important;
    }
    .item.item-input {
      background-color: transparent !important;
@@ -283,3 +287,11 @@ ion-content{
    .alert-radio-icon{
      border-color: var(--ion-color-verdec-contrast) !important;
    }
+
+  .item-has-focus ion-label {
+    color: white !important;
+  }
+ion-item {
+  --background-hover: #f7a8c2 !important;
+  --color-hover: var(--ion-color-verdec-contrast) !important;
+}
