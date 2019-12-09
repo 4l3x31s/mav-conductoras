@@ -19,7 +19,7 @@
             <print-error [control]="f.vCodigoContrato"></print-error>
             <ion-item>
                 <ion-label position="stacked">Pais</ion-label>
-                <ion-select interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
+                <ion-select interface="alert" formControlName="vPais" placeholder="Seleccione el Pais"
                             (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="contrato.pais">
                     <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">
                         {{parametros.pais}}
@@ -29,7 +29,7 @@
             <print-error [control]="f.vPais"></print-error>
             <ion-item>
                 <ion-label position="stacked">Ciudad</ion-label>
-                <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad"
+                <ion-select interface="alert" formControlName="vCiudad" placeholder="Seleccione la Ciudad"
                             [(ngModel)]="contrato.ciudad" (ngModelChange)="filtrarConductoras($event)">
                     <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">
                         {{parametros.ciudad}}
@@ -39,7 +39,7 @@
             <print-error [control]="f.vCiudad"></print-error>
             <ion-item *ngIf="lstConductoras">
                 <ion-label position="stacked">Conductora</ion-label>
-                <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora"
+                <ion-select interface="alert" formControlName="vConductora" placeholder="Seleccione una Conductora"
                             [(ngModel)]="contrato.idConductora">
                     <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">
                         {{conductora.nombre +' '+ conductora.paterno}}
@@ -64,12 +64,12 @@
             </ion-item>
             <print-error [control]="f.vFechaFin"></print-error>
             <ion-item (click)="irMapaOrigen()">
-                <ion-label>
+                <ion-label >
                     <h2>Dirección Origen</h2>
-                    <p >{{ direccionIni }}</p>
+                    <p style="color: white !important;">{{ direccionIni }}</p>
                     <!--<p >Long: {{ carrera.longInicio }}</p>-->
                   </ion-label>
-                  <ion-icon name="locate" slot="end"></ion-icon>
+                  <ion-icon style="color: white !important;" name="locate" slot="end"></ion-icon>
             </ion-item>
             
             <ion-item>
@@ -78,12 +78,12 @@
             </ion-item>
             <print-error [control]="f.vCantidadPasajeros"></print-error>
             <ion-item (click)="irMapaDestino()">
-                <ion-label>
+                <ion-label >
                     <h2>Dirección Destino</h2>
-                    <p >{{ direccionFin }}</p>
+                    <p style="color: white !important;">{{ direccionFin }}</p>
                     <!--<p >Long: {{ carrera.longFin }}</p>-->
                   </ion-label>
-                  <ion-icon name="locate" slot="end"></ion-icon>
+                  <ion-icon style="color: white !important;" name="locate" slot="end"></ion-icon>
             </ion-item>
            
            
@@ -111,7 +111,7 @@
             <print-error [control]="f.vDescLugar"></print-error>
             <ion-item>
                 <ion-label position="stacked">Tipo</ion-label>
-                <ion-select interface="popover" placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
+                <ion-select interface="alert" placeholder="Seleccione el tipo de Deposito" formControlName="vTipoPago"
                             [(ngModel)]="contrato.tipoPago">
                     <ion-select-option value="Deposito en Cuenta">Deposito en Cuenta</ion-select-option>
                     <ion-select-option value="Efectivo en Caja">Efectivo en Caja</ion-select-option>
@@ -122,7 +122,7 @@
            
             <ion-item>
                 <ion-label position="stacked">Estado Contrato</ion-label>
-                <ion-select interface="popover" formControlName="vEstadoContrato" placeholder="Seleccione el Estado del Contrato"
+                <ion-select interface="alert" formControlName="vEstadoContrato" placeholder="Seleccione el Estado del Contrato"
                             [(ngModel)]="contrato.estado">
                     <ion-select-option value="0">Solcitado</ion-select-option>
                     <ion-select-option value="1">Aprobado</ion-select-option>

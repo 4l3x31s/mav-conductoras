@@ -437,7 +437,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });
     this.navParam.set({conductora: this.conductora});
-    this.navController.navigateForward('/detalle-imagenes-conductora');
+    this.navController.navigateRoot('/detalle-imagenes-conductora');
   }
 
   async irGetCroquis() {

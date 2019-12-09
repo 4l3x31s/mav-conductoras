@@ -152,7 +152,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       
       this.statusBar.styleLightContent();
-      this.statusBar.backgroundColorByHexString('#c2185b');
+      this.statusBar.backgroundColorByHexString('#311853');
       this.splashScreen.hide();
       this.fcm.subscribeToTopic('people');
       this.fcm.getToken().then(token => {
@@ -197,7 +197,7 @@ export class AppComponent {
   }
 
   irDetalleConductora(){
-    this.navParam.set({conductora:this.conductora})
+    this.navParam.set({conductora:this.conductora});
     this.navController.navigateRoot('/detalle-conductora');
   }
 

@@ -29,13 +29,15 @@ export class SubirImagenComponent implements OnInit {
 
   ngOnInit() {
     this.cargandoImagen = true;
-    this.storage.ref(this.urlImagen).getDownloadURL()
-      .subscribe(ruta => {
-        this.urlImagenFirebase = ruta;
-        this.cargandoImagen = false;
-      }, error => {
-        this.cargandoImagen = false;
-      });
+    
+    this.storage.ref(this.urlImagen).getDownloadURL().toPromise()
+    .then(ruta => {
+      this.urlImagenFirebase = ruta;
+      this.cargandoImagen = false;
+    })
+    .catch(error => {
+      this.cargandoImagen = false;
+    });
   }
 
   async eliminarImagen() {

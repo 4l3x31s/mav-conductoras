@@ -25,7 +25,7 @@
       </ion-item>
     <ion-item >
       <ion-label position="stacked">Cambiar Conductora</ion-label>
-      <ion-select interface="popover" formControlName="vConductora" placeholder="Seleccione una Conductora"
+      <ion-select interface="alert" formControlName="vConductora" placeholder="Seleccione una Conductora"
                   [(ngModel)]="carrera.idConductora">
           <ion-select-option *ngFor="let conductora of lstConductoras" value="{{conductora.id}}">
               {{conductora.nombre +' '+ conductora.paterno}}
@@ -81,7 +81,7 @@
 
       <ion-item>
         <ion-label position="stacked">Tipo</ion-label>
-        <ion-select interface="popover" placeholder="Seleccione el tipo de pago" formControlName="vtipoPago" [(ngModel)]="carrera.tipoPago"
+        <ion-select interface="alert" placeholder="Seleccione el tipo de pago" formControlName="vtipoPago" [(ngModel)]="carrera.tipoPago"
                     cancelText="Cancelar" okText="Aceptar">
           <ion-select-option value="Empresa">Empresa</ion-select-option>
           <ion-select-option value="Efectivo">Efectivo</ion-select-option>

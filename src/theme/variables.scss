@@ -295,3 +295,15 @@ ion-item {
   --background-hover: #f7a8c2 !important;
   --color-hover: var(--ion-color-verdec-contrast) !important;
 }
+ion-select {
+
+  --background: var(--ion-color-verdec) !important;
+  --color: var(--ion-color-verdec-contrast) !important;
+  
+}
+.alert-radio-inner.sc-ion-alert-md {
+  background-color: var(--ion-color-verdec-contrast) !important;
+}
+.alert-radio-inner.sc-ion-alert-ios {
+  background-color: var(--ion-color-verdec-contrast) !important;
+}

@@ -82,7 +82,7 @@
       
       <ion-item>
         <ion-label position="stacked">Pais</ion-label>
-        <ion-select cancelText="Cancelar" interface="popover" formControlName="vPais" placeholder="Seleccione el Pais"
+        <ion-select cancelText="Cancelar" interface="alert" formControlName="vPais" placeholder="Seleccione el Pais"
           (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="conductora.pais">
           <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">
             {{parametros.pais}}
@@ -93,7 +93,7 @@
 
       <ion-item>
         <ion-label position="stacked">Ciudad</ion-label>
-        <ion-select interface='popover' formControlName="vCiudad" placeholder="Seleccione la Ciudad"
+        <ion-select interface="alert" formControlName="vCiudad" placeholder="Seleccione la Ciudad"
           [(ngModel)]="conductora.ciudad">
           <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">
             {{parametros.ciudad}}
