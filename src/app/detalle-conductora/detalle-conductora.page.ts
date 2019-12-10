@@ -1,5 +1,5 @@
 import { AuthService } from './../services/firebase/auth.service';
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
 import { MdlConductora } from '../modelo/mldConductora';
 import { ConductoraService } from '../services/db/conductora.service';
@@ -51,6 +51,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     public authService: AuthService,
     public tokenService: TokenNotifService,
     public pushNotifService: PushNotifService,
+    private zone: NgZone
   ) {
     this.myclass = 'mostrar';
    }
@@ -410,7 +411,9 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });
     this.navParam.set({ conductora: this.conductora});
-    this.navController.navigateForward('/detalle-vehiculo');
+    this.zone.run(async () => {
+      this.navController.navigateForward('/detalle-vehiculo');
+    });
   }
 
   irDetalleImagenes() {
@@ -437,7 +440,10 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });
     this.navParam.set({conductora: this.conductora});
-    this.navController.navigateRoot('/detalle-imagenes-conductora');
+    this.zone.run(async () => {
+      this.navController.navigateRoot('/detalle-imagenes-conductora');
+    });
+
   }
 
   async irGetCroquis() {

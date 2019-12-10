@@ -27,10 +27,10 @@ export class SubirImagenComponent implements OnInit {
     public alertController: AlertController
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.cargandoImagen = true;
     
-    this.storage.ref(this.urlImagen).getDownloadURL().toPromise()
+    await this.storage.ref(this.urlImagen).getDownloadURL().toPromise()
     .then(ruta => {
       this.urlImagenFirebase = ruta;
       this.cargandoImagen = false;
@@ -71,7 +71,7 @@ export class SubirImagenComponent implements OnInit {
     await alert.present();
   }
 
-  uploadImagen(event) {
+  async uploadImagen(event) {
     let upload: AngularFireUploadTask;
     this.loadingService.present()
       .then(() => {
