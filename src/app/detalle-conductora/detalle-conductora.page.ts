@@ -14,6 +14,7 @@ import { ParametrosCarreraService } from '../services/db/parametros-carrera.serv
 import { Observable } from 'rxjs';
 import { TokenNotifService } from '../services/token-notif.service';
 import { PushNotifService } from '../services/push-notif.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-conductora',
@@ -51,7 +52,8 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     public authService: AuthService,
     public tokenService: TokenNotifService,
     public pushNotifService: PushNotifService,
-    private zone: NgZone
+    private zone: NgZone,
+    private router: Router
   ) {
     this.myclass = 'mostrar';
    }
@@ -387,7 +389,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     });
   }
 
-  irDetalleVehiculo() {
+  async irDetalleVehiculo() {
     this.lstAdministradoras.forEach(element => {
       if(element.ui) {
         let notificaciones = {
@@ -411,12 +413,14 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });
     this.navParam.set({ conductora: this.conductora});
-    this.zone.run(async () => {
-      this.navController.navigateForward('/detalle-vehiculo');
+    await this.zone.run(async () => {
+      //this.navController.navigateForward('/detalle-vehiculo');
+      this.router.navigate(['/detalle-vehiculo']);
+      return;
     });
   }
 
-  irDetalleImagenes() {
+  async irDetalleImagenes() {
     this.lstAdministradoras.forEach(element => {
       if(element.ui) {
         let notificaciones = {
@@ -440,8 +444,10 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });
     this.navParam.set({conductora: this.conductora});
-    this.zone.run(async () => {
-      this.navController.navigateRoot('/detalle-imagenes-conductora');
+    await this.zone.run(async () => {
+      //this.navController.navigateForward('/detalle-vehiculo');
+      this.router.navigate(['/detalle-vehiculo']);
+      return;
     });
 
   }
