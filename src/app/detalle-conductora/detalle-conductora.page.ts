@@ -390,7 +390,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   }
 
   async irDetalleVehiculo() {
-    this.lstAdministradoras.forEach(element => {
+    /*this.lstAdministradoras.forEach(element => {
       if(element.ui) {
         let notificaciones = {
           notification:{
@@ -411,17 +411,15 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         .subscribe(response => {
         });
       }
-    });
+    });*/
     this.navParam.set({ conductora: this.conductora});
     await this.zone.run(async () => {
-      //this.navController.navigateForward('/detalle-vehiculo');
-      this.router.navigate(['/detalle-vehiculo']);
-      return;
+      this.navController.navigateForward('/detalle-vehiculo');
     });
   }
 
   async irDetalleImagenes() {
-    this.lstAdministradoras.forEach(element => {
+    /*this.lstAdministradoras.forEach(element => {
       if(element.ui) {
         let notificaciones = {
           notification:{
@@ -442,12 +440,10 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         .subscribe(response => {
         });
       }
-    });
+    });*/
     this.navParam.set({conductora: this.conductora});
     await this.zone.run(async () => {
-      //this.navController.navigateForward('/detalle-vehiculo');
-      this.router.navigate(['/detalle-vehiculo']);
-      return;
+      this.navController.navigateForward('/detalle-imagenes-conductora');
     });
 
   }
