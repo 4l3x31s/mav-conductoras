@@ -54,7 +54,7 @@ export class ListaConductorasPage implements OnInit {
     );
   }
   public abrirWhatsapp (conductora: MdlConductora) {
-    this.iab.create(`https://api.whatsapp.com/send?phone=591` + conductora.celular + `&text=MAV:`, '_system', 'location=yes');
+    this.iab.create(`https://api.whatsapp.com/send?phone=` + conductora.celular + `&text=MAV:`, '_system', 'location=yes');
   }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({

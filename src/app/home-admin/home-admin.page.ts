@@ -1,3 +1,5 @@
+import { ConductoraService } from './../services/db/conductora.service';
+import { TokenNotifService } from './../services/token-notif.service';
 import { Component, OnInit } from '@angular/core';
 import { SesionService } from '../services/sesion.service';
 import { MdlConductora } from '../modelo/mldConductora';
@@ -15,6 +17,8 @@ export class HomeAdminPage implements OnInit {
     public sesionService: SesionService,
     public navController: NavController,
     public platform: Platform,
+    public tokenService: TokenNotifService,
+    public conductoraService: ConductoraService
   ) { }
 
   ngOnInit() {
@@ -24,6 +28,11 @@ export class HomeAdminPage implements OnInit {
           .subscribe((conductora) => {
             if (conductora) {
               this.conductora = conductora;
+              if(!conductora.ui)
+              {
+                this.conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
+                this.conductoraService.grabarConductora(this.conductora);
+              }
             } else {
               this.navController.navigateRoot('/login');
             }

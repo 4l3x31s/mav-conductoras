@@ -1,3 +1,5 @@
+import { TokenNotifService } from './../services/token-notif.service';
+import { ConductoraService } from './../services/db/conductora.service';
 import { Component, OnInit } from '@angular/core';
 import { SesionService } from '../services/sesion.service';
 import { MdlConductora } from '../modelo/mldConductora';
@@ -33,6 +35,8 @@ export class HomePage implements OnInit {
     public modalController: ModalController,
     public geolocalizacionService: GeolocalizacionService,
     public platform: Platform,
+    public conductoraService: ConductoraService,
+    public tokenService: TokenNotifService
   ) { }
 
   ngOnInit() {
@@ -42,6 +46,11 @@ export class HomePage implements OnInit {
           .subscribe((conductora) => {
             if (conductora) {
               this.conductora = conductora;
+              if(!conductora.ui)
+              {
+                this.conductora.ui = this.tokenService.get() ? this.tokenService.get() : null;
+                this.conductoraService.grabarConductora(this.conductora);
+              }
               this.verLocalizacion();
               this.carreraService.getCarrerasPendientes()
                 .subscribe(carreras=>{

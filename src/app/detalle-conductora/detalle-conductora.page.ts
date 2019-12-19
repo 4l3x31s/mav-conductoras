@@ -102,7 +102,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         Validators.minLength(8),
         Validators.maxLength(8),
       ],[
-        this.validarCelularUnico.bind(this)
+        //this.validarCelularUnico.bind(this)
       ]],
       // vnroresidencia: ['', [
       //   Validators.minLength(1),
@@ -113,7 +113,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         Validators.minLength(5),
         Validators.maxLength(30),
       ],[
-        this.validarEmailUnico.bind(this)
+        //this.validarEmailUnico.bind(this)
       ]],
       vpass: ['', [
         Validators.required,
@@ -183,7 +183,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         });
     });
   }
-
+ 
   validarCelularUnico(control: FormControl):Observable<any>{
     return new Observable<any>(observer => {
       this.conductoraService.getConductoraPorCelular(control.value)
@@ -389,7 +389,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     });
   }
 
-  async irDetalleVehiculo() {
+  irDetalleVehiculo() {
     /*this.lstAdministradoras.forEach(element => {
       if(element.ui) {
         let notificaciones = {
@@ -413,12 +413,12 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });*/
     this.navParam.set({ conductora: this.conductora});
-    await this.zone.run(async () => {
+    this.zone.run(async () => {
       this.navController.navigateForward('/detalle-vehiculo');
     });
   }
 
-  async irDetalleImagenes() {
+  irDetalleImagenes() {
     /*this.lstAdministradoras.forEach(element => {
       if(element.ui) {
         let notificaciones = {
@@ -442,7 +442,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       }
     });*/
     this.navParam.set({conductora: this.conductora});
-    await this.zone.run(async () => {
+    this.zone.run(async () => {
       this.navController.navigateForward('/detalle-imagenes-conductora');
     });
 

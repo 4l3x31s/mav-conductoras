@@ -149,7 +149,7 @@ export class DetalleCarreraPage implements OnInit {
   }
 
   irWhatsApp() {
-    this.iab.create('https://api.whatsapp.com/send?phone=591' + this.cliente.cel + '&text=Hola', '_system', 'location=yes');
+    this.iab.create('https://api.whatsapp.com/send?phone=' + this.cliente.cel + '&text=Hola', '_system', 'location=yes');
   }
 
   async showOpcionesCarrera() {
@@ -169,6 +169,13 @@ export class DetalleCarreraPage implements OnInit {
         icon: 'send',
         handler: () => {
           this.marcarEnCamino();
+        }
+      });
+      opciones.push({
+        text: 'Avisa que llegaste!!!!',
+        icon: 'send',
+        handler: () => {
+          this.marcarLlegada();
         }
       });
       opciones.push({
@@ -291,6 +298,39 @@ export class DetalleCarreraPage implements OnInit {
             this.cerrar();
           });
       });
+  }
+  marcarLlegada() {
+    this.carreraService.enCaminoCarrera(this.carrera)
+    .then(() => {
+      this.clienteService.getCliente(this.carrera.idUsuario)
+              .subscribe( data => {
+                let cliente: MdlCliente = data;
+                if (cliente.ui) {
+                  let notificaciones = {
+                    notification:{
+                      title: 'Mujeres al Volante',
+                      body: 'Tu conductora acaba de llegar!!!!!',
+                      sound: 'default',
+                      click_action: 'FCM_PLUGIN_ACTIVITY',
+                      icon: 'fcm_push_icon'
+                    },
+                    data: {
+                      landing_page: 'home',
+                    },
+                    to: cliente.ui,
+                    priority: 'high',
+                    restricted_package_name: ''
+                  };
+                  this.pushNotifService.postGlobal(notificaciones, '')
+                  .subscribe(response => {
+                  });
+                }
+              });
+      this.alertService.present('Información', 'Avisaste que llegaste. :D')
+        .then(() => {
+          this.cerrar();
+        });
+    });
   }
   marcarEnCamino() {
     this.carreraService.enCaminoCarrera(this.carrera)

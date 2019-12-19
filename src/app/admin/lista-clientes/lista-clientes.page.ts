@@ -59,7 +59,7 @@ export class ListaClientesPage implements OnInit {
     this.navController.navigateForward('/reg-clientes');
   }
   public abrirWhatsapp (cliente: MdlCliente) {
-    this.iab.create(`https://api.whatsapp.com/send?phone=591` + cliente.cel + `&text=MAV:`, '_system', 'location=yes');
+    this.iab.create(`https://api.whatsapp.com/send?phone=` + cliente.cel + `&text=MAV:`, '_system', 'location=yes');
   }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({

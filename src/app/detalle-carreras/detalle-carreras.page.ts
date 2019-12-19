@@ -68,6 +68,7 @@ export class DetalleCarrerasPage implements OnInit {
   public cargarDatos() {
     this.loadingService.present()
       .then(() => {
+        this.loadingService.dismiss();
         if (this.navParams.get().conductora) {
            this.conductora = this.navParams.get().conductora;
           this.obtenerCarreras();
@@ -82,6 +83,8 @@ export class DetalleCarrerasPage implements OnInit {
               this.navController.navigateRoot('/login');
             });
         }
+      }).finally( () => {
+        this.loadingService.dismiss();
       });
   }
   obtenerCarreras() {

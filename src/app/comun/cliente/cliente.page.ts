@@ -51,7 +51,7 @@ export class ClientePage implements OnInit {
   }
 
   irWhatsApp() {
-    this.iab.create('https://api.whatsapp.com/send?phone=591' + this.cliente.cel + '&text=', '_system', 'location=yes');
+    this.iab.create('https://api.whatsapp.com/send?phone=' + this.cliente.cel + '&text=', '_system', 'location=yes');
   }
 
   cambiarColor(){
