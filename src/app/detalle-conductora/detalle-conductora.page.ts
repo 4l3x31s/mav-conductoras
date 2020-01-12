@@ -38,6 +38,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   public isSesionAdmin = false;
   public isRegister = false;
   public lstAdministradoras: MdlConductora[] = [];
+  public conductoraSesion: MdlConductora;
   constructor(
     public fb: FormBuilder,
     public conductoraService: ConductoraService,
@@ -231,6 +232,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     this.sesionService.getSesion()
       .subscribe(conductora => {
         if (conductora && conductora.admin) {
+          this.conductoraSesion = conductora;
           this.isSesionAdmin = true;
         }
       });
@@ -268,7 +270,9 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   grabar() {
     this.loadingService.present().then(() => {
       this.conductora.user = this.conductora.email;
-      this.conductora.ui = this.tokenService.get();
+      if(this.conductora.id === this.conductoraSesion.id){
+        this.conductora.ui = this.tokenService.get();
+      }
       if (this.isSesionAdmin) {
         this.conductora.estado = true;
       }
