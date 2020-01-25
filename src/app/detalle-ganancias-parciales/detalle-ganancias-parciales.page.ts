@@ -21,7 +21,7 @@ import { AbonoService } from '../services/db/abono.service';
 })
 export class DetalleGananciasParcialesPage implements OnInit {
   conductora: MdlConductora;
-  mdlGananciasTotales: MdlGananciasTotal = new MdlGananciasTotal(null,null,null,null);
+  mdlGananciasTotales: MdlGananciasTotal = new MdlGananciasTotal(null,null,null,null,null);
   lstGananciasTotal: Array<MdlGananciasTotal> =[];
   contratos: any[];
   totalRemiseCobrado: number = 0;
