@@ -270,9 +270,9 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   grabar() {
     this.loadingService.present().then(() => {
       this.conductora.user = this.conductora.email;
-      if(this.conductora.id === this.conductoraSesion.id){
-        this.conductora.ui = this.tokenService.get();
-      }
+      /*if(this.conductora.id === this.conductoraSesion.id){*/
+      this.conductora.ui = this.tokenService.get();
+      /*}*/
       if (this.isSesionAdmin) {
         this.conductora.estado = true;
       }
@@ -390,6 +390,9 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
           }
         });
       }
+    })
+    .catch(err => {
+      console.log(err);
     });
   }
 
