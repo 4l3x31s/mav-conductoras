@@ -1,0 +1,40 @@
+<cabecera-back titulo="Deposito"></cabecera-back>
+
+<ion-content>
+    <ion-list-header color="verdec">
+        <ion-label>REGISTRO ABONO/PENALIZACION</ion-label>
+      </ion-list-header>
+    <form [formGroup]="frmDeposito">
+        <ion-list>
+            <ion-item>
+                <ion-label position="stacked">Tipo</ion-label>
+                <ion-select cancelText="Cancelar" placeholder="Seleccione el tipo" formControlName="vTipo" [(ngModel)]="deposito.tipo">
+                  <ion-select-option value="Abono">Abono</ion-select-option>
+                  <ion-select-option value="Penalización">Penalización</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <print-error [control]="f.vTipo"></print-error>
+              <ion-item >
+                <ion-label position="stacked">Fecha</ion-label>
+                <ion-datetime formControlName="vFecha" [(ngModel)]="deposito.fecha" display-format="DD/MM/YYYY"></ion-datetime>
+                </ion-item>
+              <print-error [control]="f.vFecha"></print-error>
+              <ion-item >
+                  <ion-label position="stacked">Monto</ion-label>
+                  <ion-input formControlName="vMonto" [(ngModel)]="deposito.monto" ></ion-input>
+              </ion-item>
+              <print-error [control]="f.vMonto"></print-error>
+              <ion-item>
+                  <ion-label position="stacked">Observaciones</ion-label>
+                  <ion-textarea [(ngModel)]="deposito.observaciones" formControlName="vObservaciones"></ion-textarea>
+              </ion-item>
+              <print-error [control]="f.vObservaciones"></print-error>
+        </ion-list>
+        <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button (click)="grabar()" color="verdec" [disabled]="frmDeposito.invalid" >
+              <ion-icon name="save"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+      </form>
+
+</ion-content>

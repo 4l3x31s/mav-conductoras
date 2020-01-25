@@ -54,11 +54,11 @@ export class AppComponent {
   ];
 
   public appPagesAdmin = [
-    {
+    /*{
       title: 'Inicio',
       url: '/home-admin',
       icon: 'home'
-    },
+    },*/
     {
       title: 'Lista Conductoras',
       url: '/lista-conductoras',

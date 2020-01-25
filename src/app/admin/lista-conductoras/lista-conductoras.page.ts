@@ -45,7 +45,7 @@ export class ListaConductorasPage implements OnInit {
     this.navParams.set({
       conductora: conductora
     });
-    this.navController.navigateForward('/detalle-conductora');
+    this.navController.navigateForward('/detalle-conductora-admin');
   }
   public filtrar() {
     this.lstConductorasFiltradas = this.lstConductoras.filter(

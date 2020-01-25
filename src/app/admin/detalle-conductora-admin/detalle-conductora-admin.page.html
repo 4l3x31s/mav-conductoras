@@ -1,0 +1,187 @@
+<ion-header>
+  <ion-toolbar color="rosado">
+    <ion-title>Detalle Conductora</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()"><ion-icon name="close"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="conductora">
+  <form [formGroup]="form" novalidate>
+    <ion-list>
+      <ion-list-header color="verdec">
+        <ion-label>DATOS GENERALES</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input formControlName="vnombre" [(ngModel)]="conductora.nombre"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vnombre"></print-error>
+
+      <ion-item>
+        <ion-label position="stacked">Apellido Paterno</ion-label>
+        <ion-input formControlName="vpaterno" [(ngModel)]="conductora.paterno"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vpaterno"></print-error>
+
+      <ion-item>
+        <ion-label position="stacked">Apellido Materno</ion-label>
+        <ion-input formControlName="vmaterno" [(ngModel)]="conductora.materno"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vmaterno"></print-error>
+
+      <ion-item>
+        <ion-label position="stacked">Fecha Nacimiento</ion-label>
+        <ion-datetime cancelText="Cancelar" doneText="Aceptar" [ngModelOptions]="{standalone: true}" display-format="DD/MM/YYYY" [(ngModel)]="conductora.fechaNac"></ion-datetime>
+      </ion-item>
+      <!-- <print-error [control]="f.vfechanac"></print-error> -->
+
+      <ion-item>
+        <ion-label position="stacked">CI</ion-label>
+        <ion-input [ngModelOptions]="{standalone: true}" [(ngModel)]="conductora.ci"></ion-input>
+      </ion-item>
+      <!-- <print-error [control]="f.vci"></print-error> -->
+
+      <ion-item>
+        <ion-label position="stacked">Género</ion-label>
+        <ion-select cancelText="Cancelar" [ngModelOptions]="{standalone: true}" placeholder="Selecionar uno" [(ngModel)]="conductora.genero">
+          <ion-select-option value="F">Femenino</ion-select-option>
+          <ion-select-option value="M">Masculino</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <!-- <print-error [control]="f.vgenero"></print-error> -->
+
+      <ion-item>
+        <ion-label position="stacked">Tipo Licencia</ion-label>
+        <ion-select cancelText="Cancelar" [ngModelOptions]="{standalone: true}" placeholder="Selecione un valor" 
+          [(ngModel)]="conductora.tipoLicencia">
+          <ion-select-option value="A">A</ion-select-option>
+          <ion-select-option value="B">B</ion-select-option>
+          <ion-select-option value="C">C</ion-select-option>
+          <ion-select-option value="P">P</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <!-- <print-error [control]="f.vtipolicencia"></print-error> -->
+      
+      <ion-item>
+        <ion-label position="stacked">Teléfono Fijo</ion-label>
+        <ion-input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="conductora.telefono"></ion-input>
+      </ion-item>
+      <!-- <print-error [control]="f.vtelefono"></print-error> -->
+
+      <ion-item>
+        <ion-label position="stacked">Celular</ion-label>
+        <ion-input placeholder="59172012345" type="number" formControlName="vcelular" [(ngModel)]="conductora.celular"></ion-input>
+      </ion-item>
+      <print-error [control]="f.vcelular"></print-error>
+
+      <ion-list-header color="verdec">
+        <ion-label>RADICATORIA</ion-label>
+      </ion-list-header>
+      
+      <ion-item>
+        <ion-label position="stacked">Pais</ion-label>
+        <ion-select cancelText="Cancelar" interface="alert" formControlName="vPais" placeholder="Seleccione el Pais"
+          (ngModelChange)="filtrarCiudades($event)" [(ngModel)]="conductora.pais">
+          <ion-select-option *ngFor="let parametros of lstPaisesFiltrados" value="{{parametros.pais}}">
+            {{parametros.pais}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <print-error [control]="f.vPais"></print-error>
+
+      <ion-item>
+        <ion-label position="stacked">Ciudad</ion-label>
+        <ion-select interface="alert" formControlName="vCiudad" placeholder="Seleccione la Ciudad"
+          [(ngModel)]="conductora.ciudad">
+          <ion-select-option *ngFor="let parametros of lstCiudadesFiltrado" value="{{parametros.ciudad}}">
+            {{parametros.ciudad}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <print-error [control]="f.vCiudad"></print-error>
+
+      <ion-item>
+        <ion-label position="stacked">Dirección</ion-label>
+        <ion-input [ngModelOptions]="{standalone: true}" [(ngModel)]="conductora.direccion"></ion-input>
+      </ion-item>
+      <!-- <print-error [control]="f.vdireccion"></print-error> -->
+
+      <ion-item>
+        <ion-label position="stacked">Número de Residencia</ion-label>
+        <ion-input [ngModelOptions]="{standalone: true}" type="number" [(ngModel)]="conductora.nroResidencia"></ion-input>
+      </ion-item>
+      <!-- <print-error [control]="f.vnroresidencia"></print-error> -->
+      
+      <ion-item (click)="irGetCroquis()">
+        <ion-label>
+          <h2>Croquis</h2>
+          <p *ngIf="conductora.lat">Lat: {{ conductora.lat }}</p>
+          <p *ngIf="conductora.long">Long: {{ conductora.long }}</p>
+        </ion-label>
+        <ion-icon name="create" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-list-header color="verdec">
+        <ion-label>CUENTA</ion-label>
+      </ion-list-header>
+
+      <div *ngIf="conductora.id">
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-input value="{{conductora.email}}" readonly></ion-input>
+        </ion-item>
+      </div>
+
+      <div [ngClass]="myclass" >
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-input formControlName="vemail" (focusout)="outFocus()" [(ngModel)]="conductora.email"></ion-input>
+        </ion-item>
+        <print-error [control]="f.vemail"></print-error>
+  
+        <ion-item>
+          <ion-label position="stacked">Nombre de Usuario</ion-label>
+          <ion-input value="{{ conductora.email }}" readonly></ion-input>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label position="stacked">Contraseña</ion-label>
+          <ion-input #pass [type]="tipoPass" formControlName="vpass" [(ngModel)]="conductora.pass">
+          </ion-input>
+          <ion-icon (click)="cambiarValor()" name="eye" color="verdec" slot="end"></ion-icon>
+        </ion-item>
+        <print-error [control]="f.vpass"></print-error>
+  
+        <ion-item>
+          <ion-label #confPass position="stacked">Confirmar Contraseña</ion-label>
+          <ion-input type="password" formControlName="vconfirmPass" name="vconfirmPass" ></ion-input>
+        </ion-item>
+        <print-error [control]="f.vconfirmPass"></print-error>
+  
+      </div>
+  
+      <ion-item *ngIf="isSesionAdmin">
+        <ion-label>Activo</ion-label>
+        <ion-checkbox slot="end" formControlName="vestado" [(ngModel)]="conductora.estado"></ion-checkbox>
+      </ion-item>
+
+      <ion-item *ngIf="isSesionAdmin">
+        <ion-label>Administrador</ion-label>
+        <ion-checkbox slot="end" formControlName="vadmin" [(ngModel)]="conductora.admin"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    <div padding>
+      <ion-button color="verdec" expand="block" shape="round" (click)="grabar()" [disabled]="form.invalid || !form.dirty">
+        Grabar
+      </ion-button>
+    </div>
+  </form>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="conductora.id">
+    <ion-fab-button color="verdec" (click)="showOpcionesConductora()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+</ion-content>

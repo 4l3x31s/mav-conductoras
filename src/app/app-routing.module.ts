@@ -45,6 +45,8 @@ const routes: Routes = [
   { path: 'detalle-deuda', loadChildren: './detalle-deuda/detalle-deuda.module#DetalleDeudaPageModule' },
   { path: 'informes-reportes', loadChildren: './admin/informes-reportes/informes-reportes.module#InformesReportesPageModule' },  { path: 'detalle-ganancias-parciales', loadChildren: './detalle-ganancias-parciales/detalle-ganancias-parciales.module#DetalleGananciasParcialesPageModule' },
   { path: 'terminos-condiciones', loadChildren: './terminos-condiciones/terminos-condiciones.module#TerminosCondicionesPageModule' },
+  { path: 'detalle-conductora-admin', loadChildren: './admin/detalle-conductora-admin/detalle-conductora-admin.module#DetalleConductoraAdminPageModule' },
+  { path: 'reg-abono', loadChildren: './admin/reg-abono/reg-abono.module#RegAbonoPageModule' },
 
 
 

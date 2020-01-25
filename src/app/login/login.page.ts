@@ -57,7 +57,7 @@ export class LoginPage implements OnInit {
                   this.conductoraService.grabarConductora(conductora);
                 }
                 if (conductora.admin){
-                  this.navController.navigateRoot('/home-admin');
+                  this.navController.navigateRoot('/home');
                 } else {
                   if(!conductora.estado) {
                     this.navParam.set({conductora: conductora});
@@ -108,7 +108,7 @@ export class LoginPage implements OnInit {
             }
             this.events.publish('user:login');
             if (conductora.admin){
-              this.navController.navigateRoot('/home-admin');
+              this.navController.navigateRoot('/home');
             } else {
               this.navController.navigateRoot('/home');
             }

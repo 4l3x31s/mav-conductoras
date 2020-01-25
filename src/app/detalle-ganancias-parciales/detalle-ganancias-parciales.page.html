@@ -66,9 +66,10 @@
   <br/><br/>
   
   <ion-grid>
+    
     <ion-row>
       <ion-col style="color: white" size="8">TOTAL</ion-col>
-      <ion-col style="color: white" size="4" class="ion-text-right">{{totalContratos + totalRemiseCobrado + totalRemiseDepositados}}</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">{{totalContratos + totalRemiseCobrado + totalRemiseDepositados }}</ion-col>
     </ion-row>
     <ion-row>
       <ion-col style="color: white" size="8">Carreras cobradas en efectivo</ion-col>
@@ -82,7 +83,25 @@
       <ion-col style="color: white" size="8">Transferencia</ion-col>
       <ion-col style="color: white" size="4" class="ion-text-right" style="border-top: 1px solid white">
           <b style="color: white">{{
-            (totalContratos + totalRemiseDepositados)-(totalContratos + totalRemiseCobrado + totalRemiseDepositados)*0.2
+            ((totalContratos + totalRemiseDepositados)-(totalContratos + totalRemiseCobrado + totalRemiseDepositados )*0.2)
+          }}
+        </b>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col style="color: white" size="8">Abonos</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">{{ totalAbonos }}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="color: white" size="8">Penalizaciones</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right">{{ totalPenalizaciones}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="color: white" size="8">Total Transferencia</ion-col>
+      <ion-col style="color: white" size="4" class="ion-text-right" style="border-top: 1px solid white">
+          <b style="color: white">{{
+            (((totalContratos + totalRemiseDepositados)-(totalContratos + totalRemiseCobrado + totalRemiseDepositados )*0.2)+ totalAbonos + totalPenalizaciones)
           }}
         </b>
       </ion-col>

@@ -1,27 +1,27 @@
-import { AuthService } from './../services/firebase/auth.service';
+import { AuthService } from './../../services/firebase/auth.service';
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
-import { MdlConductora } from '../modelo/mldConductora';
-import { ConductoraService } from '../services/db/conductora.service';
-import { AlertService } from '../services/util/alert.service';
-import { LoadingService } from '../services/util/loading.service';
-import { SesionService } from '../services/sesion.service';
+import { MdlConductora } from '../../modelo/mldConductora';
+import { ConductoraService } from '../../services/db/conductora.service';
+import { AlertService } from '../../services/util/alert.service';
+import { LoadingService } from '../../services/util/loading.service';
+import { SesionService } from '../../services/sesion.service';
 import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
-import { NavParamService } from '../services/nav-param.service';
-import { MapaPage } from '../comun/mapa/mapa.page';
-import { MdlParametrosCarrera } from '../modelo/mdlParametrosCarrera';
-import { ParametrosCarreraService } from '../services/db/parametros-carrera.service';
+import { NavParamService } from '../../services/nav-param.service';
+import { MapaPage } from '../../comun/mapa/mapa.page';
+import { MdlParametrosCarrera } from '../../modelo/mdlParametrosCarrera';
+import { ParametrosCarreraService } from '../../services/db/parametros-carrera.service';
 import { Observable } from 'rxjs';
-import { TokenNotifService } from '../services/token-notif.service';
-import { PushNotifService } from '../services/push-notif.service';
+import { TokenNotifService } from '../../services/token-notif.service';
+import { PushNotifService } from '../../services/push-notif.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-detalle-conductora',
-  templateUrl: './detalle-conductora.page.html',
-  styleUrls: ['./detalle-conductora.page.scss'],
+  selector: 'app-detalle-conductora-admin',
+  templateUrl: './detalle-conductora-admin.page.html',
+  styleUrls: ['./detalle-conductora-admin.page.scss'],
 })
-export class DetalleConductoraPage implements OnInit, OnDestroy {
+export class DetalleConductoraAdminPage implements OnInit, OnDestroy {
 
   @ViewChild('pass') pass: ElementRef;
 
@@ -76,28 +76,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
         Validators.minLength(4),
         Validators.maxLength(50),
       ]],
-      // vfechanac: ['', [
-      //   Validators.required
-      // ]],
-      // vci: ['', [
-      //   Validators.required,
-      //   Validators.minLength(4),
-      //   Validators.maxLength(15),
-      // ]],
-      // vtipolicencia: ['', [
-      //   Validators.required
-      // ]],
-      // vdireccion: ['', [
-      //   Validators.minLength(4),
-      //   Validators.maxLength(100),
-      // ]],
-      // vgenero: ['', [
-      //   Validators.required
-      // ]],
-      // vtelefono: ['', [
-      //   Validators.minLength(7),
-      //   Validators.maxLength(9),
-      // ]],
+      
       vcelular: ['', [
         Validators.required,
         Validators.minLength(8),
@@ -105,10 +84,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       ],[
         //this.validarCelularUnico.bind(this)
       ]],
-      // vnroresidencia: ['', [
-      //   Validators.minLength(1),
-      //   Validators.maxLength(10),
-      // ]],
+      
       vemail: ['', [
         Validators.required,
         Validators.minLength(5),
@@ -271,7 +247,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     this.loadingService.present().then(() => {
       this.conductora.user = this.conductora.email;
       //if(this.conductora.id === this.conductoraSesion.id){
-        this.conductora.ui = this.tokenService.get();
+      //  this.conductora.ui = this.tokenService.get();
       //}
       if (this.isSesionAdmin) {
         this.conductora.estado = true;
@@ -394,28 +370,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   }
 
   irDetalleVehiculo() {
-    /*this.lstAdministradoras.forEach(element => {
-      if(element.ui) {
-        let notificaciones = {
-          notification:{
-            title: 'Mujeres al Volante',
-            body: 'La conductora ' + this.conductora.nombre + ' ' + this.conductora.paterno + ', esta registrando sus imagenes.' ,
-            sound: 'default',
-            click_action: 'FCM_PLUGIN_ACTIVITY',
-            icon: 'fcm_push_icon'
-          },
-          data: {
-            landing_page: 'home-admin',
-          },
-          to: element.ui,
-          priority: 'high',
-          restricted_package_name: ''
-        };
-        this.pushNotifService.postGlobal(notificaciones, '')
-        .subscribe(response => {
-        });
-      }
-    });*/
+    
     this.navParam.set({ conductora: this.conductora});
     this.zone.run(async () => {
       this.navController.navigateForward('/detalle-vehiculo');
@@ -423,28 +378,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
   }
 
   irDetalleImagenes() {
-    /*this.lstAdministradoras.forEach(element => {
-      if(element.ui) {
-        let notificaciones = {
-          notification:{
-            title: 'Mujeres al Volante',
-            body: 'La conductora ' + this.conductora.nombre + ' ' + this.conductora.paterno + ', esta registrando sus imagenes.' ,
-            sound: 'default',
-            click_action: 'FCM_PLUGIN_ACTIVITY',
-            icon: 'fcm_push_icon'
-          },
-          data: {
-            landing_page: 'home-admin',
-          },
-          to: element.ui,
-          priority: 'high',
-          restricted_package_name: ''
-        };
-        this.pushNotifService.postGlobal(notificaciones, '')
-        .subscribe(response => {
-        });
-      }
-    });*/
+    
     this.navParam.set({conductora: this.conductora});
     this.zone.run(async () => {
       this.navController.navigateForward('/detalle-imagenes-conductora');
@@ -466,11 +400,23 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       });
     });
   }
-
+  public irAbono() {
+    this.navParam.set({conductora: this.conductora});
+    this.zone.run(async () => {
+      this.navController.navigateForward('/reg-abono');
+    });
+  }
   async showOpcionesConductora(){
     const actionSheet = await this.actionSheetController.create({
       header: 'Opciones Conductora',
       buttons: [
+        {
+          text: 'Registrar Abono',
+          icon: 'cash',
+          handler: () => {
+            this.irAbono();
+          }
+        },
       {
         text: 'Imágenes',
         icon: 'images',
@@ -534,6 +480,5 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
     this.conductora.email = this.conductora.email.trim();
     this.conductora.email = this.conductora.email.replace(' ', '');
   }
+
 }
-
-
