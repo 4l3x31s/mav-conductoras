@@ -12,6 +12,7 @@ import { CarreraService } from '../services/db/carrera.service';
 import { DetalleCarreraPage } from '../comun/detalle-carrera/detalle-carrera.page';
 import { MdlGeoLocalizacion } from '../modelo/mdlGeoLocalizacion';
 import { GeolocalizacionService } from '../services/db/geolocalizacion.service';
+import { NavParamService } from '../services/nav-param.service';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +37,8 @@ export class HomePage implements OnInit {
     public geolocalizacionService: GeolocalizacionService,
     public platform: Platform,
     public conductoraService: ConductoraService,
-    public tokenService: TokenNotifService
+    public tokenService: TokenNotifService,
+    public navParams:       NavParamService
   ) { }
 
   ngOnInit() {
@@ -124,6 +126,7 @@ export class HomePage implements OnInit {
       .then(() => {
         this.alertService.present('Información', 'Se asignó correctamente.')
           .then(()=>{
+            this.navParams.set({conductora: this.conductora })
             this.navController.navigateForward('/detalle-carreras');
           });
       });
