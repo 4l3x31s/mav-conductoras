@@ -36,7 +36,6 @@
         <ion-datetime cancelText="Cancelar" doneText="Aceptar" [ngModelOptions]="{standalone: true}" display-format="DD/MM/YYYY" [(ngModel)]="conductora.fechaNac"></ion-datetime>
       </ion-item>
       <!-- <print-error [control]="f.vfechanac"></print-error> -->
-
       <ion-item>
         <ion-label position="stacked">CI</ion-label>
         <ion-input [ngModelOptions]="{standalone: true}" [(ngModel)]="conductora.ci"></ion-input>
@@ -61,6 +60,14 @@
           <ion-select-option value="C">C</ion-select-option>
           <ion-select-option value="P">P</ion-select-option>
         </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Numero de Cuenta</ion-label>
+        <ion-input [(ngModel)]="conductora.numCuenta" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Banco</ion-label>
+        <ion-input [(ngModel)]="conductora.banco" [ngModelOptions]="{standalone: true}"></ion-input>
       </ion-item>
       <!-- <print-error [control]="f.vtipolicencia"></print-error> -->
       

@@ -62,6 +62,14 @@
           <ion-select-option value="P">P</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Numero de Cuenta</ion-label>
+        <ion-input [(ngModel)]="conductora.numCuenta" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Banco</ion-label>
+        <ion-input [(ngModel)]="conductora.banco" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
       <!-- <print-error [control]="f.vtipolicencia"></print-error> -->
       
       <ion-item>

@@ -212,7 +212,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       ,null,null,null,null
       ,null,null,null,null
       ,null,null,null,null
-      ,null,null);
+      ,null,null,null,null);
     this.iniciarValidaciones();
     if (this.navParam.get() && this.navParam.get().conductora) {
       this.conductora = this.navParam.get().conductora;
@@ -224,7 +224,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       this.myclass = 'mostrar';
       this.conductora = new MdlConductora(
         null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, null,null, false, false
+        null, null, null, null, null, null, null, null, null, null,null, false, false,null,null
       );
       this.isRegister = true;
     }
@@ -530,7 +530,7 @@ export class DetalleConductoraPage implements OnInit, OnDestroy {
       ,null,null,null,null
       ,null,null,null,null
       ,null,null,null,null
-      ,null,null);
+      ,null,null,null,null);
   }
   outFocus() {
     this.conductora.email = this.conductora.email.trim();
