@@ -31,7 +31,7 @@ export class CarreraService {
     if (!carrera.id) {
       carrera.id = Date.now();
     }
-    carrera.enCamino = false;
+    carrera.enCamino = 0;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
   /*insertarLista(listaCarrera: any) {
@@ -72,11 +72,17 @@ export class CarreraService {
   terminarCarrera(carrera: MdlCarrera): Promise<any> {
     carrera.fechaFin = moment().format();
     carrera.estado = 3;
+    carrera.enCamino = 3;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
   enCaminoCarrera(carrera: MdlCarrera): Promise<any> {
     carrera.fechaFin = moment().format();
-    carrera.enCamino = true;
+    carrera.enCamino = 1;
+    return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
+  }
+  llegadaCarrera(carrera: MdlCarrera): Promise<any> {
+    carrera.fechaFin = moment().format();
+    carrera.enCamino = 2;
     return this.afDB.database.ref('carrera/' + carrera.id).set(carrera);
   }
   getCarreraPorId(idCarrera: number): Observable<MdlCarrera> {

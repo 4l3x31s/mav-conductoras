@@ -300,7 +300,7 @@ export class DetalleCarreraPage implements OnInit {
       });
   }
   marcarLlegada() {
-    this.carreraService.enCaminoCarrera(this.carrera)
+    this.carreraService.llegadaCarrera(this.carrera)
     .then(() => {
       this.clienteService.getCliente(this.carrera.idUsuario)
               .subscribe( data => {
