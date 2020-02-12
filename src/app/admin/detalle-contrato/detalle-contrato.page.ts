@@ -70,7 +70,8 @@ export class DetalleContratoPage implements OnInit {
     // directionsDisplay = new google.maps.DirectionsRenderer;
     distance: any;
     public conductora: MdlConductora = new MdlConductora(null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null);
+        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null
+        ,null, null);
 
     direccionIni: any = 'Donde te encontramos?';
     direccionFin: any = 'A donde quieres ir?';

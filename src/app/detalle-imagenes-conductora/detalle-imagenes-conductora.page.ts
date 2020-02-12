@@ -19,6 +19,17 @@ export class DetalleImagenesConductoraPage implements OnInit {
   urlImagenCI: string;
   urlImagenCIAnv: string;
   urlImagenLic: string;
+
+  urlImagenLicRev: string;
+  urlImagenSoat: string;
+  urlImagenSoatRev: string;
+  urlImagenSeguro: string;
+  urlImagenSeguroRev: string;
+  urlImagenInsVeh: string;
+  urlImagenInsVehRev: string;
+  urlImagenPermMunic: string;
+  urlImagenPermMunicRev: string;
+
   urlImagenFactura: string;
   urlImagenFelcc: string;
   urlImagenTransito: string;
@@ -28,6 +39,17 @@ export class DetalleImagenesConductoraPage implements OnInit {
   urlCI: string;
   urlCIAnv: string;
   urlLic: string;
+
+  urlLicRev: string;
+  urlSoat: string;
+  urlSoatRev: string;
+  urlSeguro: string;
+  urlSeguroRev: string;
+  urlInsVeh: string;
+  urlInsVehRev: string;
+  urlPermMunic: string;
+  urlPermMunicRev: string;
+
   urlFactura: string;
   urlFelcc: string;
   urlTransito: string;

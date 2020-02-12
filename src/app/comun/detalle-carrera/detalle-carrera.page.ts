@@ -377,9 +377,9 @@ export class DetalleCarreraPage implements OnInit {
         this.iab.create(respuesta, '_system', 'location=yes');
        });
       
-      this.alertService.present('Información','Avisaste que vas en camino. :D')
+      this.alertService.present('Información','Avisaste que vas en camino, abriendo Google Maps aguarda un momento...')
         .then(() => {
-          this.cerrar();
+          //this.cerrar(); //TODO: cierra el modal
         });
     });
   }
