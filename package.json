@@ -39,6 +39,7 @@
     "angularfire2": "^5.2.1",
     "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-fcm-with-dependecy-updated": "^2.4.0",
@@ -75,6 +76,7 @@
     "@angular/language-service": "^7.2.15",
     "@ionic/angular-toolkit": "^1.4.1",
     "@ionic/lab": "1.0.24",
+    "@types/file-saver": "^2.0.1",
     "@types/googlemaps": "^3.36.6",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
@@ -113,7 +115,8 @@
     },
     "platforms": [
       "browser",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
