@@ -62,7 +62,7 @@
     "rxjs": "~6.3.3",
     "string-similarity": "^3.0.0",
     "tslib": "^1.10.0",
-    "xlsx": "^0.15.1",
+    "xlsx": "^0.17.0",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
